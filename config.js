@@ -171,60 +171,56 @@ export const siteConfig = {
                <img src="RESİM_LİNKİ" class="w-full rounded-sm my-4"> (Resim ekler)
             */
             pageContents: {
+                home: "SİP panellerin avantajları, izolasyon değerleri ve üretim süreçleri burada anlatılmaktadır.",
+                prices: "<strong>Standart Paket:</strong> 15.000 TL / m2 <br><br> <strong>Anahtar Teslim:</strong> 25.000 TL / m2",
+                gallery: "Tamamlanan projelerimizin şantiye süreçleri. Buraya galeri uygulamaları eklenebilir.",
+                reviews: "Müşterilerimizin bizim hakkımızda söyledikleri...",
                 
-                // 1. YAPI (Ana Sayfa) İçeriği
-                // Not: Sistemin otomatik oluşturduğu rastgele resim galerisi bu yazının altına eklenir.
-                home: `
-                    <p class="mb-4">SİP panellerin avantajları, izolasyon değerleri ve üretim süreçleri alanındaki tecrübemizle hayalinizdeki evi inşa ediyoruz. Aşağıda son projelerimizden bazı kareleri inceleyebilirsiniz.</p>
-                `,
-                
-                // 2. FİYATLAR Sayfası İçeriği
-                prices: `
-                    <p class="mb-4 text-gray-700">Güncel fiyatlandırma politikamız projenin büyüklüğüne ve seçilen paket özelliklerine göre değişiklik göstermektedir. Örnek bir fiyat tablosunu ve referans görselimizi aşağıda bulabilirsiniz:</p>
-                    
-                    <!-- Fiyatlar sayfasına eklenen örnek bir resim (Logonuz) -->
-                    <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[300px] object-contain rounded-sm shadow-sm border border-gray-100 my-6 bg-white p-4" alt="Fiyat Tablosu Referans">
-                    
-                    <div class="bg-white p-6 rounded-sm border border-gray-100 shadow-sm">
-                        <p class="mb-3"><i class="fas fa-check text-brand-orange mr-2"></i> <strong>Standart Paket:</strong> 61.000 TL / m2</p>
-                        <p><i class="fas fa-check-double text-brand-orange mr-2"></i> <strong>Anahtar Teslim Paket:</strong> 54.000 TL / m2</p>
-                    </div>
-                `,
-                
-                // 3. GALERİ Sayfası İçeriği (Genel şantiye fotoları vb. eklenebilir)
-                gallery: `
-                    <p class="mb-6 text-gray-700">Tamamlanan projelerimizin şantiye süreçlerinden ve üretim aşamalarından bazı kareler:</p>
-                    
-                    <!-- Yan yana duran ikili resim tablosu örneği -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <img src="https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Şantiye 1">
-                        <img src="https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Şantiye 2">
-                    </div>
-                `,
-                
-                // 4. HAKKIMIZDA Sayfası İçeriği
+                // Hakkımızda sayfasına çoklu satır ve resim ekleme örneği
                 about: `
-                    <div class="text-left">
-                        <p class="mb-4 text-lg">Muhammet Tutkun A.Ş. olarak yılların verdiği tecrübe ile inşaat sektöründe öncüyüz. Güven ve kaliteyi her zaman ön planda tutuyoruz.</p>
-                        
-                        <!-- Hakkımızda şirket görseli (Logonuz) -->
-                        <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[200px] object-contain bg-gray-50 rounded-sm shadow-md mb-6 p-4 border border-gray-100" alt="Şirketimiz">
-                        
-                        <p class="mb-2"><strong>Misyonumuz:</strong> En kaliteli SİP Panel evleri en hızlı ve güvenli şekilde teslim etmektir.</p>
-                        <p><strong>Vizyonumuz:</strong> Modern yapı teknolojilerinde Türkiye'nin en çok tercih edilen markası olmak.</p>
-                    </div>
+                    <p class="mb-4">Muhammet Tutkun A.Ş. olarak yılların verdiği tecrübe ile inşaat sektöründe öncüyüz.</p>
+                    <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full max-w-sm rounded-sm shadow-md mb-4" alt="Şirketimiz">
+                    <p>Misyonumuz en kaliteli SİP Panel evleri en hızlı şekilde teslim etmektir.</p>
                 `,
                 
-                // 5. İLETİŞİM Sayfası İçeriği
-                // Not: Burası boş bırakılırsa motor otomatik olarak büyük telefon numarası ve harita alanını çizer.
+                // İletişim sayfasının metnini boş bırakırsanız sadece harita/form görünür.
                 contact: ""
             },
+
+            // =====================================================
+            // BÖLÜM 4.1: AÇILIR MENÜLER (MEGA MENU) EKLENTİSİ
+            // =====================================================
+            // Üst menüde farenin üzerine gelince açılan geniş alt menülerdir.
+            // Sadece menü ID'si (örnek: 'prices') burayla eşleşirse menü açılır.
+            megaMenus: {
+                prices: [ // FİYATLAR menüsü altındaki sütunlar
+                    {
+                        columnTitle: "Fiyatlar",
+                        items: [
+                            // "action" kısmı, tıklandığında hangi sayfaya gideceğini belirler (örneğin hepsi 'prices' sayfasına yönlendiriyor)
+                            { label: "EPS panelleri", action: "prices" },
+                            { label: "Ev kitleri", action: "prices" },
+                            { label: "İnşaat maliyeti", action: "prices" },
+                            { label: "SİP panellerden yapılmış çatı", action: "prices" },
+                            { label: "SİP panellerden yapılmış garaj", action: "prices" },
+                            { label: "Montaj köpüğü", action: "prices" }
+                        ]
+                    },
+                    {
+                        columnTitle: "Hizmetler",
+                        items: [
+                            { label: "Tasarım", action: "about" },
+                            { label: "Sandviç panellerden yapı", action: "home" },
+                            { label: "Yeniden yapılanma", action: "about" },
+                            { label: "Kurulum denetimi", action: "about" }
+                        ]
+                    }
+                ]
+                // İsterseniz buraya projects: [ ... ] diyerek PROJELER menüsüne de alt menü ekleyebilirsiniz.
+            },
+            
             footerText: "© 2026 Muhammet Tutkun A.Ş. Tüm hakları saklıdır."
         },
-
-        // --------------------------------------------------------------
-        // İNGİLİZCE DİL PAKETİ BAŞLANGICI (Türkçe ile Aynı Mantık)
-        // --------------------------------------------------------------
         en: {
             menu: {
                 home: "BUILDING", projects: "PROJECTS", prices: "PRICING", 
@@ -247,35 +243,47 @@ export const siteConfig = {
             backBtn: "Go Back",
             projectDetailsTitle: "Project Details",
             pageTitles: {
-                home: "Building and Technology", prices: "Pricing and Packages", gallery: "Photo Gallery",
+                home: "Building and Technology", prices: "Pricing", gallery: "Photo Gallery",
                 reviews: "Customer Reviews", about: "About Us", contact: "Contact Us"
             },
             pageContents: {
-                home: `<p class="mb-4">With our experience in the advantages of SIP panels, insulation values, and production processes, we build your dream home.</p>`,
-                prices: `
-                    <p class="mb-4 text-gray-700">Our pricing varies depending on the size of the project and the selected package features.</p>
-                    <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[300px] object-contain rounded-sm shadow-sm border border-gray-100 my-6 bg-white p-4" alt="Pricing Reference">
-                    <div class="bg-white p-6 rounded-sm border border-gray-100 shadow-sm">
-                        <p class="mb-3"><i class="fas fa-check text-brand-orange mr-2"></i> <strong>Standard Package:</strong> $500 / sqm</p>
-                        <p><i class="fas fa-check-double text-brand-orange mr-2"></i> <strong>Turnkey Package:</strong> $800 / sqm</p>
-                    </div>
-                `,
-                gallery: `
-                    <p class="mb-6 text-gray-700">Some shots from the construction processes and production stages of our completed projects:</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                         <img src="https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Site 1">
-                         <img src="https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Site 2">
-                    </div>
-                `,
+                home: "Advantages of SIP panels, insulation values, and production processes.",
+                prices: "<strong>Standard Package:</strong> $500 / sqm <br><br> <strong>Turnkey:</strong> $800 / sqm",
+                gallery: "Construction processes of our completed projects.",
+                reviews: "What our customers say about us...",
                 about: `
-                    <div class="text-left">
-                        <p class="mb-4 text-lg">As Muhammet Tutkun A.Ş., we are pioneers in the construction sector with years of experience.</p>
-                        <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[200px] object-contain bg-gray-50 rounded-sm shadow-md mb-6 p-4 border border-gray-100" alt="Our Company">
-                        <p class="mb-2"><strong>Our Mission:</strong> To deliver the highest quality SIP Panel houses as quickly and safely as possible.</p>
-                    </div>
+                    <p class="mb-4">As Muhammet Tutkun A.Ş., we are pioneers in the construction sector with years of experience.</p>
+                    <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full max-w-sm rounded-sm shadow-md mb-4" alt="Our Company">
+                    <p>Our mission is to deliver the highest quality SIP Panel houses as quickly as possible.</p>
                 `,
                 contact: ""
             },
+
+            megaMenus: {
+                prices: [
+                    {
+                        columnTitle: "Prices",
+                        items: [
+                            { label: "EPS panels", action: "prices" },
+                            { label: "House kits", action: "prices" },
+                            { label: "Construction cost", action: "prices" },
+                            { label: "Roofs from SIP panels", action: "prices" },
+                            { label: "Garages from SIP panels", action: "prices" },
+                            { label: "Mounting foam", action: "prices" }
+                        ]
+                    },
+                    {
+                        columnTitle: "Services",
+                        items: [
+                            { label: "Design", action: "about" },
+                            { label: "Construction from sandwich panels", action: "home" },
+                            { label: "Reconstruction", action: "about" },
+                            { label: "Installation supervision", action: "about" }
+                        ]
+                    }
+                ]
+            },
+
             footerText: "© 2026 Muhammet Tutkun A.Ş. All rights reserved."
         }
     }
