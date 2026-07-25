@@ -6,7 +6,11 @@ const state = {
     currentView: 'projects', 
     activeCategory: null,     
     sliderInterval: null,
-    mobileMenuOpen: false 
+    mobileMenuOpen: false,
+    sortBy: 'default', // 2.1. Akıllı Sıralama için state eklendi ('default', 'areaAsc', 'areaDesc')
+    // Lightbox durumu
+    lightboxImages: [],
+    currentLightboxIndex: 0
 };
 
 const DOM = {
@@ -21,12 +25,30 @@ function t() {
     return siteConfig.i18n[state.lang];
 }
 
+// 1.3. Dinamik Sekme Başlıkları Fonksiyonu
+function updateDocumentTitle(viewOrId) {
+    const baseTitle = "Muhammet Tutkun A.Ş";
+    let subTitle = "";
+
+    if (viewOrId === 'projects') {
+        subTitle = t().menu.projects;
+    } else if (['home', 'prices', 'gallery', 'reviews', 'about', 'contact'].includes(viewOrId)) {
+        subTitle = t().pageTitles[viewOrId];
+    } else {
+        const project = siteConfig.projects.find(p => p.id === viewOrId);
+        if (project) {
+            subTitle = state.lang === 'tr' ? project.title : project.titleEn;
+        }
+    }
+
+    document.title = subTitle ? `${subTitle} | ${baseTitle}` : baseTitle;
+}
+
 export function navigate(viewOrId, evt = null) {
     if (evt) evt.preventDefault(); 
     
     if (state.currentView === viewOrId) return; 
 
-    // Yeni sayfaya geçerken mobil menüyü ve slider'ı otomatik kapat
     state.mobileMenuOpen = false; 
     if (state.sliderInterval) {
         clearInterval(state.sliderInterval);
@@ -35,11 +57,13 @@ export function navigate(viewOrId, evt = null) {
 
     state.currentView = viewOrId;
     
-    // Geçiş Animasyonu: Önce gizle
+    // Geçiş Animasyonu
     DOM.content.classList.remove('page-fade-in');
     DOM.content.classList.add('page-fade-out');
     
     renderHeader();
+    // Sayfa geçişinde title'ı güncelle
+    updateDocumentTitle(viewOrId);
 
     setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' }); 
@@ -52,7 +76,6 @@ export function navigate(viewOrId, evt = null) {
             renderProjectDetail(viewOrId);
         }
 
-        // İçeriği geri göster
         DOM.content.classList.remove('page-fade-out');
         DOM.content.classList.add('page-fade-in');
     }, 250); 
@@ -65,6 +88,7 @@ export function changeLanguage(lang) {
     
     renderTopBar();
     renderHeader();
+    updateDocumentTitle(state.currentView);
     
     if (state.currentView === 'projects') renderProjectsList();
     else if (['home', 'prices', 'gallery', 'reviews', 'about', 'contact'].includes(state.currentView)) renderGenericPage(state.currentView);
@@ -80,7 +104,6 @@ window.filterCategory = function(catId, evt) {
     if(evt) evt.preventDefault();
     state.activeCategory = catId === 'all' ? null : catId;
     
-    // Kullanıcı başka bir sayfadayken filtreye tıklarsa önce projelere yönlendir
     if (state.currentView !== 'projects') {
         navigate('projects');
     } else {
@@ -90,7 +113,13 @@ window.filterCategory = function(catId, evt) {
 
 window.toggleMobileMenu = function() {
     state.mobileMenuOpen = !state.mobileMenuOpen;
-    renderHeader(); // Menü açılıp kapandığında header'ı yeniden çiz
+    renderHeader(); 
+};
+
+// 2.1. Akıllı Sıralama fonksiyonu
+window.sortProjects = function(sortBy) {
+    state.sortBy = sortBy;
+    renderProjectsList();
 };
 
 window.changeMainImage = function(src) {
@@ -103,6 +132,82 @@ window.changeMainImage = function(src) {
         }, 300); 
     }
 };
+
+// 1.1. Lightbox Kontrolleri
+window.openLightbox = function(startIndex) {
+    const overlay = document.getElementById('lightbox-overlay');
+    const img = document.getElementById('lightbox-img');
+    const counter = document.getElementById('lightbox-counter');
+    
+    state.currentLightboxIndex = startIndex;
+    img.src = state.lightboxImages[startIndex];
+    counter.innerText = `${startIndex + 1} / ${state.lightboxImages.length}`;
+    
+    overlay.classList.add('active');
+    
+    // Klavyeden yön tuşlarını dinle
+    document.addEventListener('keydown', window.handleLightboxKeys);
+};
+
+window.closeLightbox = function() {
+    document.getElementById('lightbox-overlay').classList.remove('active');
+    document.removeEventListener('keydown', window.handleLightboxKeys);
+};
+
+window.changeLightboxImage = function(direction) {
+    state.currentLightboxIndex += direction;
+    
+    if (state.currentLightboxIndex < 0) {
+        state.currentLightboxIndex = state.lightboxImages.length - 1;
+    } else if (state.currentLightboxIndex >= state.lightboxImages.length) {
+        state.currentLightboxIndex = 0;
+    }
+    
+    const img = document.getElementById('lightbox-img');
+    const counter = document.getElementById('lightbox-counter');
+    
+    // Ufak bir kararma efekti
+    img.style.opacity = 0.5;
+    setTimeout(() => {
+        img.src = state.lightboxImages[state.currentLightboxIndex];
+        img.style.opacity = 1;
+        counter.innerText = `${state.currentLightboxIndex + 1} / ${state.lightboxImages.length}`;
+    }, 150);
+};
+
+window.handleLightboxKeys = function(e) {
+    if (e.key === 'Escape') window.closeLightbox();
+    if (e.key === 'ArrowRight') window.changeLightboxImage(1);
+    if (e.key === 'ArrowLeft') window.changeLightboxImage(-1);
+};
+
+// Lightbox overlay dışına tıklanınca kapatma
+document.getElementById('lightbox-overlay')?.addEventListener('click', function(e) {
+    if (e.target === this) window.closeLightbox();
+});
+
+
+// 2.2. Hızlı Paylaş Butonu Fonksiyonu
+window.shareProject = function(evt) {
+    evt.preventDefault();
+    const url = window.location.href; // Gerçekte domain olduğunda hash vs alınabilir. Şimdilik dummy URL
+    const mockUrl = "https://muhammettutkun.com.tr/#" + state.currentView;
+    
+    navigator.clipboard.writeText(mockUrl).then(() => {
+        showToast(state.lang === 'tr' ? 'Proje bağlantısı kopyalandı!' : 'Project link copied!');
+    }).catch(err => {
+        console.error('Kopyalama başarısız:', err);
+    });
+};
+
+function showToast(message) {
+    const toast = document.getElementById('toast-message');
+    toast.innerText = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
 
 window.formatPhone = function(input) {
     let x = input.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
@@ -158,19 +263,17 @@ function renderHeader() {
         { id: 'contact', label: t().menu.contact }
     ];
 
-    // Masaüstü için linkler ve DİNAMİK MEGA MENÜ entegrasyonu
     const desktopMenuHTML = menuItems.map(item => {
         const isProjectDetail = !menuItems.find(m => m.id === state.currentView) && state.currentView !== 'projects';
         const isActive = (state.currentView === item.id) || (item.id === 'projects' && isProjectDetail);
         
         let megaMenuHTML = '';
         
-        // EĞER "PROJELER" menüsüysek, Mega Menüyü config'deki kategorilere bakarak OTOMATİK ÇİZ
+        // PROJELER menüsü için Dinamik Mega Menü
         if (item.id === 'projects') {
             const allProjectsLabel = state.lang === 'tr' ? 'Tüm Projeler' : 'All Projects';
             const columnTitle = state.lang === 'tr' ? 'Ev Modelleri' : 'House Models';
             
-            // Linkleri otomatik oluştur (Tümü + Kategoriler)
             const categoryLinks = [
                 { label: allProjectsLabel, category: 'all' },
                 ...siteConfig.categories.map(cat => ({
@@ -198,7 +301,7 @@ function renderHeader() {
 
             megaMenuHTML = `
                 <div class="absolute left-0 top-full pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 w-full transform translate-y-2 group-hover:translate-y-0">
-                    <div class="bg-white shadow-2xl border-t-2 border-brand-orange rounded-b-md p-8 flex gap-8 mx-auto w-max max-w-7xl relative before:absolute before:-top-4 before:left-0 before:w-full before:h-4">
+                    <div class="bg-white shadow-2xl border-t-2 border-brand-orange rounded-b-sm p-8 flex gap-8 mx-auto w-max max-w-7xl relative before:absolute before:-top-4 before:left-0 before:w-full before:h-4">
                         ${columnsHTML}
                     </div>
                 </div>
@@ -215,7 +318,6 @@ function renderHeader() {
         `;
     }).join('');
 
-    // Mobil için menü linkleri
     const mobileMenuHTML = menuItems.map(item => {
         const isProjectDetail = !menuItems.find(m => m.id === state.currentView) && state.currentView !== 'projects';
         const isActive = (state.currentView === item.id) || (item.id === 'projects' && isProjectDetail);
@@ -240,13 +342,11 @@ function renderHeader() {
                 </button>
             </nav>
             
-            <!-- Mobil Hamburger Butonu -->
-            <button onclick="window.toggleMobileMenu()" class="lg:hidden text-2xl text-gray-800 hover:text-brand-orange focus:outline-none transition-transform duration-200 ${state.mobileMenuOpen ? 'rotate-90' : ''}">
+            <button onclick="window.toggleMobileMenu()" class="lg:hidden text-2xl text-gray-800 hover:text-brand-orange focus:outline-none transition-transform duration-200 ${state.mobileMenuOpen ? 'rotate-90' : ''} py-4">
                 <i class="fas ${state.mobileMenuOpen ? 'fa-times' : 'fa-bars'}"></i>
             </button>
         </div>
 
-        <!-- Mobil Açılır Menü Container -->
         <div class="${state.mobileMenuOpen ? 'max-h-screen opacity-100 shadow-xl border-b border-gray-100' : 'max-h-0 opacity-0 pointer-events-none'} lg:hidden absolute top-full left-0 w-full bg-white overflow-hidden transition-all duration-300 ease-in-out z-40">
             <div class="flex flex-col px-4 py-6 space-y-2">
                 ${mobileMenuHTML}
@@ -264,29 +364,60 @@ function renderHeader() {
 
 function renderGenericPage(pageId) {
     const title = t().pageTitles[pageId] || '';
-    const content = t().pageContents[pageId] || '';
-
-    // Ana Sayfa (YAPI) için özel galeri gösterimi
-    let extraHTML = '';
+    let content = t().pageContents[pageId] || '';
+    
+    // --- ÖZEL İÇERİK: ANA SAYFA (YAPI) ---
     if (pageId === 'home') {
-        const randomProjects = [...siteConfig.projects].sort(() => 0.5 - Math.random()).slice(0, 3);
-        const galleryItems = randomProjects.map(p => `
-            <div class="relative overflow-hidden aspect-[4/3] rounded-sm group cursor-pointer shadow-sm" onclick="navigate('${p.id}')">
-                <img src="${p.mainImage}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 transition duration-300 flex items-end p-4">
-                    <h3 class="text-white font-bold text-lg transform translate-y-2 group-hover:translate-y-0 transition opacity-0 group-hover:opacity-100">${state.lang === 'tr' ? p.title : p.titleEn}</h3>
-                </div>
-            </div>
-        `).join('');
+        const allPhotos = siteConfig.projects.map(p => p.mainImage);
+        const randomPhotos = allPhotos.sort(() => 0.5 - Math.random()).slice(0, 3);
         
-        extraHTML = `
-            <div class="mt-16">
-                <h2 class="text-2xl font-bold text-gray-900 mb-8 border-l-4 border-brand-orange pl-3">${state.lang === 'tr' ? 'Öne Çıkan Projelerimiz' : 'Featured Projects'}</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    ${galleryItems}
+        let dynamicGalleryHTML = '';
+        if (randomPhotos.length > 0) {
+            dynamicGalleryHTML = `
+                <div class="mt-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 border-l-4 border-brand-orange pl-3 uppercase tracking-wide">
+                        ${state.lang === 'tr' ? 'Projelerimizden Kareler' : 'Shots from our projects'}
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        ${randomPhotos.map(img => `
+                            <div class="aspect-[4/3] rounded-sm overflow-hidden shadow-sm">
+                                <img src="${img}" class="w-full h-full object-cover hover:scale-110 transition duration-700 cursor-pointer" onclick="navigate('projects')">
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
+        content += dynamicGalleryHTML;
+    }
+    
+    // --- ÖZEL İÇERİK: YORUMLAR ---
+    if (pageId === 'reviews') {
+        let reviewsHTML = '';
+        if (siteConfig.reviews && siteConfig.reviews.length > 0) {
+            reviewsHTML = siteConfig.reviews.map(review => `
+                <div class="flex flex-col md:flex-row gap-6 bg-white border border-gray-100 p-6 rounded-sm shadow-sm mb-6 hover:shadow-md transition">
+                    <div class="w-full md:w-1/3 shrink-0">
+                        <img src="${review.image}" alt="Müşteri Görseli" class="w-full aspect-[4/3] object-cover rounded-sm">
+                    </div>
+                    <div class="w-full md:w-2/3 flex flex-col justify-center">
+                        <h3 class="text-xl font-bold text-brand-orange mb-2 uppercase tracking-wide">${review.title[state.lang]}</h3>
+                        <p class="text-sm text-gray-400 mb-4">${review.date}</p>
+                        <p class="text-gray-700 leading-relaxed italic border-l-4 border-gray-200 pl-4">"${review.text[state.lang]}"</p>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            reviewsHTML = `
+                <div class="bg-gray-50 border border-dashed border-gray-300 p-12 text-center rounded-sm">
+                    <i class="fas fa-comments text-4xl text-gray-300 mb-4"></i>
+                    <h3 class="text-lg font-semibold text-gray-600">${state.lang === 'tr' ? 'Müşteri yorumları güncellenmektedir.' : 'Customer reviews are being updated.'}</h3>
+                    <p class="text-gray-500 mt-2">${state.lang === 'tr' ? 'Tamamlanan projelerimizin ardından müşteri deneyimleri en kısa sürede burada yer alacaktır.' : 'Customer experiences will be published here as soon as possible following our completed projects.'}</p>
+                </div>
+            `;
+        }
+        
+        content = reviewsHTML; 
     }
 
     DOM.content.innerHTML = `
@@ -299,10 +430,8 @@ function renderGenericPage(pageId) {
                 ${content}
             </div>
             
-            ${extraHTML}
-            
             ${pageId === 'contact' ? `
-                <div class="mt-12 bg-gray-50 p-8 rounded border border-gray-100 flex flex-col items-center shadow-sm">
+                <div class="mt-12 bg-gray-50 p-8 rounded-sm border border-gray-100 flex flex-col items-center shadow-sm">
                     <i class="fas fa-headset text-5xl text-brand-orange mb-4"></i>
                     <h3 class="text-xl font-bold mb-2">Bize Ulaşın</h3>
                     <p class="text-3xl font-black text-gray-800 mb-2">${siteConfig.contact.phone}</p>
@@ -332,9 +461,17 @@ function renderProjectsList() {
         </button>
     ` + categoriesHTML;
 
-    const filteredProjects = state.activeCategory 
+    // Filtreleme
+    let filteredProjects = state.activeCategory 
         ? siteConfig.projects.filter(p => p.categoryId === state.activeCategory)
-        : siteConfig.projects;
+        : [...siteConfig.projects];
+
+    // 2.1. Sıralama İşlemi
+    if (state.sortBy === 'areaAsc') {
+        filteredProjects.sort((a, b) => a.area - b.area);
+    } else if (state.sortBy === 'areaDesc') {
+        filteredProjects.sort((a, b) => b.area - a.area);
+    }
 
     const projectsHTML = filteredProjects.length > 0 ? filteredProjects.map(project => `
         <div class="project-card bg-white border border-gray-100 cursor-pointer group rounded-sm" onclick="navigate('${project.id}')">
@@ -362,25 +499,40 @@ function renderProjectsList() {
     DOM.content.innerHTML = `
         <div class="text-center mb-10">
             <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 uppercase tracking-tight">${t().allProjectsTitle}</h1>
-            <div class="bg-gray-50 p-4 text-sm text-gray-500 text-left rounded-sm border border-gray-100 flex items-center inline-flex">
-                <a href="#" onclick="navigate('projects', event)" class="hover:text-brand-orange transition font-medium"><i class="fas fa-home mr-1"></i> Muhammet Tutkun A.Ş</a> 
-                <i class="fas fa-angle-right mx-3 text-gray-300"></i> 
-                <span class="text-gray-800 font-semibold">${t().projectsPath}</span>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+                <div class="bg-gray-50 p-4 text-sm text-gray-500 text-left rounded-sm border border-gray-100 flex items-center inline-flex">
+                    <a href="#" onclick="navigate('projects', event)" class="hover:text-brand-orange transition font-medium"><i class="fas fa-home mr-1"></i> Muhammet Tutkun A.Ş</a> 
+                    <i class="fas fa-angle-right mx-3 text-gray-300"></i> 
+                    <span class="text-gray-800 font-semibold">${t().projectsPath}</span>
+                </div>
             </div>
         </div>
 
         <div class="flex flex-col md:flex-row gap-10">
-            <div class="w-full md:w-1/4">
-                <div class="bg-gray-50 p-4 md:p-6 rounded-sm border border-gray-100 sticky top-24">
+            <div class="w-full md:w-1/4 flex flex-col gap-6">
+                <!-- Kategoriler -->
+                <div class="bg-gray-50 p-4 md:p-6 rounded-sm border border-gray-100 md:sticky md:top-24">
                     <h2 class="font-black text-gray-900 mb-4 md:mb-6 text-lg border-l-4 border-brand-orange pl-3 hidden md:block">${t().categoryTitle}</h2>
-                    <div class="flex flex-row overflow-x-auto no-scrollbar md:flex-col space-x-2 md:space-x-0 md:space-y-1">
+                    <div class="flex flex-row overflow-x-auto no-scrollbar md:flex-col space-x-2 md:space-x-0 md:space-y-1 pb-2 md:pb-0">
                         ${allCategoriesHTML}
                     </div>
                 </div>
             </div>
             
-            <div class="w-full md:w-3/4 grid grid-cols-1 lg:grid-cols-2 gap-8">
-                ${projectsHTML}
+            <div class="w-full md:w-3/4">
+                <!-- 2.1. Sıralama Araç Çubuğu -->
+                <div class="flex justify-between items-center mb-6 bg-gray-50 p-3 rounded-sm border border-gray-100">
+                    <span class="text-sm font-semibold text-gray-600">${filteredProjects.length} ${state.lang === 'tr' ? 'Proje listeleniyor' : 'Projects listed'}</span>
+                    <select onchange="window.sortProjects(this.value)" class="bg-white border border-gray-200 text-gray-700 text-sm rounded-sm focus:ring-brand-orange focus:border-brand-orange block p-2 cursor-pointer outline-none">
+                        <option value="default" ${state.sortBy === 'default' ? 'selected' : ''}>${state.lang === 'tr' ? 'Varsayılan Sıralama' : 'Default Sort'}</option>
+                        <option value="areaAsc" ${state.sortBy === 'areaAsc' ? 'selected' : ''}>${state.lang === 'tr' ? 'Metrekare (Küçükten Büyüğe)' : 'Area (Low to High)'}</option>
+                        <option value="areaDesc" ${state.sortBy === 'areaDesc' ? 'selected' : ''}>${state.lang === 'tr' ? 'Metrekare (Büyükten Küçüğe)' : 'Area (High to Low)'}</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    ${projectsHTML}
+                </div>
             </div>
         </div>
     `;
@@ -397,7 +549,11 @@ function renderProjectDetail(projectId) {
     
     if (state.sliderInterval) clearInterval(state.sliderInterval);
     
-    const fullGallery = [project.mainImage, ...project.gallery.filter(img => img !== project.mainImage)];
+    // Ana görsel ve diğer galeriler birleştirilir
+    const fullGallery = [project.mainImage, ...(project.gallery || []).filter(img => img !== project.mainImage)];
+    
+    // Lightbox state'i güncellenir
+    state.lightboxImages = fullGallery;
     
     state.sliderInterval = setInterval(() => {
         currentImgIndex = (currentImgIndex + 1) % fullGallery.length;
@@ -405,21 +561,24 @@ function renderProjectDetail(projectId) {
     }, 3000);
 
     const thumbnailsHTML = fullGallery.map((img, index) => `
-        <div class="w-20 md:w-full h-20 md:h-24 shrink-0 overflow-hidden rounded-sm border-2 border-transparent hover:border-brand-orange transition">
-            <img src="${img}" 
-                 alt="Galeri ${index+1}" 
-                 class="w-full h-full object-cover cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                 onclick="window.changeMainImage('${img}'); currentImgIndex = ${index}; clearInterval(state.sliderInterval);"
-            >
+        <div class="w-20 md:w-full aspect-square shrink-0 overflow-hidden rounded-sm border-2 border-transparent hover:border-brand-orange transition cursor-pointer"
+             onclick="window.changeMainImage('${img}'); currentImgIndex = ${index}; clearInterval(state.sliderInterval);">
+             <img src="${img}" alt="Galeri ${index+1}" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity">
         </div>
     `).join('');
 
     DOM.content.innerHTML = `
         <div class="mb-6 flex justify-between items-center border-b border-gray-200 pb-4">
             <h1 class="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-tight">${prjTitle}</h1>
-            <button onclick="navigate('projects')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-sm text-sm font-semibold transition flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> ${t().backBtn}
-            </button>
+            <div class="flex space-x-2">
+                <!-- 2.2. Hızlı Paylaş Butonu -->
+                <button onclick="window.shareProject(event)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 md:px-4 py-2 rounded-sm text-sm font-semibold transition flex items-center" title="${state.lang === 'tr' ? 'Paylaş' : 'Share'}">
+                    <i class="fas fa-share-alt md:mr-2"></i> <span class="hidden md:inline">${state.lang === 'tr' ? 'Paylaş' : 'Share'}</span>
+                </button>
+                <button onclick="navigate('projects')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 md:px-4 py-2 rounded-sm text-sm font-semibold transition flex items-center">
+                    <i class="fas fa-arrow-left md:mr-2"></i> <span class="hidden md:inline">${t().backBtn}</span>
+                </button>
+            </div>
         </div>
         
         <div class="bg-gray-50 p-3 mb-8 text-sm text-gray-500 rounded-sm border border-gray-100 flex items-center flex-wrap">
@@ -436,10 +595,15 @@ function renderProjectDetail(projectId) {
                 <div class="w-full md:w-28 flex md:flex-col gap-2 overflow-x-auto md:overflow-visible no-scrollbar pb-2 md:pb-0">
                     ${thumbnailsHTML}
                 </div>
-                <div class="flex-grow">
-                    <div class="w-full aspect-[4/3] bg-gray-100 overflow-hidden rounded-sm shadow-md">
+                <div class="flex-grow group relative">
+                    <!-- 1.1 Lightbox Tetikleyici -->
+                    <div class="w-full aspect-[4/3] bg-gray-100 overflow-hidden rounded-sm shadow-md cursor-zoom-in" onclick="window.openLightbox(currentImgIndex); clearInterval(state.sliderInterval);">
                         <img id="detail-main-image" src="${project.mainImage}" alt="${prjTitle}" class="w-full h-full object-cover transition-opacity duration-200">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300 flex items-center justify-center pointer-events-none">
+                            <i class="fas fa-expand text-white text-3xl opacity-0 group-hover:opacity-100 drop-shadow-md"></i>
+                        </div>
                     </div>
+                    <p class="text-xs text-gray-400 mt-2 text-center italic"><i class="fas fa-search-plus mr-1"></i> ${state.lang === 'tr' ? 'Tam ekran incelemek için görsele tıklayın.' : 'Click image to view full screen.'}</p>
                 </div>
             </div>
 
@@ -505,6 +669,8 @@ function initApp() {
     
     state.currentView = 'projects';
     renderProjectsList();
+    updateDocumentTitle('projects'); // Başlangıç title
+    
     DOM.content.classList.remove('page-fade-out');
     DOM.content.classList.add('page-fade-in');
 }
