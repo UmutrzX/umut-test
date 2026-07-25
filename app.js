@@ -7,10 +7,10 @@ const state = {
     activeCategory: null,     
     sliderInterval: null,
     mobileMenuOpen: false,
-    sortBy: 'default', // 2.1. Akıllı Sıralama için state eklendi ('default', 'areaAsc', 'areaDesc')
-    // Lightbox durumu
+    sortBy: 'default',
     lightboxImages: [],
-    currentLightboxIndex: 0
+    currentLightboxIndex: 0,
+    activeGalleryIndex: 0 // Hangi fotoğrafta olduğumuzu aklında tutan sayaç
 };
 
 const DOM = {
@@ -57,12 +57,10 @@ export function navigate(viewOrId, evt = null) {
 
     state.currentView = viewOrId;
     
-    // Geçiş Animasyonu
     DOM.content.classList.remove('page-fade-in');
     DOM.content.classList.add('page-fade-out');
     
     renderHeader();
-    // Sayfa geçişinde title'ı güncelle
     updateDocumentTitle(viewOrId);
 
     setTimeout(() => {
@@ -116,7 +114,6 @@ window.toggleMobileMenu = function() {
     renderHeader(); 
 };
 
-// 2.1. Akıllı Sıralama fonksiyonu
 window.sortProjects = function(sortBy) {
     state.sortBy = sortBy;
     renderProjectsList();
@@ -133,7 +130,24 @@ window.changeMainImage = function(src) {
     }
 };
 
-// 1.1. Lightbox Kontrolleri
+// GALERİ (THUMBNAIL) VE LİGHTBOX KÖPRÜ FONKSİYONLARI (HATA ÇÖZÜMÜ)
+window.setGalleryImage = function(index) {
+    if (state.sliderInterval) {
+        clearInterval(state.sliderInterval);
+        state.sliderInterval = null;
+    }
+    state.activeGalleryIndex = index;
+    window.changeMainImage(state.lightboxImages[index]);
+};
+
+window.openLightboxCurrent = function() {
+    if (state.sliderInterval) {
+        clearInterval(state.sliderInterval);
+        state.sliderInterval = null;
+    }
+    window.openLightbox(state.activeGalleryIndex);
+};
+
 window.openLightbox = function(startIndex) {
     const overlay = document.getElementById('lightbox-overlay');
     const img = document.getElementById('lightbox-img');
@@ -145,7 +159,6 @@ window.openLightbox = function(startIndex) {
     
     overlay.classList.add('active');
     
-    // Klavyeden yön tuşlarını dinle
     document.addEventListener('keydown', window.handleLightboxKeys);
 };
 
@@ -166,7 +179,6 @@ window.changeLightboxImage = function(direction) {
     const img = document.getElementById('lightbox-img');
     const counter = document.getElementById('lightbox-counter');
     
-    // Ufak bir kararma efekti
     img.style.opacity = 0.5;
     setTimeout(() => {
         img.src = state.lightboxImages[state.currentLightboxIndex];
@@ -181,17 +193,13 @@ window.handleLightboxKeys = function(e) {
     if (e.key === 'ArrowLeft') window.changeLightboxImage(-1);
 };
 
-// Lightbox overlay dışına tıklanınca kapatma
 document.getElementById('lightbox-overlay')?.addEventListener('click', function(e) {
     if (e.target === this) window.closeLightbox();
 });
 
-
-// 2.2. Hızlı Paylaş Butonu Fonksiyonu
 window.shareProject = function(evt) {
     evt.preventDefault();
-    const url = window.location.href; // Gerçekte domain olduğunda hash vs alınabilir. Şimdilik dummy URL
-    const mockUrl = "https://muhammettutkun.com.tr/#" + state.currentView;
+    const mockUrl = window.location.href; 
     
     navigator.clipboard.writeText(mockUrl).then(() => {
         showToast(state.lang === 'tr' ? 'Proje bağlantısı kopyalandı!' : 'Project link copied!');
@@ -269,7 +277,6 @@ function renderHeader() {
         
         let megaMenuHTML = '';
         
-        // PROJELER menüsü için Dinamik Mega Menü
         if (item.id === 'projects') {
             const allProjectsLabel = state.lang === 'tr' ? 'Tüm Projeler' : 'All Projects';
             const columnTitle = state.lang === 'tr' ? 'Ev Modelleri' : 'House Models';
@@ -366,7 +373,6 @@ function renderGenericPage(pageId) {
     const title = t().pageTitles[pageId] || '';
     let content = t().pageContents[pageId] || '';
     
-    // --- ÖZEL İÇERİK: ANA SAYFA (YAPI) ---
     if (pageId === 'home') {
         const allPhotos = siteConfig.projects.map(p => p.mainImage);
         const randomPhotos = allPhotos.sort(() => 0.5 - Math.random()).slice(0, 3);
@@ -391,7 +397,6 @@ function renderGenericPage(pageId) {
         content += dynamicGalleryHTML;
     }
     
-    // --- ÖZEL İÇERİK: YORUMLAR ---
     if (pageId === 'reviews') {
         let reviewsHTML = '';
         if (siteConfig.reviews && siteConfig.reviews.length > 0) {
@@ -461,12 +466,10 @@ function renderProjectsList() {
         </button>
     ` + categoriesHTML;
 
-    // Filtreleme
     let filteredProjects = state.activeCategory 
         ? siteConfig.projects.filter(p => p.categoryId === state.activeCategory)
         : [...siteConfig.projects];
 
-    // 2.1. Sıralama İşlemi
     if (state.sortBy === 'areaAsc') {
         filteredProjects.sort((a, b) => a.area - b.area);
     } else if (state.sortBy === 'areaDesc') {
@@ -510,7 +513,6 @@ function renderProjectsList() {
 
         <div class="flex flex-col md:flex-row gap-10">
             <div class="w-full md:w-1/4 flex flex-col gap-6">
-                <!-- Kategoriler -->
                 <div class="bg-gray-50 p-4 md:p-6 rounded-sm border border-gray-100 md:sticky md:top-24">
                     <h2 class="font-black text-gray-900 mb-4 md:mb-6 text-lg border-l-4 border-brand-orange pl-3 hidden md:block">${t().categoryTitle}</h2>
                     <div class="flex flex-row overflow-x-auto no-scrollbar md:flex-col space-x-2 md:space-x-0 md:space-y-1 pb-2 md:pb-0">
@@ -520,7 +522,6 @@ function renderProjectsList() {
             </div>
             
             <div class="w-full md:w-3/4">
-                <!-- 2.1. Sıralama Araç Çubuğu -->
                 <div class="flex justify-between items-center mb-6 bg-gray-50 p-3 rounded-sm border border-gray-100">
                     <span class="text-sm font-semibold text-gray-600">${filteredProjects.length} ${state.lang === 'tr' ? 'Proje listeleniyor' : 'Projects listed'}</span>
                     <select onchange="window.sortProjects(this.value)" class="bg-white border border-gray-200 text-gray-700 text-sm rounded-sm focus:ring-brand-orange focus:border-brand-orange block p-2 cursor-pointer outline-none">
@@ -545,24 +546,22 @@ function renderProjectDetail(projectId) {
     const prjTitle = state.lang === 'tr' ? project.title : project.titleEn;
     const prjDesc = project.description[state.lang];
 
-    let currentImgIndex = 0;
+    const fullGallery = [project.mainImage, ...(project.gallery || []).filter(img => img !== project.mainImage)];
+    
+    // Lightbox state'i ve sayacı güncellenir
+    state.lightboxImages = fullGallery;
+    state.activeGalleryIndex = 0; 
     
     if (state.sliderInterval) clearInterval(state.sliderInterval);
     
-    // Ana görsel ve diğer galeriler birleştirilir
-    const fullGallery = [project.mainImage, ...(project.gallery || []).filter(img => img !== project.mainImage)];
-    
-    // Lightbox state'i güncellenir
-    state.lightboxImages = fullGallery;
-    
     state.sliderInterval = setInterval(() => {
-        currentImgIndex = (currentImgIndex + 1) % fullGallery.length;
-        window.changeMainImage(fullGallery[currentImgIndex]);
+        state.activeGalleryIndex = (state.activeGalleryIndex + 1) % state.lightboxImages.length;
+        window.changeMainImage(state.lightboxImages[state.activeGalleryIndex]);
     }, 3000);
 
     const thumbnailsHTML = fullGallery.map((img, index) => `
         <div class="w-20 md:w-full aspect-square shrink-0 overflow-hidden rounded-sm border-2 border-transparent hover:border-brand-orange transition cursor-pointer"
-             onclick="window.changeMainImage('${img}'); currentImgIndex = ${index}; clearInterval(state.sliderInterval);">
+             onclick="window.setGalleryImage(${index})">
              <img src="${img}" alt="Galeri ${index+1}" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity">
         </div>
     `).join('');
@@ -571,7 +570,6 @@ function renderProjectDetail(projectId) {
         <div class="mb-6 flex justify-between items-center border-b border-gray-200 pb-4">
             <h1 class="text-2xl md:text-3xl font-black text-gray-900 uppercase tracking-tight">${prjTitle}</h1>
             <div class="flex space-x-2">
-                <!-- 2.2. Hızlı Paylaş Butonu -->
                 <button onclick="window.shareProject(event)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 md:px-4 py-2 rounded-sm text-sm font-semibold transition flex items-center" title="${state.lang === 'tr' ? 'Paylaş' : 'Share'}">
                     <i class="fas fa-share-alt md:mr-2"></i> <span class="hidden md:inline">${state.lang === 'tr' ? 'Paylaş' : 'Share'}</span>
                 </button>
@@ -596,8 +594,8 @@ function renderProjectDetail(projectId) {
                     ${thumbnailsHTML}
                 </div>
                 <div class="flex-grow group relative">
-                    <!-- 1.1 Lightbox Tetikleyici -->
-                    <div class="w-full aspect-[4/3] bg-gray-100 overflow-hidden rounded-sm shadow-md cursor-zoom-in" onclick="window.openLightbox(currentImgIndex); clearInterval(state.sliderInterval);">
+                    <!-- 1.1 Lightbox Tetikleyicisi (HATA DÜZELTİLDİ) -->
+                    <div class="w-full aspect-[4/3] bg-gray-100 overflow-hidden rounded-sm shadow-md cursor-zoom-in" onclick="window.openLightboxCurrent()">
                         <img id="detail-main-image" src="${project.mainImage}" alt="${prjTitle}" class="w-full h-full object-cover transition-opacity duration-200">
                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300 flex items-center justify-center pointer-events-none">
                             <i class="fas fa-expand text-white text-3xl opacity-0 group-hover:opacity-100 drop-shadow-md"></i>
@@ -669,7 +667,7 @@ function initApp() {
     
     state.currentView = 'projects';
     renderProjectsList();
-    updateDocumentTitle('projects'); // Başlangıç title
+    updateDocumentTitle('projects'); 
     
     DOM.content.classList.remove('page-fade-out');
     DOM.content.classList.add('page-fade-in');
