@@ -2,13 +2,14 @@
  * ======================================================================
  * YÖNETİM PANELİ (CONFIG DOSYASI) - MUHAMMET TUTKUN A.Ş.
  * ======================================================================
- * Bu dosya sitenizin beynidir. Sadece tırnak (" ") içindeki yazıları ve 
- * linkleri değiştirerek siteyi yönetebilirsiniz.
+ * HOŞ GELDİNİZ! Bu dosya sitenizin beynidir. Kodlama bilmenize gerek yok.
+ * Sadece tırnak işaretleri (" ") içindeki yazıları değiştirerek tüm siteyi 
+ * anında güncelleyebilirsiniz. LÜTFEN TIRNAKLARI SİLMEMEYE DİKKAT EDİN!
  */
 
 export const siteConfig = {
     // ==========================================
-    // 1. GENEL BİLGİLER VE LOGO
+    // BÖLÜM 1: GENEL BİLGİLER VE İLETİŞİM
     // ==========================================
     contact: {
         logoSrc: "https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg",
@@ -23,7 +24,7 @@ export const siteConfig = {
     },
 
     // ==========================================
-    // 2. KATEGORİLER (Sol Menü)
+    // BÖLÜM 2: PROJE KATEGORİLERİ (Soldaki Menü)
     // ==========================================
     categories: [
         { id: "standart", tr: "Standart evler", en: "Standard houses" },
@@ -36,7 +37,7 @@ export const siteConfig = {
     ],
 
     // ==========================================
-    // 3. PROJELER VE EVLER
+    // BÖLÜM 3: SATILIK EVLER / PROJELER
     // ==========================================
     projects: [
         {
@@ -76,22 +77,20 @@ export const siteConfig = {
     ],
 
     // ==========================================
-    // 4. MÜŞTERİ YORUMLARI
+    // BÖLÜM 4: MÜŞTERİ YORUMLARI
     // ==========================================
-    // Şu an boş olduğu için sitede "Hazırlanıyor" mesajı çıkar.
-    // Yorum eklemek isterseniz aşağıdaki /* ve */ işaretlerini silin.
     reviews: [
-        /*
+        /* Örnek Yorum (Aktif etmek için başındaki ve sonundaki /* işaretlerini silin)
         {
             id: 1,
-            image: "https://placehold.co/400x400/f39c12/white?text=Musteri",
+            image: "https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg", // Örnek olarak logo eklendi
             date: "20.12.2023",
             title: {
                 tr: "VİDEO İNCELEMESİ: NEDEN GAZBETON YERİNE SİP EV TERCİH ETTİM?",
                 en: "VIDEO REVIEW: WHY I CHOSE A SIP HOUSE?"
             },
             text: {
-                tr: "Müşteriye yaklaşımlarını çok beğendik. Her şey bize çok detaylı bir şekilde açıklandı... Ustabaşımızla birlikte ofise geldik, kendisi nitelikli bir uzmandı ve birçok soru sorduk.",
+                tr: "Müşteriye yaklaşımlarını çok beğendik. Her şey bize çok detaylı bir şekilde açıklandı...",
                 en: "We really liked their approach to the customer. Everything was explained to us in detail..."
             }
         }
@@ -99,8 +98,9 @@ export const siteConfig = {
     ],
 
     // ==========================================
-    // 5. ÇEVİRİLER VE SAYFA İÇERİKLERİ
+    // BÖLÜM 5: ÇEVİRİLER VE TÜM SAYFA İÇERİKLERİ
     // ==========================================
+    // NOT: Sayfa içeriklerine resim eklemek için <img src="RESİM_LİNKİ" class="w-full rounded-sm my-4"> kullanabilirsiniz.
     i18n: {
         tr: {
             menu: {
@@ -126,22 +126,43 @@ export const siteConfig = {
             
             pageTitles: {
                 home: "Yapı ve Teknoloji",
-                prices: "Fiyatlandırma",
-                gallery: "Fotoğraf Galerisi",
+                prices: "Fiyatlandırma ve Paketler",
+                gallery: "Fotoğraf ve Video Galerisi",
                 reviews: "Müşteri Yorumları",
                 about: "Hakkımızda",
                 contact: "Bize Ulaşın"
             },
             
             pageContents: {
-                // Giriş yazısı. (Uygulama motoru bu yazının altına otomatik rastgele projeler ekleyecek)
-                home: "SİP panellerin avantajları, izolasyon değerleri ve üretim süreçleri alanındaki tecrübemizle hayalinizdeki evi inşa ediyoruz. Aşağıda son projelerimizden bazı kareleri inceleyebilirsiniz.",
-                prices: "<strong>Standart Paket:</strong> 15.000 TL / m2 <br><br> <strong>Anahtar Teslim:</strong> 25.000 TL / m2",
-                gallery: "Tamamlanan projelerimizin şantiye süreçleri. Buraya galeri uygulamaları eklenebilir.",
+                // Ana sayfanın üst metni. (Motor bu yazının altına otomatik rastgele projeler ekler)
+                home: `
+                    <p class="mb-4">SİP panellerin avantajları, izolasyon değerleri ve üretim süreçleri alanındaki tecrübemizle hayalinizdeki evi inşa ediyoruz. Aşağıda son projelerimizden bazı kareleri inceleyebilirsiniz.</p>
+                `,
+                // Fiyatlar Sayfası - Metin, Tablo veya Görsel ekleyebilirsiniz.
+                prices: `
+                    <p class="mb-4 text-gray-700">Güncel fiyatlandırma politikamız projenin büyüklüğüne ve seçilen paket özelliklerine göre değişiklik göstermektedir. Örnek bir fiyat tablosunu ve referans görselimizi aşağıda bulabilirsiniz:</p>
+                    <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[300px] object-contain rounded-sm shadow-sm border border-gray-100 my-6 bg-white p-4" alt="Fiyat Tablosu Referans">
+                    <div class="bg-white p-6 rounded-sm border border-gray-100 shadow-sm">
+                        <p class="mb-3"><i class="fas fa-check text-brand-orange mr-2"></i> <strong>Standart Paket:</strong> 15.000 TL / m2</p>
+                        <p><i class="fas fa-check-double text-brand-orange mr-2"></i> <strong>Anahtar Teslim Paket:</strong> 25.000 TL / m2</p>
+                    </div>
+                `,
+                // Galeri Sayfası - Proje detayları haricindeki genel şantiye fotoları vb. eklenebilir.
+                gallery: `
+                    <p class="mb-6 text-gray-700">Tamamlanan projelerimizin şantiye süreçlerinden ve üretim aşamalarından bazı kareler:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <img src="https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Şantiye 1">
+                        <img src="https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Şantiye 2">
+                    </div>
+                `,
+                // Hakkımızda Sayfası
                 about: `
-                    <p class="mb-4">Muhammet Tutkun A.Ş. olarak yılların verdiği tecrübe ile inşaat sektöründe öncüyüz.</p>
-                    <img src="https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg" class="w-full h-[400px] object-cover rounded-sm shadow-md mb-4" alt="Şirketimiz">
-                    <p>Misyonumuz en kaliteli SİP Panel evleri en hızlı şekilde teslim etmektir.</p>
+                    <div class="text-left">
+                        <p class="mb-4 text-lg">Muhammet Tutkun A.Ş. olarak yılların verdiği tecrübe ile inşaat sektöründe öncüyüz. Güven ve kaliteyi her zaman ön planda tutuyoruz.</p>
+                        <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[200px] object-contain bg-gray-50 rounded-sm shadow-md mb-6 p-4 border border-gray-100" alt="Şirketimiz">
+                        <p class="mb-2"><strong>Misyonumuz:</strong> En kaliteli SİP Panel evleri en hızlı ve güvenli şekilde teslim etmektir.</p>
+                        <p><strong>Vizyonumuz:</strong> Modern yapı teknolojilerinde Türkiye'nin en çok tercih edilen markası olmak.</p>
+                    </div>
                 `,
                 contact: ""
             },
@@ -169,16 +190,32 @@ export const siteConfig = {
             backBtn: "Go Back",
             projectDetailsTitle: "Project Details",
             pageTitles: {
-                home: "Building and Technology", prices: "Pricing", gallery: "Photo Gallery",
+                home: "Building and Technology", prices: "Pricing and Packages", gallery: "Photo Gallery",
                 reviews: "Customer Reviews", about: "About Us", contact: "Contact Us"
             },
             pageContents: {
-                home: "With our experience in the advantages of SIP panels, insulation values, and production processes, we build your dream home. You can review some shots from our recent projects below.",
-                prices: "<strong>Standard Package:</strong> $500 / sqm <br><br> <strong>Turnkey:</strong> $800 / sqm",
-                gallery: "Construction processes of our completed projects.",
+                home: `<p class="mb-4">With our experience in the advantages of SIP panels, insulation values, and production processes, we build your dream home.</p>`,
+                prices: `
+                    <p class="mb-4 text-gray-700">Our pricing varies depending on the size of the project and the selected package features.</p>
+                    <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[300px] object-contain rounded-sm shadow-sm border border-gray-100 my-6 bg-white p-4" alt="Pricing Reference">
+                    <div class="bg-white p-6 rounded-sm border border-gray-100 shadow-sm">
+                        <p class="mb-3"><i class="fas fa-check text-brand-orange mr-2"></i> <strong>Standard Package:</strong> $500 / sqm</p>
+                        <p><i class="fas fa-check-double text-brand-orange mr-2"></i> <strong>Turnkey Package:</strong> $800 / sqm</p>
+                    </div>
+                `,
+                gallery: `
+                    <p class="mb-6 text-gray-700">Some shots from the construction processes and production stages of our completed projects:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                         <img src="https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Site 1">
+                         <img src="https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Site 2">
+                    </div>
+                `,
                 about: `
-                    <p class="mb-4">As Muhammet Tutkun A.Ş., we are pioneers in the construction sector with years of experience.</p>
-                    <p>Our mission is to deliver the highest quality SIP Panel houses as quickly as possible.</p>
+                    <div class="text-left">
+                        <p class="mb-4 text-lg">As Muhammet Tutkun A.Ş., we are pioneers in the construction sector with years of experience.</p>
+                        <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[200px] object-contain bg-gray-50 rounded-sm shadow-md mb-6 p-4 border border-gray-100" alt="Our Company">
+                        <p class="mb-2"><strong>Our Mission:</strong> To deliver the highest quality SIP Panel houses as quickly and safely as possible.</p>
+                    </div>
                 `,
                 contact: ""
             },
