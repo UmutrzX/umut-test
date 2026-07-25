@@ -150,9 +150,53 @@ function renderHeader() {
     const desktopMenuHTML = menuItems.map(item => {
         const isProjectDetail = !menuItems.find(m => m.id === state.currentView) && state.currentView !== 'projects';
         const isActive = (state.currentView === item.id) || (item.id === 'projects' && isProjectDetail);
-        return `<a href="#" onclick="navigate('${item.id}', event)" class="text-sm font-semibold text-gray-800 hover:text-brand-orange nav-link transition-colors ${isActive ? 'active' : ''}">${item.label}</a>`;
+        
+        // Bu menü maddesi için config'de açılır menü (megaMenu) tanımlanmış mı kontrol et
+        const megaMenuData = t().megaMenus && t().megaMenus[item.id];
+        let megaMenuHTML = '';
+        
+        if (megaMenuData) {
+            // Açılır menü sütunlarını oluştur
+            const columnsHTML = megaMenuData.map(col => `
+                <div class="flex-1">
+                    <h4 class="text-brand-orange font-bold text-lg mb-5 border-b border-gray-100 pb-2">${col.columnTitle}</h4>
+                    <ul class="space-y-4">
+                        ${col.items.map(link => `
+                            <li>
+                                <a href="#" onclick="navigate('${link.action}', event)" class="text-gray-600 hover:text-brand-orange transition flex items-center text-sm font-medium">
+                                    ${link.label}
+                                </a>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('');
+
+            // Mega menü kapsayıcısını inşa et (Fare üzerine gelince görünür olan kısım)
+            megaMenuHTML = `
+                <div class="absolute left-1/2 -translate-x-1/2 top-full w-[600px] pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform translate-y-2 group-hover:translate-y-0">
+                    <div class="bg-white shadow-2xl border-t-4 border-brand-orange rounded-b-md p-8 flex gap-12 cursor-default relative">
+                        <!-- Üstteki küçük ok işareti (Görsellik için) -->
+                        <div class="absolute -top-[12px] left-1/2 -translate-x-1/2 border-[6px] border-transparent border-b-brand-orange"></div>
+                        ${columnsHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Ana linki ve mega menüyü '.group' divi içine sararak hover efektini bağla
+        return `
+            <div class="relative group h-full flex items-center">
+                <a href="#" onclick="navigate('${item.id}', event)" class="text-sm font-semibold text-gray-800 hover:text-brand-orange nav-link transition-colors ${isActive ? 'active' : ''} py-6 flex items-center">
+                    ${item.label}
+                    ${megaMenuData ? '<i class="fas fa-chevron-down text-[10px] ml-1.5 text-gray-400 group-hover:text-brand-orange transition transform group-hover:rotate-180 duration-300"></i>' : ''}
+                </a>
+                ${megaMenuHTML}
+            </div>
+        `;
     }).join('');
 
+    // Mobil için menü linkleri (Daha büyük ve tıklanabilir alan)
     const mobileMenuHTML = menuItems.map(item => {
         const isProjectDetail = !menuItems.find(m => m.id === state.currentView) && state.currentView !== 'projects';
         const isActive = (state.currentView === item.id) || (item.id === 'projects' && isProjectDetail);
