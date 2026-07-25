@@ -16,7 +16,7 @@ export const siteConfig = {
         logoSrc: "https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg",
         
         // Adres ve İletişim Bilgileriniz
-        address: "Sakarya, Türkiye",
+        address: "Sakarya, Türkiyeeeee",
         phone: "+90 507 880 76 07", 
         email: "info@muhammettutkun.com.tr",
         
