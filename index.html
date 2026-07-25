@@ -47,20 +47,42 @@
         .project-card { transition: all 0.3s ease; }
         .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         
-        /* Sabit İletişim Butonları (Mobil ve Masaüstü uyumlu) */
+        /* Sabit İletişim ve Yukarı Çık Butonları */
         .floating-btn {
-            position: fixed; bottom: 20px; z-index: 50;
+            position: fixed; z-index: 50;
             width: 50px; height: 50px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, background-color 0.3s; cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s, opacity 0.3s, visibility 0.3s; cursor: pointer;
         }
         @media (min-width: 768px) {
-            .floating-btn { width: 60px; height: 60px; font-size: 24px; bottom: 30px; }
+            .floating-btn { width: 60px; height: 60px; font-size: 24px; }
         }
         .floating-btn:hover { transform: scale(1.1) rotate(5deg); }
-        .btn-call { left: 20px; background-color: #f39c12; }
-        .btn-chat { right: 20px; background-color: #25D366; }
+        .btn-call { left: 20px; bottom: 20px; background-color: #f39c12; }
+        .btn-chat { right: 20px; bottom: 20px; background-color: #25D366; }
+        
+        @media (min-width: 768px) {
+            .btn-call { bottom: 30px; }
+            .btn-chat { bottom: 30px; }
+        }
+
+        /* 1.2. Akıllı Yukarı Çık Butonu */
+        .btn-scroll-top { 
+            right: 20px; bottom: 80px; 
+            background-color: #1a1a1a; 
+            opacity: 0; visibility: hidden; 
+            transform: translateY(20px);
+        }
+        .btn-scroll-top.visible {
+            opacity: 1; visibility: visible;
+            transform: translateY(0);
+        }
+        .btn-scroll-top:hover { transform: translateY(-5px) !important; background-color: #f39c12; }
+        
+        @media (min-width: 768px) {
+            .btn-scroll-top { bottom: 100px; }
+        }
 
         /* Sayfa Geçiş Animasyonları */
         #app-content { transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out; }
@@ -74,6 +96,64 @@
             align-items: center; justify-content: center; z-index: 100;
         }
         .modal-overlay.active { display: flex; }
+
+        /* Toast (Bildirim) Mesajı */
+        #toast-message {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(26, 26, 26, 0.9); color: white; padding: 12px 24px;
+            border-radius: 4px; font-weight: 500; font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+            opacity: 0; z-index: 110; pointer-events: none;
+        }
+        #toast-message.show {
+            transform: translateX(-50%) translateY(0); opacity: 1;
+        }
+
+        /* 1.1. Lightbox (Tam Ekran Galeri) Stilleri */
+        #lightbox-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        #lightbox-overlay.active {
+            opacity: 1; visibility: visible;
+        }
+        #lightbox-img {
+            max-width: 90vw; max-height: 90vh; object-fit: contain;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        #lightbox-overlay.active #lightbox-img {
+            transform: scale(1);
+        }
+        .lightbox-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.1); color: white;
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .lightbox-btn:hover { background: rgba(243, 156, 18, 0.8); border-color: #f39c12; scale: 1.1; }
+        #lightbox-prev { left: 20px; }
+        #lightbox-next { right: 20px; }
+        #lightbox-close {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255,0,0,0.6); color: white;
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 20px; cursor: pointer; transition: all 0.2s ease;
+        }
+        #lightbox-close:hover { background: red; scale: 1.1; transform: rotate(90deg); }
+        .lightbox-counter {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            color: white; font-size: 14px; font-weight: 500;
+            background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px;
+        }
     </style>
 </head>
 <body class="antialiased flex flex-col min-h-screen">
@@ -90,9 +170,14 @@
     <!-- Footer -->
     <footer id="main-footer" class="bg-brand-dark text-white py-12 mt-auto"></footer>
 
-    <!-- Yüzen İletişim Butonları (Linkler Düzeltildi) -->
+    <!-- Yüzen İletişim ve Kontrol Butonları -->
     <a id="btn-call-floating" href="tel:+905078807607" class="floating-btn btn-call" title="Bizi Arayın"><i class="fas fa-phone-alt"></i></a>
     <a id="btn-chat-floating" href="https://wa.me/905078807607" target="_blank" class="floating-btn btn-chat" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    
+    <!-- 1.2. Akıllı Yukarı Çık Butonu -->
+    <button id="btn-scroll-top" class="floating-btn btn-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Yukarı Çık">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Modal (Uyarı/Başarı Penceresi - Formlar için) -->
     <div id="alert-modal" class="modal-overlay">
@@ -103,6 +188,30 @@
             <button onclick="document.getElementById('alert-modal').classList.remove('active')" class="bg-brand-orange text-white px-6 py-2 rounded-sm font-bold hover:bg-orange-600 w-full">Tamam</button>
         </div>
     </div>
+
+    <!-- Toast Mesajı (Bildirim) -->
+    <div id="toast-message">İşlem başarılı</div>
+
+    <!-- 1.1. Lightbox (Tam Ekran Fotoğraf İnceleme) -->
+    <div id="lightbox-overlay">
+        <button id="lightbox-close" onclick="window.closeLightbox()"><i class="fas fa-times"></i></button>
+        <button id="lightbox-prev" class="lightbox-btn" onclick="window.changeLightboxImage(-1)"><i class="fas fa-chevron-left"></i></button>
+        <img id="lightbox-img" src="" alt="Tam Ekran Görsel">
+        <button id="lightbox-next" class="lightbox-btn" onclick="window.changeLightboxImage(1)"><i class="fas fa-chevron-right"></i></button>
+        <div id="lightbox-counter" class="lightbox-counter">1 / 1</div>
+    </div>
+
+    <!-- Scroll olayını dinleyip yukarı çık butonunu göster/gizle -->
+    <script>
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('btn-scroll-top');
+            if (window.scrollY > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+    </script>
 
     <!-- Uygulama Motorunu (app.js) Modül Olarak Yüklüyoruz -->
     <script type="module" src="app.js"></script>
