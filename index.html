@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammet Tutkun A.Ş - Yapı Teknolojileri</title>
+    
+    <!-- Fontlar ve İkonlar -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            orange: '#f39c12',
+                            dark: '#1a1a1a',
+                            light: '#f8f9fa',
+                            gray: '#e5e7eb'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Genel Stiller */
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #333; overflow-x: hidden; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Navigasyon Animasyonları */
+        .nav-link { position: relative; display: inline-block; }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; 
+            bottom: -4px; left: 0; background-color: #f39c12; transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: #f39c12; }
+
+        /* Proje Kartı Efektleri */
+        .project-card { transition: all 0.3s ease; }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* Sabit İletişim Butonları (Mobil ve Masaüstü uyumlu) */
+        .floating-btn {
+            position: fixed; bottom: 20px; z-index: 50;
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, background-color 0.3s; cursor: pointer;
+        }
+        @media (min-width: 768px) {
+            .floating-btn { width: 60px; height: 60px; font-size: 24px; bottom: 30px; }
+        }
+        .floating-btn:hover { transform: scale(1.1) rotate(5deg); }
+        .btn-call { left: 20px; background-color: #f39c12; }
+        .btn-chat { right: 20px; background-color: #25D366; }
+
+        /* Sayfa Geçiş Animasyonları */
+        #app-content { transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out; }
+        .page-fade-out { opacity: 0; transform: translateY(10px); }
+        .page-fade-in { opacity: 1; transform: translateY(0); }
+
+        /* Modal (Uyarı) Penceresi Stili */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); display: none;
+            align-items: center; justify-content: center; z-index: 100;
+        }
+        .modal-overlay.active { display: flex; }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- Üst İletişim Barı (Sadece Masaüstü) -->
+    <div id="top-bar" class="bg-brand-dark text-gray-300 text-xs py-2 hidden md:block"></div>
+    
+    <!-- Ana Navigasyon (Mobil ve Masaüstü) -->
+    <header id="main-header" class="bg-white shadow-sm sticky top-0 z-40 transition-all duration-300 relative"></header>
+
+    <!-- Ana İçerik Alanı -->
+    <main id="app-content" class="flex-grow w-full max-w-7xl mx-auto px-4 py-8 page-fade-in"></main>
+
+    <!-- Footer -->
+    <footer id="main-footer" class="bg-brand-dark text-white py-12 mt-auto"></footer>
+
+    <!-- Yüzen İletişim Butonları (Linkler Düzeltildi) -->
+    <a id="btn-call-floating" href="tel:+905078807607" class="floating-btn btn-call" title="Bizi Arayın"><i class="fas fa-phone-alt"></i></a>
+    <a id="btn-chat-floating" href="https://wa.me/905078807607" target="_blank" class="floating-btn btn-chat" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+    <!-- Modal (Uyarı/Başarı Penceresi - Formlar için) -->
+    <div id="alert-modal" class="modal-overlay">
+        <div class="bg-white p-8 rounded-sm shadow-2xl max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300">
+            <i class="fas fa-check-circle text-5xl text-brand-orange mb-4"></i>
+            <h3 id="modal-title" class="text-2xl font-bold text-gray-900 mb-2">Başarılı</h3>
+            <p id="modal-message" class="text-gray-600 mb-6">Talebiniz alınmıştır.</p>
+            <button onclick="document.getElementById('alert-modal').classList.remove('active')" class="bg-brand-orange text-white px-6 py-2 rounded-sm font-bold hover:bg-orange-600 w-full">Tamam</button>
+        </div>
+    </div>
+
+    <!-- Uygulama Motorunu (app.js) Modül Olarak Yüklüyoruz -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
