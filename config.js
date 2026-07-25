@@ -3,19 +3,29 @@
  * YÖNETİM PANELİ (CONFIG DOSYASI) - MUHAMMET TUTKUN A.Ş.
  * ======================================================================
  * HOŞ GELDİNİZ! Bu dosya sitenizin beynidir. Kodlama bilmenize gerek yok.
- * Sadece tırnak işaretleri (" ") içindeki yazıları değiştirerek tüm siteyi 
- * anında güncelleyebilirsiniz. LÜTFEN TIRNAKLARI SİLMEMEYE DİKKAT EDİN!
+ * Sadece tırnak işaretleri (" " veya ` `) içindeki yazıları değiştirerek 
+ * tüm siteyi anında güncelleyebilirsiniz. 
+ * 
+ * ÇOK ÖNEMLİ KURAL: Yazıları değiştirirken baştaki ve sondaki tırnakları,
+ * ve satır sonlarındaki virgülleri (,) ASLA SİLMEYİN.
  */
 
 export const siteConfig = {
-    // ==========================================
-    // BÖLÜM 1: GENEL BİLGİLER VE İLETİŞİM
-    // ==========================================
+    // ==================================================================
+    // BÖLÜM 1: GENEL BİLGİLER VE İLETİŞİM (Her Yerde Görünen Bilgiler)
+    // ==================================================================
     contact: {
+        // Sitenizin Sol Üstünde ve En Altında Çıkan Logo
         logoSrc: "https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg",
+        
         address: "Sakarya, Türkiye",
+        
+        // DİKKAT: Bu numara hem sitede görünür hem de WhatsApp/Arama butonlarını çalıştırır.
         phone: "+90 507 880 76 07", 
+        
         email: "info@muhammettutkun.com.tr",
+        
+        // Sosyal Medya Linkleriniz (Hesabınız yoksa sadece "#" işareti bırakın)
         social: {
             facebook: "#",
             youtube: "#",
@@ -23,9 +33,11 @@ export const siteConfig = {
         }
     },
 
-    // ==========================================
-    // BÖLÜM 2: PROJE KATEGORİLERİ (Soldaki Menü)
-    // ==========================================
+    // ==================================================================
+    // BÖLÜM 2: PROJE KATEGORİLERİ (Sol Taraftaki Filtre Menüsü)
+    // ==================================================================
+    // 'id' kısmı sistem içindir: Türkçe karakter, büyük harf ve boşluk İÇERMEMELİDİR.
+    // 'tr' ve 'en' kısımları ise sitede müşterinin gördüğü yazılardır.
     categories: [
         { id: "standart", tr: "Standart evler", en: "Standard houses" },
         { id: "moduler", tr: "Modüler evler", en: "Modular houses" },
@@ -36,23 +48,29 @@ export const siteConfig = {
         { id: "tekkatli", tr: "Tek Katlı", en: "Single-Story" }
     ],
 
-    // ==========================================
-    // BÖLÜM 3: SATILIK EVLER / PROJELER
-    // ==========================================
+    // ==================================================================
+    // BÖLÜM 3: SATILIK EVLER / PROJELER VİTRİNİ
+    // ==================================================================
+    // Yeni ev eklemek için { ile başlayıp } ile biten bir bloğu kopyalayıp alta yapıştırın.
     projects: [
         {
-            id: "dubleks-298", 
-            title: "Zifin House",
-            titleEn: "Duplex Project - 298",
-            area: 61, 
-            rooms: 3, 
-            categoryId: "ahsap", 
+            id: "dubleks-298", // Benzersiz ve boşluksuz bir isim uydurun
+            title: "Zifin House", // Türkçe Başlık
+            titleEn: "Duplex Project - 298", // İngilizce Başlık
+            area: 61, // Sadece sayı olarak metrekare
+            rooms: 3, // Sadece sayı olarak oda sayısı
+            categoryId: "ahsap", // Yukarıdaki BÖLÜM 2'deki ID'lerden biri olmalı
+            
+            // Ana Kapak Resmi
             mainImage: "https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg",
+            
+            // Alt galeri resimleri (Ana resim buraya otomatik eklenir, yazmanıza gerek yok)
             gallery: [
                 "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
                 "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg",
                 "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg"
             ],
+            
             description: {
                 tr: "Modern iki katlı dubleks SİP panel proje. İki ailenin yan yana fakat kendi özel alanlarını koruyarak yaşamak istedikleri durumlar için pratik bir çözümdür. Geniş pencereler, garaj alanı ve modern mimari detaylar ile tasarlanmıştır.",
                 en: "Modern two-story duplex SIP panel project. It is a practical solution for two families who want to live side by side but preserve their own private spaces."
@@ -76,14 +94,15 @@ export const siteConfig = {
         }
     ],
 
-    // ==========================================
+    // ==================================================================
     // BÖLÜM 4: MÜŞTERİ YORUMLARI
-    // ==========================================
+    // ==================================================================
+    // Siteye yorum eklemek isterseniz aşağıdaki örneği çoğaltabilirsiniz.
     reviews: [
         /* Örnek Yorum (Aktif etmek için başındaki ve sonundaki /* işaretlerini silin)
         {
             id: 1,
-            image: "https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg", // Örnek olarak logo eklendi
+            image: "https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg", 
             date: "20.12.2023",
             title: {
                 tr: "VİDEO İNCELEMESİ: NEDEN GAZBETON YERİNE SİP EV TERCİH ETTİM?",
@@ -97,16 +116,21 @@ export const siteConfig = {
         */
     ],
 
-    // ==========================================
-    // BÖLÜM 5: ÇEVİRİLER VE TÜM SAYFA İÇERİKLERİ
-    // ==========================================
-    // NOT: Sayfa içeriklerine resim eklemek için <img src="RESİM_LİNKİ" class="w-full rounded-sm my-4"> kullanabilirsiniz.
+    // ==================================================================
+    // BÖLÜM 5: TÜM SAYFA YAZILARI VE MENÜLER (TR / EN)
+    // ==================================================================
     i18n: {
+        
+        // --------------------------------------------------------------
+        // TÜRKÇE DİL PAKETİ BAŞLANGICI
+        // --------------------------------------------------------------
         tr: {
             menu: {
                 home: "YAPI", projects: "PROJELER", prices: "FİYATLAR", 
                 gallery: "GALERİ", reviews: "YORUMLAR", about: "HAKKIMIZDA", contact: "İLETİŞİM"
             },
+            
+            // Sabit Düğme ve Etiket Yazıları
             consultBtn: "DANIŞMA",
             followUs: "Bizi sosyal medyada takip edin:",
             categoryTitle: "PROJE KATEGORİSİ",
@@ -124,6 +148,9 @@ export const siteConfig = {
             backBtn: "Geri Dön",
             projectDetailsTitle: "Proje Detayları",
             
+            // ----------------------------------------------------------
+            // SAYFA BAŞLIKLARI (Sayfalara tıklandığında üstte çıkan büyük yazı)
+            // ----------------------------------------------------------
             pageTitles: {
                 home: "Yapı ve Teknoloji",
                 prices: "Fiyatlandırma ve Paketler",
@@ -133,41 +160,71 @@ export const siteConfig = {
                 contact: "Bize Ulaşın"
             },
             
+            // ----------------------------------------------------------
+            // SAYFA İÇERİKLERİ (ÖZELLEŞTİRME ALANI)
+            // ----------------------------------------------------------
+            /* 
+               KOPYA KAĞIDI (Buralarda kullanabileceğiniz HTML kodları):
+               <p class="mb-4"> Buraya paragraf yazılır </p>
+               <strong> Bu yazı kalın olur </strong>
+               <br> (Alt satıra geçer)
+               <img src="RESİM_LİNKİ" class="w-full rounded-sm my-4"> (Resim ekler)
+            */
             pageContents: {
-                // Ana sayfanın üst metni. (Motor bu yazının altına otomatik rastgele projeler ekler)
+                
+                // 1. YAPI (Ana Sayfa) İçeriği
+                // Not: Sistemin otomatik oluşturduğu rastgele resim galerisi bu yazının altına eklenir.
                 home: `
                     <p class="mb-4">SİP panellerin avantajları, izolasyon değerleri ve üretim süreçleri alanındaki tecrübemizle hayalinizdeki evi inşa ediyoruz. Aşağıda son projelerimizden bazı kareleri inceleyebilirsiniz.</p>
                 `,
-                // Fiyatlar Sayfası - Metin, Tablo veya Görsel ekleyebilirsiniz.
+                
+                // 2. FİYATLAR Sayfası İçeriği
                 prices: `
                     <p class="mb-4 text-gray-700">Güncel fiyatlandırma politikamız projenin büyüklüğüne ve seçilen paket özelliklerine göre değişiklik göstermektedir. Örnek bir fiyat tablosunu ve referans görselimizi aşağıda bulabilirsiniz:</p>
+                    
+                    <!-- Fiyatlar sayfasına eklenen örnek bir resim (Logonuz) -->
                     <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[300px] object-contain rounded-sm shadow-sm border border-gray-100 my-6 bg-white p-4" alt="Fiyat Tablosu Referans">
+                    
                     <div class="bg-white p-6 rounded-sm border border-gray-100 shadow-sm">
-                        <p class="mb-3"><i class="fas fa-check text-brand-orange mr-2"></i> <strong>Standart Paket:</strong> 15.000 TL / m2</p>
-                        <p><i class="fas fa-check-double text-brand-orange mr-2"></i> <strong>Anahtar Teslim Paket:</strong> 25.000 TL / m2</p>
+                        <p class="mb-3"><i class="fas fa-check text-brand-orange mr-2"></i> <strong>Standart Paket:</strong> 61.000 TL / m2</p>
+                        <p><i class="fas fa-check-double text-brand-orange mr-2"></i> <strong>Anahtar Teslim Paket:</strong> 54.000 TL / m2</p>
                     </div>
                 `,
-                // Galeri Sayfası - Proje detayları haricindeki genel şantiye fotoları vb. eklenebilir.
+                
+                // 3. GALERİ Sayfası İçeriği (Genel şantiye fotoları vb. eklenebilir)
                 gallery: `
                     <p class="mb-6 text-gray-700">Tamamlanan projelerimizin şantiye süreçlerinden ve üretim aşamalarından bazı kareler:</p>
+                    
+                    <!-- Yan yana duran ikili resim tablosu örneği -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <img src="https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Şantiye 1">
                         <img src="https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg" class="w-full h-48 object-cover rounded-sm shadow-sm hover:scale-105 transition" alt="Şantiye 2">
                     </div>
                 `,
-                // Hakkımızda Sayfası
+                
+                // 4. HAKKIMIZDA Sayfası İçeriği
                 about: `
                     <div class="text-left">
                         <p class="mb-4 text-lg">Muhammet Tutkun A.Ş. olarak yılların verdiği tecrübe ile inşaat sektöründe öncüyüz. Güven ve kaliteyi her zaman ön planda tutuyoruz.</p>
+                        
+                        <!-- Hakkımızda şirket görseli (Logonuz) -->
                         <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full h-auto max-h-[200px] object-contain bg-gray-50 rounded-sm shadow-md mb-6 p-4 border border-gray-100" alt="Şirketimiz">
+                        
                         <p class="mb-2"><strong>Misyonumuz:</strong> En kaliteli SİP Panel evleri en hızlı ve güvenli şekilde teslim etmektir.</p>
                         <p><strong>Vizyonumuz:</strong> Modern yapı teknolojilerinde Türkiye'nin en çok tercih edilen markası olmak.</p>
                     </div>
                 `,
+                
+                // 5. İLETİŞİM Sayfası İçeriği
+                // Not: Burası boş bırakılırsa motor otomatik olarak büyük telefon numarası ve harita alanını çizer.
                 contact: ""
             },
             footerText: "© 2026 Muhammet Tutkun A.Ş. Tüm hakları saklıdır."
         },
+
+        // --------------------------------------------------------------
+        // İNGİLİZCE DİL PAKETİ BAŞLANGICI (Türkçe ile Aynı Mantık)
+        // --------------------------------------------------------------
         en: {
             menu: {
                 home: "BUILDING", projects: "PROJECTS", prices: "PRICING", 
