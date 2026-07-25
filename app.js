@@ -16,6 +16,7 @@ const DOM = {
     footer: document.getElementById('main-footer')
 };
 
+// Çeviri (Dil) Fonksiyonu
 function t() {
     return siteConfig.i18n[state.lang];
 }
@@ -25,6 +26,7 @@ export function navigate(viewOrId, evt = null) {
     
     if (state.currentView === viewOrId) return; 
 
+    // Yeni sayfaya geçerken mobil menüyü ve slider'ı otomatik kapat
     state.mobileMenuOpen = false; 
     if (state.sliderInterval) {
         clearInterval(state.sliderInterval);
@@ -33,6 +35,7 @@ export function navigate(viewOrId, evt = null) {
 
     state.currentView = viewOrId;
     
+    // Geçiş Animasyonu: Önce gizle
     DOM.content.classList.remove('page-fade-in');
     DOM.content.classList.add('page-fade-out');
     
@@ -49,6 +52,7 @@ export function navigate(viewOrId, evt = null) {
             renderProjectDetail(viewOrId);
         }
 
+        // İçeriği geri göster
         DOM.content.classList.remove('page-fade-out');
         DOM.content.classList.add('page-fade-in');
     }, 250); 
@@ -86,7 +90,7 @@ window.filterCategory = function(catId, evt) {
 
 window.toggleMobileMenu = function() {
     state.mobileMenuOpen = !state.mobileMenuOpen;
-    renderHeader(); 
+    renderHeader(); // Menü açılıp kapandığında header'ı yeniden çiz
 };
 
 window.changeMainImage = function(src) {
@@ -154,26 +158,35 @@ function renderHeader() {
         { id: 'contact', label: t().menu.contact }
     ];
 
-    // Masaüstü için linkler ve MEGA MENÜ entegrasyonu
+    // Masaüstü için linkler ve DİNAMİK MEGA MENÜ entegrasyonu
     const desktopMenuHTML = menuItems.map(item => {
         const isProjectDetail = !menuItems.find(m => m.id === state.currentView) && state.currentView !== 'projects';
         const isActive = (state.currentView === item.id) || (item.id === 'projects' && isProjectDetail);
         
-        // Config dosyasından bu menüye ait mega menü verisi var mı diye kontrol et
-        const megaMenuData = t().megaMenus && t().megaMenus[item.id];
         let megaMenuHTML = '';
         
-        if (megaMenuData) {
-            const columnsHTML = megaMenuData.map(col => `
+        // EĞER "PROJELER" menüsüysek, Mega Menüyü config'deki kategorilere bakarak OTOMATİK ÇİZ
+        if (item.id === 'projects') {
+            const allProjectsLabel = state.lang === 'tr' ? 'Tüm Projeler' : 'All Projects';
+            const columnTitle = state.lang === 'tr' ? 'Ev Modelleri' : 'House Models';
+            
+            // Linkleri otomatik oluştur (Tümü + Kategoriler)
+            const categoryLinks = [
+                { label: allProjectsLabel, category: 'all' },
+                ...siteConfig.categories.map(cat => ({
+                    label: cat[state.lang],
+                    category: cat.id
+                }))
+            ];
+
+            const columnsHTML = `
                 <div class="flex-1 min-w-[200px]">
-                    <h4 class="text-brand-orange font-bold text-base mb-4 border-b border-gray-100 pb-2">${col.columnTitle}</h4>
+                    <h4 class="text-brand-orange font-bold text-base mb-4 border-b border-gray-100 pb-2">${columnTitle}</h4>
                     <ul class="space-y-3">
-                        ${col.items.map(link => {
-                            // Eğer link bir kategori ise filtreleme fonksiyonunu, normal link ise yönlendirme fonksiyonunu tetikle
-                            const clickAction = link.category ? `filterCategory('${link.category}', event)` : `navigate('${link.action}', event)`;
+                        ${categoryLinks.map(link => {
                             return `
                             <li>
-                                <a href="#" onclick="${clickAction}" class="text-gray-600 hover:text-brand-orange transition flex items-center text-sm font-medium">
+                                <a href="#" onclick="filterCategory('${link.category}', event)" class="text-gray-600 hover:text-brand-orange transition flex items-center text-sm font-medium">
                                     <i class="fas fa-angle-right text-[10px] mr-2 text-gray-300"></i> ${link.label}
                                 </a>
                             </li>
@@ -181,9 +194,8 @@ function renderHeader() {
                         }).join('')}
                     </ul>
                 </div>
-            `).join('');
+            `;
 
-            // Geniş Mega Menü Görsel Yapısı
             megaMenuHTML = `
                 <div class="absolute left-0 top-full pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 w-full transform translate-y-2 group-hover:translate-y-0">
                     <div class="bg-white shadow-2xl border-t-2 border-brand-orange rounded-b-md p-8 flex gap-8 mx-auto w-max max-w-7xl relative before:absolute before:-top-4 before:left-0 before:w-full before:h-4">
@@ -196,7 +208,7 @@ function renderHeader() {
         return `
             <div class="nav-item group relative py-4">
                 <a href="#" onclick="navigate('${item.id}', event)" class="text-sm font-semibold text-gray-800 hover:text-brand-orange nav-link transition-colors ${isActive ? 'active' : ''}">
-                    ${item.label} ${megaMenuData ? '<i class="fas fa-chevron-down text-[10px] ml-1"></i>' : ''}
+                    ${item.label} ${item.id === 'projects' ? '<i class="fas fa-chevron-down text-[10px] ml-1"></i>' : ''}
                 </a>
                 ${megaMenuHTML}
             </div>
@@ -228,11 +240,13 @@ function renderHeader() {
                 </button>
             </nav>
             
+            <!-- Mobil Hamburger Butonu -->
             <button onclick="window.toggleMobileMenu()" class="lg:hidden text-2xl text-gray-800 hover:text-brand-orange focus:outline-none transition-transform duration-200 ${state.mobileMenuOpen ? 'rotate-90' : ''}">
                 <i class="fas ${state.mobileMenuOpen ? 'fa-times' : 'fa-bars'}"></i>
             </button>
         </div>
 
+        <!-- Mobil Açılır Menü Container -->
         <div class="${state.mobileMenuOpen ? 'max-h-screen opacity-100 shadow-xl border-b border-gray-100' : 'max-h-0 opacity-0 pointer-events-none'} lg:hidden absolute top-full left-0 w-full bg-white overflow-hidden transition-all duration-300 ease-in-out z-40">
             <div class="flex flex-col px-4 py-6 space-y-2">
                 ${mobileMenuHTML}
