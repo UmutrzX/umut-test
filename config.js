@@ -16,7 +16,7 @@ export const siteConfig = {
         logoSrc: "https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg",
         
         // Adres ve İletişim Bilgileriniz
-        address: "Sakarya, Türkiyeeeee",
+        address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@muhammettutkun.com.tr",
         
@@ -53,7 +53,7 @@ export const siteConfig = {
             id: "dubleks-298", 
             
             // Sitede görünecek Evin Adı
-            title: "Zifin Hose",
+            title: "Zifin House",
             titleEn: "Duplex Project - 298",
             
             // Özellikleri (Sadece sayı yazın)
@@ -84,7 +84,7 @@ export const siteConfig = {
         // --- İKİNCİ EV BAŞLANGICI ---
         {
             id: "calanthe-145",
-            title: "Calanthe Projesi - 145",
+            title: "Test projesi",
             titleEn: "Calanthe Project - 145",
             area: 54,
             rooms: 4,
@@ -114,7 +114,7 @@ export const siteConfig = {
             consultBtn: "DANIŞMA",
             followUs: "Bizi sosyal medyada takip edin:",
             categoryTitle: "PROJE KATEGORİSİ",
-            allProjectsTitle: "SİP PANEL EV PLANLARI",
+            allProjectsTitle: "Örnek Projeler",
             sqm: "metrekare",
             homePath: "Ana Sayfa",
             projectsPath: "Projeler",
