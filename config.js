@@ -84,7 +84,7 @@ export const siteConfig = {
         /*
         {
             id: 1,
-            image: "https://i.pinimg.com/736x/88/e4/89/88e489dc22cf5addc5044b2efb13b5a0.jpg",
+            image: "https://placehold.co/400x400/f39c12/white?text=Musteri",
             date: "20.12.2023",
             title: {
                 tr: "VİDEO İNCELEMESİ: NEDEN GAZBETON YERİNE SİP EV TERCİH ETTİM?",
@@ -95,7 +95,7 @@ export const siteConfig = {
                 en: "We really liked their approach to the customer. Everything was explained to us in detail..."
             }
         }
-        /*
+        */
     ],
 
     // ==========================================
