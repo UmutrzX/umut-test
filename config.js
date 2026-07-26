@@ -6,7 +6,7 @@
 
 export const siteConfig = {
     contact: {
-        logoSrc: "https://pbs.twimg.com/media/HOLR5R6XAAAe8QI?format=png&name=small", // YENİ LOGO
+        logoSrc: "https://pbs.twimg.com/media/HOLR5R6XAAAe8QI?format=png&name=small", // YENİ ŞEFFAF LOGO
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@kartechpanel.com",
@@ -18,7 +18,7 @@ export const siteConfig = {
     },
 
     homeHero: {
-        backgroundImage: "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg",
+        backgroundImage: "https://scontent.fsaw6-1.fna.fbcdn.net/v/t51.82787-15/684834411_18460007191107118_4508284816265753507_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1350&ctp=s1080x1350&_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=vsiosBHxNZcQ7kNvwFsmyhy&_nc_oc=AdownMd348Hi-Kjjn_mvEzr0Pxe3X2-_5j5CCBrqoaWZJmkA6gAhvJl_3IfR3DwsFJQ&_nc_zt=23&_nc_ht=scontent.fsaw6-1.fna&_nc_gid=owsQbghiJK-vW6lW5OjD2w&_nc_ss=7b2a8&oh=00_AQCu7n7IfBoeIu0zXC1Hff66Vdq5WwgKE2s_B_q3nhBTUg&oe=6A6C3DB1",
         slogan: {
             tr: "Lüks ve Minimalizmin Birleşimi",
             en: "Fusion of Luxury and Minimalism"
@@ -63,8 +63,8 @@ export const siteConfig = {
      * 
      * ÖNEMLİ FOTOĞRAF BOYUTLARI (EN KALİTELİ GÖRÜNTÜ İÇİN):
      * - Ana Görsel (mainImage) ve Galeri (gallery) fotoğrafları YATAY (Landscape) olmalıdır.
-     * - İdeal Oran: 4:3 (Dört bölü Üç)
-     * - Önerilen Çözünürlük: 1200x900 piksel veya 1600x1200 piksel boyutlarındadır.
+     * - İdeal Oran: 4:3 (Dört bölü Üç) veya 16:9
+     * - Önerilen Çözünürlük: 1200x900 piksel veya 1920x1080 piksel boyutlarındadır.
      * 
      * ALANLARIN ANLAMLARI:
      * - id: Projeye özel benzersiz bir isim (boşluksuz, küçük harf, örn: "kis-bahcesi-premium")
@@ -116,10 +116,10 @@ export const siteConfig = {
                 "uretim": "Üretim", 
                 "galeri": "Galeri", 
                 "hakkimizda": "Hakkımızda",
-                "iletisim": "İletişim"
+                "iletisim": "Bize Ulaşın"
             },
             
-            consultBtn: "İletişim",
+            consultBtn: "Bize Ulaşın", // GÜNCELLENDİ
             allProjectsTitle: "Tüm Seçenekler",
             categoryTitle: "Kategoriler",
             sqm: "m²",
@@ -144,9 +144,9 @@ export const siteConfig = {
                 "iletisim": "Bize Ulaşın"
             },
 
-            // DİNAMİK SİP PANEL VERİSİ - İstenildiği kadar eklenebilir
+            // DİNAMİK SİP PANEL VERİSİ
             sipPanelData: {
-                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
+                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg", // GÜNCELLENDİ
                 introTitle: "SİP (Yapısal Yalıtımlı Panel) Nedir?",
                 introText: "SİP (Structural Insulated Panel), yüksek yoğunluklu yalıtım çekirdeğinin (genellikle EPS) iki yapısal kaplama malzemesi (OSB-3) arasına preslenmesiyle oluşturulan, taşıyıcı kapasitesi olağanüstü yüksek, modern ve kompozit bir yapı malzemesidir. Geleneksel sistemlere göre %60'a varan enerji tasarrufu ve ultra hızlı kurulum sunar.",
                 
@@ -192,9 +192,9 @@ export const siteConfig = {
             menu: {
                 "home": "Home", "sip-panel": "SIP Panel", "ev-modelleri": "House Models", 
                 "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems", 
-                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us", "iletisim": "Contact"
+                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us", "iletisim": "Contact Us"
             },
-            consultBtn: "Contact", categoryTitle: "Categories",
+            consultBtn: "Contact Us", categoryTitle: "Categories",
             allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
             getQuoteTitle: "Get a Quote", formName: "Your Name", formPhone: "Phone",
             submitBtn: "Submit", backBtn: "Go Back", projectDetailsTitle: "Details",
