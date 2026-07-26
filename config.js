@@ -18,7 +18,7 @@ export const siteConfig = {
     },
 
     homeHero: {
-        backgroundImage: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_1280.jpg",
+        backgroundImage: "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg",
         slogan: {
             tr: "Lüks ve Minimalizmin Birleşimi",
             en: "Fusion of Luxury and Minimalism"
@@ -80,23 +80,6 @@ export const siteConfig = {
             pageMenu: "ev-modelleri", 
             categoryId: "ev-luks", 
             mainImage: "https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg",
-            gallery: [
-                "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
-                "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg"
-            ],
-            description: {
-                tr: "Kartech Panel kalitesiyle tasarlanmış modern iki katlı dubleks proje.",
-                en: "Modern two-story duplex SIP panel project."
-            }
-        },
-                {
-            id: "dubleks-298", 
-            title: "Bahçe yapısı deneme",
-            titleEn: "Duplex Project - 298",
-            area: 61, rooms: 3,  
-            pageMenu: "bahce-yapilari", 
-            categoryId: "by-kisbahcesi", 
-            mainImage: "https://i.pinimg.com/1200x/2d/25/96/2d25968d25186ccaa7bca2daf0e33418.jpg",
             gallery: [
                 "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
                 "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg"
