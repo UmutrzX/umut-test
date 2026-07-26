@@ -261,7 +261,7 @@ function renderHeader() {
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between relative z-50">
             <div class="cursor-pointer h-full flex items-center py-2" onclick="navigate('home')">
-                 <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-10 sm:h-12 md:h-14 lg:h-16 w-auto object-contain transition-transform duration-300 hover:scale-105 mix-blend-multiply">
+                 <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-14 sm:h-16 md:h-20 lg:h-24 w-auto object-contain transition-transform duration-300 hover:scale-105 mix-blend-multiply">
             </div>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
@@ -653,7 +653,7 @@ function renderProjectDetail(projectId) {
 function renderFooter() {
     DOM.footer.innerHTML = `
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
-            <div class="w-24 sm:w-32 md:w-40 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 mix-blend-multiply" onclick="navigate('home')">
+            <div class="w-32 sm:w-40 md:w-48 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 mix-blend-multiply" onclick="navigate('home')">
                 <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-full h-auto object-contain mix-blend-multiply">
             </div>
             <p class="text-xs sm:text-sm text-gray-500 font-medium tracking-wide text-center px-4">${t().footerText}</p>
