@@ -1,28 +1,24 @@
 /**
  * ======================================================================
- * YÖNETİM PANELİ (CONFIG DOSYASI) - MUHAMMET TUTKUN A.Ş.
+ * YÖNETİM PANELİ (CONFIG DOSYASI) - KARTECH PANEL STRUCTURES HOUSE SYSTEMS
  * ======================================================================
- * PREMIUM MİMARİ GÜNCELLEMESİ:
- * Artık 4 farklı proje sayfası var (SİP Panel, Ev, Bahçe, Garaj).
- * Hangi projenin hangi sayfada çıkacağını 'pageMenu' ayarından seçersiniz.
  */
 
 export const siteConfig = {
     contact: {
-        // YENİ YUVARLAK BÜYÜK LOGONUZ
-        logoSrc: "https://i.pinimg.com/736x/4e/f6/25/4ef625ad3564670a75e74be775fac392.jpg",
+        logoSrc: "https://pbs.twimg.com/media/HOLR5R6XAAAe8QI?format=png&name=small", // YENİ LOGO
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
-        email: "info@muhammettutkun.com.tr",
-        social: { facebook: "#", youtube: "#", instagram: "https://www.instagram.com/muhammet.tutkun/" }
+        email: "info@kartechpanel.com",
+        social: { 
+            facebook: "#", 
+            youtube: "#", 
+            instagram: "https://www.instagram.com/muhammet.tutkun/" 
+        }
     },
 
-    // ==========================================
-    // YENİ: SİP PANEL ANA SAYFA (HERO) AYARLARI
-    // ==========================================
     homeHero: {
-        // Site açılır açılmaz arkada görünecek devasa resim (veya ileride video eklenebilir)
-        backgroundImage: "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg",
+        backgroundImage: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_1280.jpg",
         slogan: {
             tr: "Lüks ve Minimalizmin Birleşimi",
             en: "Fusion of Luxury and Minimalism"
@@ -33,41 +29,80 @@ export const siteConfig = {
         }
     },
 
-    // ==========================================
-    // FİLTRE KATEGORİLERİ (Tüm proje sayfalarında solda çıkar)
-    // ==========================================
-    categories: [
-        { id: "standart", tr: "Standart Evler", en: "Standard Houses" },
-        { id: "moduler", tr: "Modüler Evler", en: "Modular Houses" },
-        { id: "ahsap", tr: "Ahşap Kaplama", en: "Wooden Finish" },
-        { id: "tekkatli", tr: "Tek Katlı", en: "Single-Story" },
-        { id: "ikikatli", tr: "İki Katlı", en: "Two-Story" },
-        { id: "kamelya", tr: "Kamelya & Çardak", en: "Gazebo" },
-        { id: "kisbahcesi", tr: "Kış Bahçesi", en: "Winter Garden" }
-    ],
+    /* 
+     * ======================================================================
+     * KATEGORİ EKLEME/DÜZENLEME REHBERİ
+     * ======================================================================
+     * Yeni bir alt kategori eklemek için aşağıdaki listeye formatı bozmadan ekleme yapın.
+     * 'id' kısmı benzersiz olmalı (boşluksuz, ingilizce karakter, örn: "yeni-kategori").
+     * 'tr' ve 'en' kısımları ise menüde ve filtrelerde görünen isimlerdir.
+     */
+    categories: {
+        "ev-modelleri": [
+            { id: "ev-standart", tr: "Standart Evler", en: "Standard Houses" },
+            { id: "ev-ahsap", tr: "Ahşap Kaplamalı Evler", en: "Wooden Clad Houses" },
+            { id: "ev-luks", tr: "Lüks Villalar", en: "Luxury Villas" }
+        ],
+        "bahce-yapilari": [
+            { id: "by-kamelya", tr: "Kamelya & Çardak", en: "Gazebos & Pergolas" },
+            { id: "by-kisbahcesi", tr: "Kış Bahçeleri", en: "Winter Gardens" },
+            { id: "by-depo", tr: "Bahçe Depoları", en: "Garden Sheds" }
+        ],
+        "garaj-sistemleri": [
+            { id: "gs-tekacik", tr: "Tek Araçlık Açık Garaj", en: "Single Car Open Garage" },
+            { id: "gs-ciftkapali", tr: "Çift Araçlık Kapalı Garaj", en: "Double Car Closed Garage" },
+            { id: "gs-atolye", tr: "Atölyeli Garajlar", en: "Garages with Workshop" }
+        ]
+    },
 
-    // ==========================================
-    // PROJELER (Yeni 'pageMenu' sistemine göre)
-    // ==========================================
+    /* 
+     * ======================================================================
+     * YENİ PROJE EKLEME REHBERİ
+     * ======================================================================
+     * Hiç kod bilmeseniz bile yeni proje ekleyebilirsiniz. Yeni bir proje için mevcut bir projenin { ... } arasındaki bloğunu kopyalayıp en alta yapıştırın.
+     * 
+     * ÖNEMLİ FOTOĞRAF BOYUTLARI (EN KALİTELİ GÖRÜNTÜ İÇİN):
+     * - Ana Görsel (mainImage) ve Galeri (gallery) fotoğrafları YATAY (Landscape) olmalıdır.
+     * - İdeal Oran: 4:3 (Dört bölü Üç)
+     * - Önerilen Çözünürlük: 1200x900 piksel veya 1600x1200 piksel boyutlarındadır.
+     * 
+     * ALANLARIN ANLAMLARI:
+     * - id: Projeye özel benzersiz bir isim (boşluksuz, küçük harf, örn: "kis-bahcesi-premium")
+     * - pageMenu: Projenin çıkacağı ana menü (Seçenekler: "ev-modelleri", "bahce-yapilari", "garaj-sistemleri")
+     * - categoryId: Projenin çıkacağı alt kategori (Yukarıdaki 'categories' listesindeki id'lerden biri olmalı)
+     */
     projects: [
         {
             id: "dubleks-298", 
             title: "Zifin House",
             titleEn: "Duplex Project - 298",
             area: 61, rooms: 3,  
-            
-            // DİKKAT: Bu proje üst menüde HANGİ sekmeye basınca çıksın?
-            // Seçenekler: "sip-panel", "ev-modelleri", "bahce-yapilari", "garaj-sistemleri"
-            pageMenu: "sip-panel", 
-            categoryId: "ikikatli", 
-            
+            pageMenu: "ev-modelleri", 
+            categoryId: "ev-luks", 
             mainImage: "https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg",
             gallery: [
                 "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
                 "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg"
             ],
             description: {
-                tr: "SİP Panel ana sayfasında sergilenmek üzere tasarlanmış modern iki katlı dubleks proje.",
+                tr: "Kartech Panel kalitesiyle tasarlanmış modern iki katlı dubleks proje.",
+                en: "Modern two-story duplex SIP panel project."
+            }
+        },
+                {
+            id: "dubleks-298", 
+            title: "Bahçe yapısı deneme",
+            titleEn: "Duplex Project - 298",
+            area: 61, rooms: 3,  
+            pageMenu: "bahce-yapilari", 
+            categoryId: "by-kisbahcesi", 
+            mainImage: "https://i.pinimg.com/1200x/2d/25/96/2d25968d25186ccaa7bca2daf0e33418.jpg",
+            gallery: [
+                "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
+                "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg"
+            ],
+            description: {
+                tr: "Kartech Panel kalitesiyle tasarlanmış modern iki katlı dubleks proje.",
                 en: "Modern two-story duplex SIP panel project."
             }
         },
@@ -76,121 +111,150 @@ export const siteConfig = {
             title: "Calanthe Modeli",
             titleEn: "Calanthe Model - 145",
             area: 54, rooms: 4,
-            
-            pageMenu: "ev-modelleri", // Sadece Ev Modelleri'ne basınca çıkar
-            categoryId: "tekkatli",
-            
+            pageMenu: "ev-modelleri", 
+            categoryId: "ev-standart",
             mainImage: "https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg",
             gallery: ["https://i.pinimg.com/1200x/be/d6/bf/bed6bfbffcea556193c1a2b9c7ce4b92.jpg"],
             description: {
                 tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.",
                 en: "A stylish and useful house design."
             }
-        },
-        {
-            id: "kis-bahcesi-1",
-            title: "Premium Kış Bahçesi",
-            titleEn: "Premium Winter Garden",
-            area: 25, rooms: 1,
-            
-            pageMenu: "bahce-yapilari", // Sadece Bahçe Yapıları'na basınca çıkar
-            categoryId: "kisbahcesi",
-            
-            mainImage: "https://placehold.co/800x600/1a1a1a/FFF?text=Kış+Bahçesi",
-            gallery: [],
-            description: { tr: "Dört mevsim bahçe keyfi.", en: "Enjoy your garden in all seasons." }
         }
     ],
 
     i18n: {
         tr: {
-            // YENİ 7'Lİ MENÜ SİSTEMİ (İstediğiniz gibi güncellendi)
             menu: {
-                "sip-panel": "SİP PANEL", 
-                "ev-modelleri": "EV MODELLERİ", 
-                "bahce-yapilari": "BAHÇE YAPILARI", 
-                "garaj-sistemleri": "GARAJ SİSTEMLERİ", 
-                "uretim": "ÜRETİM", 
-                "galeri": "GALERİ", 
-                "hakkimizda": "HAKKIMIZDA"
+                "home": "Ana Sayfa", 
+                "sip-panel": "Sip Panel", 
+                "ev-modelleri": "Ev Modelleri", 
+                "bahce-yapilari": "Bahçe Yapıları", 
+                "garaj-sistemleri": "Garaj Sistemleri", 
+                "uretim": "Üretim", 
+                "galeri": "Galeri", 
+                "hakkimizda": "Hakkımızda",
+                "iletisim": "İletişim"
             },
             
-            consultBtn: "İLETİŞİM",
-            followUs: "Bizi takip edin:",
-            categoryTitle: "KATEGORİLER",
+            consultBtn: "İletişim",
             allProjectsTitle: "Tüm Seçenekler",
+            categoryTitle: "Kategoriler",
             sqm: "m²",
             totalArea: "Toplam alan",
             roomCount: "Oda sayısı",
             getQuoteTitle: "Hemen Fiyat Alın",
             formName: "İsminiz",
             formPhone: "Telefon (Örn: 507 880 7607)",
-            formEmail: "E-postanız",
             submitBtn: "Gönder",
             backBtn: "Geri Dön",
             projectDetailsTitle: "Detaylar",
             
             pageTitles: {
+                "home": "Ana Sayfa",
                 "uretim": "Üretim Tesisimiz",
                 "galeri": "Fotoğraf Galerisi",
                 "hakkimizda": "Hakkımızda",
-                "sip-panel": "SİP Panel Projeler",
+                "sip-panel": "SİP Panel Teknolojisi",
                 "ev-modelleri": "Ev Modellerimiz",
                 "bahce-yapilari": "Bahçe Yapılarımız",
-                "garaj-sistemleri": "Garaj Sistemlerimiz"
+                "garaj-sistemleri": "Garaj Sistemlerimiz",
+                "iletisim": "Bize Ulaşın"
+            },
+
+            // DİNAMİK SİP PANEL VERİSİ - İstenildiği kadar eklenebilir
+            sipPanelData: {
+                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
+                introTitle: "SİP (Yapısal Yalıtımlı Panel) Nedir?",
+                introText: "SİP (Structural Insulated Panel), yüksek yoğunluklu yalıtım çekirdeğinin (genellikle EPS) iki yapısal kaplama malzemesi (OSB-3) arasına preslenmesiyle oluşturulan, taşıyıcı kapasitesi olağanüstü yüksek, modern ve kompozit bir yapı malzemesidir. Geleneksel sistemlere göre %60'a varan enerji tasarrufu ve ultra hızlı kurulum sunar.",
+                
+                advantagesTitle: "Neden SİP Panel?",
+                advantages: [
+                    { icon: "fa-bolt", title: "Ultra Hızlı Kurulum", desc: "Paneller fabrikamızda projenize özel milimetrik kesilir. Şantiyede sadece montajı yapılır, inşaat süresi %50 kısalır." },
+                    { icon: "fa-leaf", title: "Üstün Isı Yalıtımı", desc: "Yekpare yalıtım çekirdeği sayesinde ısı köprüleri oluşmaz. Yazın serin, kışın sıcak tutar." },
+                    { icon: "fa-shield-alt", title: "Depreme Tam Dayanım", desc: "Esnek ve yekpare çalışma prensibi sayesinde deprem sarsıntılarını sönümler. Betonarme gibi yıkılma riski taşımaz." },
+                    { icon: "fa-volume-mute", title: "Akustik Konfor", desc: "Yüksek yoğunluklu EPS katmanı dışarıdan gelen sesleri ciddi oranda keserek huzurlu bir yaşam alanı sunar." }
+                ],
+                
+                specsTitle: "Teknik Spesifikasyonlar",
+                specsDesc: "Projelerinizde mühendislik standartlarını en üst seviyede tutuyoruz.",
+                technicalSpecs: [
+                    { label: "Dış Yüzey Kaplaması", value: "11mm / 15mm OSB-3 (Neme Dayanıklı)" },
+                    { label: "Yalıtım Çekirdeği", value: "EPS (Genleştirilmiş Polistiren) - 16-30 Dansite" },
+                    { label: "Standart Panel Kalınlıkları", value: "100mm, 150mm, 200mm" },
+                    { label: "Isı İletim Katsayısı (U-Değeri)", value: "0.15 - 0.25 W/m²K (Kalınlığa göre)" },
+                    { label: "Yangın Direnç Sınıfı", value: "E Sınıfı (Alev yürütmez EPS)" },
+                    { label: "Taşıyıcı Kapasite", value: "Geleneksel ahşap karkasa göre 3 kat daha güçlü" }
+                ]
             },
             
             pageContents: {
-                // Ana sayfanın (SİP PANEL) alt kısmında (projelerden önce) çıkacak tanıtım yazısı
-                "sip-panel-intro": `
-                    <div class="text-center max-w-4xl mx-auto mb-16 px-4">
-                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6">Geleceğin Yapı Teknolojisi</h2>
-                        <p class="text-lg text-gray-600 leading-relaxed font-medium">SİP (Yapısal Yalıtımlı Panel) teknolojisi ile evlerinizi hem daha hızlı inşa ediyor hem de maksimum enerji tasarrufu sağlıyoruz. Kurumsal tecrübemizi doğayla buluşturuyoruz.</p>
+                "home-intro": `
+                    <div class="text-left max-w-4xl mx-auto mb-16 px-4">
+                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Geleceğin Yapı Teknolojisi</h2>
+                        <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">SİP (Yapısal Yalıtımlı Panel) teknolojisi ile evlerinizi hem daha hızlı inşa ediyor hem de maksimum enerji tasarrufu sağlıyoruz. Kartech Panel tecrübemizi doğayla buluşturuyoruz.</p>
+                        <div class="mt-6 w-20 h-1.5 bg-brand-orange rounded-full"></div>
                     </div>
                 `,
-                
-                "uretim": `
-                    <p class="mb-6 text-lg text-gray-700 leading-relaxed">Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz. Kalite kontrol süreçlerimiz Avrupa standartlarındadır.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                        <img src="https://placehold.co/600x400/f39c12/white?text=Uretim+Hatti+1" class="w-full rounded-sm shadow-md" alt="Üretim 1">
-                        <img src="https://placehold.co/600x400/f39c12/white?text=Uretim+Hatti+2" class="w-full rounded-sm shadow-md" alt="Üretim 2">
-                    </div>
-                `,
-                "galeri": "<p class="text-center text-gray-500 text-lg">Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.</p>",
+                "uretim": `<p class="mb-6 text-xl text-gray-700 leading-relaxed font-medium break-words">Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz.</p>`,
+                "galeri": "<p class='text-center text-gray-500 text-xl font-medium break-words'>Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.</p>",
                 "hakkimizda": `
-                    <h3 class="text-3xl font-black mb-4 text-gray-900">Muhammet Tutkun A.Ş.</h3>
-                    <p class="mb-6 text-lg text-gray-700 leading-relaxed">Yılların verdiği tecrübe ile yenilikçi yapı teknolojilerini Türkiye ile buluşturuyoruz. Güven, estetik ve sağlamlık temel ilkelerimizdir.</p>
+                    <h3 class="text-4xl font-black mb-6 text-gray-900 tracking-tight">Kartech Panel Structures House Systems</h3>
+                    <p class="mb-6 text-xl text-gray-700 leading-relaxed font-medium break-words">Yılların verdiği tecrübe ile yenilikçi yapı teknolojilerini Türkiye ile buluşturuyoruz.</p>
                 `
             },
-            footerText: "© 2026 Muhammet Tutkun A.Ş. Tüm hakları saklıdır."
+            footerText: "© 2026 Kartech Panel Structures House Systems. Tüm hakları saklıdır."
         },
+
         en: {
             menu: {
-                "sip-panel": "SIP PANEL", "ev-modelleri": "HOUSE MODELS", 
-                "bahce-yapilari": "GARDENS", "garaj-sistemleri": "GARAGES", 
-                "uretim": "PRODUCTION", "galeri": "GALLERY", "hakkimizda": "ABOUT US"
+                "home": "Home", "sip-panel": "SIP Panel", "ev-modelleri": "House Models", 
+                "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems", 
+                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us", "iletisim": "Contact"
             },
-            consultBtn: "CONTACT", followUs: "Follow us:", categoryTitle: "CATEGORIES",
+            consultBtn: "Contact", categoryTitle: "Categories",
             allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
-            getQuoteTitle: "Get a Quote", formName: "Your Name", formPhone: "Phone", formEmail: "Email",
+            getQuoteTitle: "Get a Quote", formName: "Your Name", formPhone: "Phone",
             submitBtn: "Submit", backBtn: "Go Back", projectDetailsTitle: "Details",
             pageTitles: {
-                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us",
-                "sip-panel": "SIP Panel Projects", "ev-modelleri": "House Models", 
-                "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
+                "home": "Home", "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us",
+                "sip-panel": "SIP Panel Technology", "ev-modelleri": "House Models", 
+                "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems", "iletisim": "Contact Us"
+            },
+            sipPanelData: {
+                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
+                introTitle: "What is a Structural Insulated Panel?",
+                introText: "SIPs are high-performance building panels used in floors, walls, and roofs. Each panel is made using an expanded polystyrene (EPS) rigid foam insulation sandwiched between two structural skins of oriented strand board (OSB).",
+                advantagesTitle: "Why Choose SIP?",
+                advantages: [
+                    { icon: "fa-bolt", title: "Fast Installation", desc: "Panels are pre-cut in our factory. Site assembly is 50% faster than traditional methods." },
+                    { icon: "fa-leaf", title: "Thermal Efficiency", desc: "Continuous insulation means no thermal bridging. Keeps you warm in winter, cool in summer." },
+                    { icon: "fa-shield-alt", title: "Earthquake Resistant", desc: "Flexible structural integrity handles seismic waves significantly better than concrete." },
+                    { icon: "fa-volume-mute", title: "Acoustic Comfort", desc: "High-density EPS effectively dampens exterior noise." }
+                ],
+                specsTitle: "Technical Specifications",
+                specsDesc: "Engineered to meet the highest global standards.",
+                technicalSpecs: [
+                    { label: "Structural Skins", value: "11mm / 15mm OSB-3 (Moisture Resistant)" },
+                    { label: "Insulation Core", value: "EPS - 16-30 Density" },
+                    { label: "Standard Thicknesses", value: "100mm, 150mm, 200mm" },
+                    { label: "U-Value", value: "0.15 - 0.25 W/m²K (Depends on thickness)" },
+                    { label: "Fire Rating", value: "Class E (Fire Retardant EPS)" },
+                    { label: "Load Bearing", value: "Up to 3x stronger than traditional timber framing" }
+                ]
             },
             pageContents: {
-                "sip-panel-intro": `
-                    <div class="text-center max-w-4xl mx-auto mb-16 px-4">
-                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6">Future Building Technology</h2>
-                        <p class="text-lg text-gray-600 leading-relaxed font-medium">We build your homes faster and provide maximum energy savings with SIP technology.</p>
+                "home-intro": `
+                    <div class="text-left max-w-4xl mx-auto mb-16 px-4">
+                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Future Building Technology</h2>
+                        <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">We build your homes faster and provide maximum energy savings with SIP technology.</p>
+                        <div class="mt-6 w-20 h-1.5 bg-brand-orange rounded-full"></div>
                     </div>
                 `,
-                "uretim": "<p>Information about our production facility.</p>",
-                "galeri": "<p>Gallery coming soon.</p>",
-                "hakkimizda": "<p>About Muhammet Tutkun A.Ş.</p>"
+                "uretim": "<p class='text-xl break-words'>Information about our production facility.</p>",
+                "galeri": "<p class='text-xl break-words'>Gallery coming soon.</p>",
+                "hakkimizda": "<p class='text-xl break-words'>About Kartech Panel Structures House Systems.</p>"
             },
-            footerText: "© 2026 Muhammet Tutkun A.Ş. All rights reserved."
+            footerText: "© 2026 Kartech Panel Structures House Systems. All rights reserved."
         }
     }
 };
