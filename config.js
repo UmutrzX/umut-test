@@ -2,206 +2,193 @@
  * ======================================================================
  * YÖNETİM PANELİ (CONFIG DOSYASI) - MUHAMMET TUTKUN A.Ş.
  * ======================================================================
- * HOŞ GELDİNİZ! Bu dosya sitenizin beynidir. Kodlama bilmenize gerek yok.
- * Sadece tırnak işaretleri (" ") içindeki yazıları değiştirerek tüm siteyi 
- * anında güncelleyebilirsiniz. LÜTFEN TIRNAKLARI SİLMEMEYE DİKKAT EDİN!
+ * PREMIUM MİMARİ GÜNCELLEMESİ:
+ * Artık 4 farklı proje sayfası var (SİP Panel, Ev, Bahçe, Garaj).
+ * Hangi projenin hangi sayfada çıkacağını 'pageMenu' ayarından seçersiniz.
  */
 
 export const siteConfig = {
-    // ==========================================
-    // BÖLÜM 1: GENEL BİLGİLER VE İLETİŞİM
-    // ==========================================
     contact: {
-        // Site logonuzun linki (Şu an Pinterest linkiniz bağlı)
-        logoSrc: "https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg",
-        
-        // Adres ve İletişim Bilgileriniz
+        // YENİ YUVARLAK BÜYÜK LOGONUZ
+        logoSrc: "https://i.pinimg.com/736x/4e/f6/25/4ef625ad3564670a75e74be775fac392.jpg",
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@muhammettutkun.com.tr",
-        
-        // Sosyal Medya Linkleriniz (Eğer bir hesabınız yoksa "#" olarak bırakın)
-        social: {
-            facebook: "#",
-            youtube: "#",
-            instagram: "https://www.instagram.com/muhammet.tutkun/"
+        social: { facebook: "#", youtube: "#", instagram: "https://www.instagram.com/muhammet.tutkun/" }
+    },
+
+    // ==========================================
+    // YENİ: SİP PANEL ANA SAYFA (HERO) AYARLARI
+    // ==========================================
+    homeHero: {
+        // Site açılır açılmaz arkada görünecek devasa resim (veya ileride video eklenebilir)
+        backgroundImage: "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg",
+        slogan: {
+            tr: "Lüks ve Minimalizmin Birleşimi",
+            en: "Fusion of Luxury and Minimalism"
+        },
+        subSlogan: {
+            tr: "SİP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.",
+            en: "Reach your dream structure quickly with SIP Panel technology."
         }
     },
 
     // ==========================================
-    // BÖLÜM 2: PROJE KATEGORİLERİ
+    // FİLTRE KATEGORİLERİ (Tüm proje sayfalarında solda çıkar)
     // ==========================================
-    // Yeni bir kategori eklemek için satırı kopyalayıp alta yapıştırın.
-    // 'id' kısmı çok önemlidir: Türkçe karakter ve boşluk İÇERMEMELİDİR.
-    // DİKKAT: Buraya eklediğiniz her kategori, üstteki açılır menüye OTOMATİK eklenir!
     categories: [
-        { id: "standart", tr: "Standart evler", en: "Standard houses" },
-        { id: "moduler", tr: "Modüler evler", en: "Modular houses" },
-        { id: "ahsap", tr: "Ahşap evler", en: "Wooden houses" },
-        { id: "kirsal", tr: "Kırsal evler", en: "Rural houses" },
-        { id: "garajli", tr: "Garajlı", en: "With Garage" },
+        { id: "standart", tr: "Standart Evler", en: "Standard Houses" },
+        { id: "moduler", tr: "Modüler Evler", en: "Modular Houses" },
+        { id: "ahsap", tr: "Ahşap Kaplama", en: "Wooden Finish" },
+        { id: "tekkatli", tr: "Tek Katlı", en: "Single-Story" },
         { id: "ikikatli", tr: "İki Katlı", en: "Two-Story" },
-        { id: "tekkatli", tr: "Tek Katlı", en: "Single-Story" }
+        { id: "kamelya", tr: "Kamelya & Çardak", en: "Gazebo" },
+        { id: "kisbahcesi", tr: "Kış Bahçesi", en: "Winter Garden" }
     ],
 
     // ==========================================
-    // BÖLÜM 3: SATILIK EVLER / PROJELER
+    // PROJELER (Yeni 'pageMenu' sistemine göre)
     // ==========================================
-    // Burada sitenizdeki evleri ekliyoruz. İstediğiniz kadar kopyalayıp ekleyebilirsiniz.
     projects: [
         {
-            // Sistemin bu evi tanıması için benzersiz ve boşluksuz bir isim verin.
             id: "dubleks-298", 
-            
-            // Sitede görünecek Evin Adı
             title: "Zifin House",
             titleEn: "Duplex Project - 298",
+            area: 61, rooms: 3,  
             
-            // Özellikleri (Sadece sayı yazın)
-            area: 61, // Metrekare
-            rooms: 3,  // Oda sayısı
+            // DİKKAT: Bu proje üst menüde HANGİ sekmeye basınca çıksın?
+            // Seçenekler: "sip-panel", "ev-modelleri", "bahce-yapilari", "garaj-sistemleri"
+            pageMenu: "sip-panel", 
+            categoryId: "ikikatli", 
             
-            // Bu ev Hangi Kategoride görünsün? (Yukarıdaki BÖLÜM 2'deki ID'lerden birini yazın)
-            categoryId: "ahsap", 
-            
-            // Ana Kapak Resmi
             mainImage: "https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg",
-            
-            // İç mekan veya diğer galeri resimleri (İstediğiniz kadar alt alta link ekleyebilirsiniz)
-            // DİKKAT: Ana resminiz de otomatik olarak galeriye dahil edilecektir, buraya tekrar yazmanıza gerek yok.
             gallery: [
                 "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
-                "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg",
-                "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg"
+                "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg"
             ],
-            
-            // Evin uzun tanıtım yazısı
             description: {
-                tr: "Modern iki katlı dubleks SİP panel proje. İki ailenin yan yana fakat kendi özel alanlarını koruyarak yaşamak istedikleri durumlar için pratik bir çözümdür. Geniş pencereler, garaj alanı ve modern mimari detaylar ile tasarlanmıştır.",
-                en: "Modern two-story duplex SIP panel project. It is a practical solution for two families who want to live side by side but preserve their own private spaces."
+                tr: "SİP Panel ana sayfasında sergilenmek üzere tasarlanmış modern iki katlı dubleks proje.",
+                en: "Modern two-story duplex SIP panel project."
             }
         },
-        
-        // --- İKİNCİ EV BAŞLANGICI ---
         {
             id: "calanthe-145",
-            title: "Test projesi",
-            titleEn: "Calanthe Project - 145",
-            area: 54,
-            rooms: 4,
+            title: "Calanthe Modeli",
+            titleEn: "Calanthe Model - 145",
+            area: 54, rooms: 4,
+            
+            pageMenu: "ev-modelleri", // Sadece Ev Modelleri'ne basınca çıkar
             categoryId: "tekkatli",
+            
             mainImage: "https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg",
-            gallery: [
-                "https://i.pinimg.com/1200x/be/d6/bf/bed6bfbffcea556193c1a2b9c7ce4b92.jpg"
-            ],
+            gallery: ["https://i.pinimg.com/1200x/be/d6/bf/bed6bfbffcea556193c1a2b9c7ce4b92.jpg"],
             description: {
-                tr: "Tek katlı, geniş bahçe teraslı doğa ile iç içe yaşam sunan şık ve kullanışlı bir SİP panel ev tasarımı. Enerji verimliliği yüksek, hızlı kurulabilen modern bir yaşam alanı.",
-                en: "A stylish and useful SIP panel house design that offers life in touch with nature with a single-story, large garden terrace."
+                tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.",
+                en: "A stylish and useful house design."
             }
+        },
+        {
+            id: "kis-bahcesi-1",
+            title: "Premium Kış Bahçesi",
+            titleEn: "Premium Winter Garden",
+            area: 25, rooms: 1,
+            
+            pageMenu: "bahce-yapilari", // Sadece Bahçe Yapıları'na basınca çıkar
+            categoryId: "kisbahcesi",
+            
+            mainImage: "https://placehold.co/800x600/1a1a1a/FFF?text=Kış+Bahçesi",
+            gallery: [],
+            description: { tr: "Dört mevsim bahçe keyfi.", en: "Enjoy your garden in all seasons." }
         }
     ],
 
-    // ==========================================
-    // BÖLÜM 4: ÇEVİRİLER VE SAYFA YAZILARI
-    // ==========================================
     i18n: {
         tr: {
+            // YENİ 7'Lİ MENÜ SİSTEMİ (İstediğiniz gibi güncellendi)
             menu: {
-                home: "YAPI", projects: "PROJELER", prices: "FİYATLAR", 
-                gallery: "GALERİ", reviews: "YORUMLAR", about: "HAKKIMIZDA", contact: "İLETİŞİM"
+                "sip-panel": "SİP PANEL", 
+                "ev-modelleri": "EV MODELLERİ", 
+                "bahce-yapilari": "BAHÇE YAPILARI", 
+                "garaj-sistemleri": "GARAJ SİSTEMLERİ", 
+                "uretim": "ÜRETİM", 
+                "galeri": "GALERİ", 
+                "hakkimizda": "HAKKIMIZDA"
             },
             
-            // Genel Buton ve Başlık Yazıları
-            consultBtn: "DANIŞMA",
-            followUs: "Bizi sosyal medyada takip edin:",
-            categoryTitle: "PROJE KATEGORİSİ",
-            allProjectsTitle: "Örnek Projeler",
-            sqm: "metrekare",
-            homePath: "Ana Sayfa",
-            projectsPath: "Projeler",
-            
-            // Proje İçi Yazılar
+            consultBtn: "İLETİŞİM",
+            followUs: "Bizi takip edin:",
+            categoryTitle: "KATEGORİLER",
+            allProjectsTitle: "Tüm Seçenekler",
+            sqm: "m²",
             totalArea: "Toplam alan",
             roomCount: "Oda sayısı",
-            getQuoteTitle: "İnşaat maliyetini öğrenin",
+            getQuoteTitle: "Hemen Fiyat Alın",
             formName: "İsminiz",
             formPhone: "Telefon (Örn: 507 880 7607)",
             formEmail: "E-postanız",
-            submitBtn: "Fiyatı Öğren",
+            submitBtn: "Gönder",
             backBtn: "Geri Dön",
-            projectDetailsTitle: "Proje Detayları",
+            projectDetailsTitle: "Detaylar",
             
-            // -----------------------------------------------------
-            // SAYFA BAŞLIKLARI
-            // -----------------------------------------------------
             pageTitles: {
-                home: "Yapı ve Teknoloji",
-                prices: "Fiyatlandırma",
-                gallery: "Fotoğraf Galerisi",
-                reviews: "Müşteri Yorumları",
-                about: "Hakkımızda",
-                contact: "Bize Ulaşın"
+                "uretim": "Üretim Tesisimiz",
+                "galeri": "Fotoğraf Galerisi",
+                "hakkimizda": "Hakkımızda",
+                "sip-panel": "SİP Panel Projeler",
+                "ev-modelleri": "Ev Modellerimiz",
+                "bahce-yapilari": "Bahçe Yapılarımız",
+                "garaj-sistemleri": "Garaj Sistemlerimiz"
             },
             
-            // -----------------------------------------------------
-            // SAYFA İÇERİKLERİ (İstediğiniz gibi doldurun)
-            // HTML Kodları kullanabilirsiniz. Örnek: <br> alt satıra atar.
-            // <strong>Kalın Yazı</strong> yazar. 
-            // -----------------------------------------------------
             pageContents: {
-                home: "SİP panellerin avantajları, izolasyon değerleri ve üretim süreçleri burada anlatılmaktadır.",
-                prices: "<strong>Standart Paket:</strong> 15.000 TL / m2 <br><br> <strong>Anahtar Teslim:</strong> 25.000 TL / m2",
-                gallery: "Tamamlanan projelerimizin şantiye süreçleri. Buraya galeri uygulamaları eklenebilir.",
-                reviews: "Müşterilerimizin bizim hakkımızda söyledikleri...",
-                
-                // Hakkımızda sayfasına çoklu satır ve resim ekleme örneği
-                about: `
-                    <p class="mb-4">Muhammet Tutkun A.Ş. olarak yılların verdiği tecrübe ile inşaat sektöründe öncüyüz.</p>
-                    <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full max-w-sm rounded-sm shadow-md mb-4" alt="Şirketimiz">
-                    <p>Misyonumuz en kaliteli SİP Panel evleri en hızlı şekilde teslim etmektir.</p>
+                // Ana sayfanın (SİP PANEL) alt kısmında (projelerden önce) çıkacak tanıtım yazısı
+                "sip-panel-intro": `
+                    <div class="text-center max-w-4xl mx-auto mb-16 px-4">
+                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6">Geleceğin Yapı Teknolojisi</h2>
+                        <p class="text-lg text-gray-600 leading-relaxed font-medium">SİP (Yapısal Yalıtımlı Panel) teknolojisi ile evlerinizi hem daha hızlı inşa ediyor hem de maksimum enerji tasarrufu sağlıyoruz. Kurumsal tecrübemizi doğayla buluşturuyoruz.</p>
+                    </div>
                 `,
                 
-                // İletişim sayfasının metnini boş bırakırsanız sadece harita/form görünür.
-                contact: ""
+                "uretim": `
+                    <p class="mb-6 text-lg text-gray-700 leading-relaxed">Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz. Kalite kontrol süreçlerimiz Avrupa standartlarındadır.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                        <img src="https://placehold.co/600x400/f39c12/white?text=Uretim+Hatti+1" class="w-full rounded-sm shadow-md" alt="Üretim 1">
+                        <img src="https://placehold.co/600x400/f39c12/white?text=Uretim+Hatti+2" class="w-full rounded-sm shadow-md" alt="Üretim 2">
+                    </div>
+                `,
+                "galeri": "<p class="text-center text-gray-500 text-lg">Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.</p>",
+                "hakkimizda": `
+                    <h3 class="text-3xl font-black mb-4 text-gray-900">Muhammet Tutkun A.Ş.</h3>
+                    <p class="mb-6 text-lg text-gray-700 leading-relaxed">Yılların verdiği tecrübe ile yenilikçi yapı teknolojilerini Türkiye ile buluşturuyoruz. Güven, estetik ve sağlamlık temel ilkelerimizdir.</p>
+                `
             },
             footerText: "© 2026 Muhammet Tutkun A.Ş. Tüm hakları saklıdır."
         },
         en: {
             menu: {
-                home: "BUILDING", projects: "PROJECTS", prices: "PRICING", 
-                gallery: "GALLERY", reviews: "REVIEWS", about: "ABOUT US", contact: "CONTACT"
+                "sip-panel": "SIP PANEL", "ev-modelleri": "HOUSE MODELS", 
+                "bahce-yapilari": "GARDENS", "garaj-sistemleri": "GARAGES", 
+                "uretim": "PRODUCTION", "galeri": "GALLERY", "hakkimizda": "ABOUT US"
             },
-            consultBtn: "CONSULTATION",
-            followUs: "Follow us on social media:",
-            categoryTitle: "PROJECT CATEGORY",
-            allProjectsTitle: "SIP PANEL HOUSE PLANS",
-            sqm: "square meters",
-            homePath: "Home",
-            projectsPath: "Projects",
-            totalArea: "Total area",
-            roomCount: "Number of rooms",
-            getQuoteTitle: "Find out the construction cost",
-            formName: "Your Name",
-            formPhone: "Phone",
-            formEmail: "Your Email",
-            submitBtn: "Get Quote",
-            backBtn: "Go Back",
-            projectDetailsTitle: "Project Details",
+            consultBtn: "CONTACT", followUs: "Follow us:", categoryTitle: "CATEGORIES",
+            allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
+            getQuoteTitle: "Get a Quote", formName: "Your Name", formPhone: "Phone", formEmail: "Email",
+            submitBtn: "Submit", backBtn: "Go Back", projectDetailsTitle: "Details",
             pageTitles: {
-                home: "Building and Technology", prices: "Pricing", gallery: "Photo Gallery",
-                reviews: "Customer Reviews", about: "About Us", contact: "Contact Us"
+                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us",
+                "sip-panel": "SIP Panel Projects", "ev-modelleri": "House Models", 
+                "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
             },
             pageContents: {
-                home: "Advantages of SIP panels, insulation values, and production processes.",
-                prices: "<strong>Standard Package:</strong> $500 / sqm <br><br> <strong>Turnkey:</strong> $800 / sqm",
-                gallery: "Construction processes of our completed projects.",
-                reviews: "What our customers say about us...",
-                about: `
-                    <p class="mb-4">As Muhammet Tutkun A.Ş., we are pioneers in the construction sector with years of experience.</p>
-                    <img src="https://i.pinimg.com/736x/3c/09/22/3c09223c7da248f49f461aca4c87301f.jpg" class="w-full max-w-sm rounded-sm shadow-md mb-4" alt="Our Company">
-                    <p>Our mission is to deliver the highest quality SIP Panel houses as quickly as possible.</p>
+                "sip-panel-intro": `
+                    <div class="text-center max-w-4xl mx-auto mb-16 px-4">
+                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6">Future Building Technology</h2>
+                        <p class="text-lg text-gray-600 leading-relaxed font-medium">We build your homes faster and provide maximum energy savings with SIP technology.</p>
+                    </div>
                 `,
-                contact: ""
+                "uretim": "<p>Information about our production facility.</p>",
+                "galeri": "<p>Gallery coming soon.</p>",
+                "hakkimizda": "<p>About Muhammet Tutkun A.Ş.</p>"
             },
             footerText: "© 2026 Muhammet Tutkun A.Ş. All rights reserved."
         }
