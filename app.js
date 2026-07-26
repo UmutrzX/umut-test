@@ -236,6 +236,9 @@ window.submitTestForm = function(evt, form) {
 function renderHeader() {
     const menuItems = ['home', 'sip-panel', 'ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri', 'uretim', 'galeri', 'hakkimizda'];
 
+    // Menünün sabit yüksekliğini iptal edip tamamen flex'e bırakıyoruz
+    DOM.header.classList.remove('h-[80px]');
+
     const overlayMenuHTML = menuItems.map(id => {
         const isProjectMenu = ['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(id);
         const label = t().menu[id];
@@ -260,18 +263,30 @@ function renderHeader() {
 
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between relative z-50">
-            <div class="cursor-pointer h-full flex items-center py-2" onclick="navigate('home')">
-                 <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-14 sm:h-16 md:h-20 lg:h-24 w-auto object-contain transition-transform duration-300 hover:scale-105 mix-blend-multiply">
+            <!-- 2 KAT BÜYÜTÜLMÜŞ DİNAMİK LOGO -->
+            <div class="cursor-pointer flex items-center py-2 md:py-4" onclick="navigate('home')">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-20 sm:h-24 md:h-32 lg:h-40 w-auto object-contain transition-all duration-500 hover:scale-105 mix-blend-multiply transform origin-left">
             </div>
             
-            <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
+            <div class="flex items-center space-x-3 md:space-x-5 ml-auto">
+                
                 <div class="hidden sm:flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
                     <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
                     <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
                 </div>
-                <button onclick="navigate('iletisim')" class="hidden md:block bg-brand-orange hover:bg-orange-500 text-white font-semibold py-2 px-5 sm:px-6 rounded-full shadow-md transition-all btn-press text-xs sm:text-sm whitespace-nowrap">
+                
+                <!-- DİL SEÇİMİ (MASAÜSTÜ ANA MENÜ) -->
+                <div class="hidden md:flex items-center space-x-2 font-bold text-sm lg:text-base mr-2 border-r border-gray-500/30 pr-4">
+                    <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'tr' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'}" onclick="changeLanguage('tr')">TR</span>
+                    <span class="text-gray-400">|</span>
+                    <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'en' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'}" onclick="changeLanguage('en')">EN</span>
+                </div>
+
+                <!-- BİZE ULAŞIN BUTONU -->
+                <button onclick="navigate('iletisim')" class="hidden md:block bg-brand-orange hover:bg-orange-500 text-white font-semibold py-2.5 px-6 sm:px-8 rounded-full shadow-md transition-all btn-press text-xs sm:text-sm whitespace-nowrap">
                     ${t().consultBtn}
                 </button>
+
                 <button onclick="window.toggleMobileMenu()" class="w-10 h-10 md:w-12 md:h-12 bg-[#1a1a1a] rounded-full flex items-center justify-center text-white hover:bg-brand-orange shadow-lg transition-all duration-300 btn-press focus:outline-none shrink-0 z-[101]">
                     <i class="fas fa-bars text-base sm:text-lg pointer-events-none"></i>
                 </button>
@@ -286,8 +301,10 @@ function renderHeader() {
                     </button>
                 </div>
             </div>
+
             <div class="w-full flex-grow px-6 sm:px-12 md:px-24 lg:px-40 flex flex-col justify-start pt-6 sm:pt-10 pb-24 overflow-y-auto no-scrollbar">
                 ${overlayMenuHTML}
+                
                 <div class="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-800 flex items-center space-x-6 w-max shrink-0">
                     <div class="flex space-x-4">
                         <span class="cursor-pointer font-bold text-base sm:text-lg btn-press ${state.lang === 'tr' ? 'text-brand-orange' : 'text-gray-500'}" onclick="changeLanguage('tr')">TR</span>
@@ -309,20 +326,52 @@ function handleScroll() {
     const header = document.getElementById('main-header');
     if(!header) return;
     const icons = header.querySelectorAll('.header-icon');
+    const langTexts = header.querySelectorAll('.header-text-lang');
+    const logo = document.getElementById('header-logo');
     
-    const hasHero = ['home', 'sip-panel'].includes(state.currentView);
+    // Ana sayfa veya SİP panel sayfalarındaysak kahraman görsel (Hero) var demektir, yazı rengini beyazdan başlat
+    const hasHero = ['home'].includes(state.currentView);
 
     if (window.scrollY > 50) {
         header.classList.remove('bg-transparent');
-        header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm');
+        header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
+        
+        // Logoyu aşağı inildiğinde küçült (Scroll-to-Shrink)
+        if(logo) {
+            logo.classList.remove('h-20', 'sm:h-24', 'md:h-32', 'lg:h-40');
+            logo.classList.add('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
+        }
+
         icons.forEach(icon => { icon.classList.remove('text-white'); icon.classList.add('text-gray-900'); });
+        langTexts.forEach(txt => { 
+            if(!txt.classList.contains('text-brand-orange')) {
+                txt.classList.remove('text-white'); txt.classList.add('text-gray-900'); 
+            }
+        });
     } else {
         header.classList.add('bg-transparent');
-        header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm');
+        header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
+        
+        // Logoyu en tepedeyken kocaman yap
+        if(logo) {
+            logo.classList.add('h-20', 'sm:h-24', 'md:h-32', 'lg:h-40');
+            logo.classList.remove('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
+        }
+
         if(hasHero) {
             icons.forEach(icon => { icon.classList.remove('text-gray-900'); icon.classList.add('text-white'); });
+            langTexts.forEach(txt => { 
+                if(!txt.classList.contains('text-brand-orange')) {
+                    txt.classList.remove('text-gray-900'); txt.classList.add('text-white'); 
+                }
+            });
         } else {
             icons.forEach(icon => { icon.classList.remove('text-white'); icon.classList.add('text-gray-900'); });
+            langTexts.forEach(txt => { 
+                if(!txt.classList.contains('text-brand-orange')) {
+                    txt.classList.remove('text-white'); txt.classList.add('text-gray-900'); 
+                }
+            });
         }
     }
 }
@@ -351,7 +400,7 @@ function renderHomePage() {
                 <div class="max-w-2xl transform">
                     <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight drop-shadow-lg">${siteConfig.homeHero.slogan[state.lang]}</h1>
                     <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-medium drop-shadow-md">${siteConfig.homeHero.subSlogan[state.lang]}</p>
-                    <button onclick="navigate('ev-modelleri')" class="mt-6 sm:mt-8 md:mt-10 bg-brand-orange text-white font-bold px-5 py-3 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-xs sm:text-sm md:text-base">
+                    <button onclick="navigate('ev-modelleri')" class="mt-6 sm:mt-8 md:mt-10 bg-brand-orange text-white font-bold px-5 py-3 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-xs sm:text-sm md:text-base w-max">
                         Projeleri İncele <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -653,7 +702,7 @@ function renderProjectDetail(projectId) {
 function renderFooter() {
     DOM.footer.innerHTML = `
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
-            <div class="w-32 sm:w-40 md:w-48 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 mix-blend-multiply" onclick="navigate('home')">
+            <div class="w-40 sm:w-48 md:w-56 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 mix-blend-multiply" onclick="navigate('home')">
                 <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-full h-auto object-contain mix-blend-multiply">
             </div>
             <p class="text-xs sm:text-sm text-gray-500 font-medium tracking-wide text-center px-4">${t().footerText}</p>
