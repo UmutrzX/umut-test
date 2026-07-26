@@ -18,7 +18,7 @@ export const siteConfig = {
     },
 
     homeHero: {
-        backgroundImage: "https://scontent.fsaw6-1.fna.fbcdn.net/v/t51.82787-15/684834411_18460007191107118_4508284816265753507_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1350&ctp=s1080x1350&_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=vsiosBHxNZcQ7kNvwFsmyhy&_nc_oc=AdownMd348Hi-Kjjn_mvEzr0Pxe3X2-_5j5CCBrqoaWZJmkA6gAhvJl_3IfR3DwsFJQ&_nc_zt=23&_nc_ht=scontent.fsaw6-1.fna&_nc_gid=owsQbghiJK-vW6lW5OjD2w&_nc_ss=7b2a8&oh=00_AQCu7n7IfBoeIu0zXC1Hff66Vdq5WwgKE2s_B_q3nhBTUg&oe=6A6C3DB1",
+        backgroundImage: "https://pbs.twimg.com/media/HOLXzKvXcAAOx2J?format=jpg&name=large",
         slogan: {
             tr: "Lüks ve Minimalizmin Birleşimi",
             en: "Fusion of Luxury and Minimalism"
