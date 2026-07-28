@@ -18,7 +18,7 @@ export const siteConfig = {
     },
 
     homeHero: {
-        backgroundImage: "https://pbs.twimg.com/media/HOLXzKvXcAAOx2J?format=jpg&name=large",
+        backgroundImage: "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg",
         slogan: {
             tr: "Lüks ve Minimalizmin Birleşimi",
             en: "Fusion of Luxury and Minimalism"
@@ -172,10 +172,12 @@ export const siteConfig = {
             
             pageContents: {
                 "home-intro": `
-                    <div class="text-left max-w-4xl mx-auto mb-16 px-4">
-                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Geleceğin Yapı Teknolojisi</h2>
-                        <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">SİP (Yapısal Yalıtımlı Panel) teknolojisi ile evlerinizi hem daha hızlı inşa ediyor hem de maksimum enerji tasarrufu sağlıyoruz. Kartech Panel tecrübemizi doğayla buluşturuyoruz.</p>
-                        <div class="mt-6 w-20 h-1.5 bg-brand-orange rounded-full"></div>
+                    <div class="text-left max-w-[1400px] w-full mx-auto mb-16 px-4 sm:px-6 lg:px-8">
+                        <div class="max-w-4xl">
+                            <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Geleceğin Yapı Teknolojisi</h2>
+                            <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">SİP (Yapısal Yalıtımlı Panel) teknolojisi ile evlerinizi hem daha hızlı inşa ediyor hem de maksimum enerji tasarrufu sağlıyoruz. Kartech Panel tecrübemizi doğayla buluşturuyoruz.</p>
+                            <div class="mt-6 w-20 h-1.5 bg-brand-orange rounded-full"></div>
+                        </div>
                     </div>
                 `,
                 "uretim": `<p class="mb-6 text-xl text-gray-700 leading-relaxed font-medium break-words">Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz.</p>`,
@@ -227,10 +229,12 @@ export const siteConfig = {
             },
             pageContents: {
                 "home-intro": `
-                    <div class="text-left max-w-4xl mx-auto mb-16 px-4">
-                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Future Building Technology</h2>
-                        <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">We build your homes faster and provide maximum energy savings with SIP technology.</p>
-                        <div class="mt-6 w-20 h-1.5 bg-brand-orange rounded-full"></div>
+                    <div class="text-left max-w-[1400px] w-full mx-auto mb-16 px-4 sm:px-6 lg:px-8">
+                        <div class="max-w-4xl">
+                            <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Future Building Technology</h2>
+                            <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">We build your homes faster and provide maximum energy savings with SIP technology.</p>
+                            <div class="mt-6 w-20 h-1.5 bg-brand-orange rounded-full"></div>
+                        </div>
                     </div>
                 `,
                 "uretim": "<p class='text-xl break-words'>Information about our production facility.</p>",
