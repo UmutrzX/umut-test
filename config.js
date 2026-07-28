@@ -109,6 +109,7 @@ export const siteConfig = {
                 "galeri": "Galeri", 
                 "hakkimizda": "Hakkımızda"
             },
+            
             consultBtn: "Bize Ulaşın",
             allProjectsTitle: "Tüm Seçenekler",
             categoryTitle: "Kategoriler",
@@ -125,6 +126,7 @@ export const siteConfig = {
             nextProject: "Sonraki Proje",
             formErrorName: "Lütfen isminizi giriniz.",
             formErrorPhone: "Lütfen geçerli bir telefon numarası giriniz (10 hane).",
+            
             pageTitles: {
                 "home": "Kartech Panel",
                 "iletisim": "Bize Ulaşın",
@@ -136,6 +138,7 @@ export const siteConfig = {
                 "bahce-yapilari": "Bahçe Yapılarımız",
                 "garaj-sistemleri": "Garaj Sistemlerimiz"
             },
+            
             sipPanelData: {
                 heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
                 introTitle: "Geleceğin Yapı Teknolojisi: SİP Panel",
@@ -158,6 +161,7 @@ export const siteConfig = {
                     { label: "Ses Yalıtımı (Akustik)", value: "40 dB - 45 dB Ses İndirgeme İndeksi" }
                 ]
             },
+
             pageContents: {
                 "uretim": "Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz.",
                 "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.",
