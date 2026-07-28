@@ -2,10 +2,20 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Kartech Panel Structures House Systems</title>
     <meta id="meta-desc" name="description" content="Lüks ve Minimalizmin Birleşimi. SİP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.">
     
+    <!-- PWA Meta Etiketleri -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#f39c12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Kartech Panel">
+    <link rel="apple-touch-icon" href="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
+    <link rel="icon" type="image/png" href="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
+    
+    <!-- External Fonts & Libraries -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -183,6 +193,20 @@
         <button id="lightbox-next" class="lightbox-btn btn-press" onclick="window.changeLightboxImage(1)"><i class="fas fa-chevron-right"></i></button>
         <div id="lightbox-counter" class="lightbox-counter">1 / 1</div>
     </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker kaydı başarılı:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('ServiceWorker kaydı başarısız:', error);
+                    });
+            });
+        }
+    </script>
 
     <script type="module" src="app.js"></script>
 </body>
