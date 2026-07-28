@@ -39,7 +39,6 @@
         .btn-press { transition: all 0.15s ease; cursor: pointer; }
         .btn-press:active { transform: scale(0.92); }
         
-        /* MOBİL SİMETRİ & FLOATING BUTTONS */
         .floating-btn {
             position: fixed; z-index: 50;
             width: 55px; height: 55px; border-radius: 50%;
@@ -50,7 +49,6 @@
         .floating-btn:hover { transform: scale(1.1) rotate(5deg); }
         .floating-btn:active { transform: scale(0.9); }
         
-        /* Kusursuz Simetri: Her iki taraf için boşluklar tamamen eşitlendi */
         .btn-call { left: 20px; bottom: 20px; background-color: #f39c12; }
         .btn-chat { right: 20px; bottom: 20px; background-color: #25D366; z-index: 51; }
         
@@ -68,12 +66,10 @@
         .btn-scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
         .btn-scroll-top:hover { background-color: #2ecc71; }
 
-        /* Page Transitions */
         #app-content { transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; }
         .page-fade-out { opacity: 0; transform: translateY(20px); }
         .page-fade-in { opacity: 1; transform: translateY(0); }
 
-        /* Modals & Overlays */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.8); display: none;
@@ -91,7 +87,6 @@
         }
         #toast-message.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* Lightbox */
         #lightbox-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background-color: rgba(0, 0, 0, 0.95);
@@ -127,7 +122,6 @@
             background: rgba(0,0,0,0.7); padding: 8px 24px; border-radius: 30px;
         }
 
-        /* Mobile Menu */
         .vg-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-color: #0a0a0a; z-index: 100; opacity: 0; visibility: hidden;
@@ -136,20 +130,18 @@
         }
         .vg-overlay.active { opacity: 1; visibility: visible; }
 
-        /* YENİ NESİL, PROFESYONEL ACCORDION EFEKTİ (CSS GRID TRANSITION) - DÜZELTİLDİ */
         .accordion-content {
             display: grid;
             grid-template-rows: 0fr;
             transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
             opacity: 0;
-            overflow: hidden; /* Dış kutu taşmayı gizler */
+            overflow: hidden; 
         }
         .accordion-content.open {
             grid-template-rows: 1fr;
             opacity: 1;
             margin-top: 0.5rem;
         }
-        /* Kırılmaları önlemek ve Grid hilesinin çalışması için içindeki tüm yapıyı saran div gizlenir */
         .accordion-content > div {
             overflow: hidden;
         }
