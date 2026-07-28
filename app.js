@@ -261,16 +261,18 @@ function renderHeader() {
         }
     }).join('');
 
+    // HİZALAMA VE SİMETRİ İÇİN KAPSAYICI: max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8
     DOM.header.innerHTML = `
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between relative z-50">
+        <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50">
             <!-- 2 KAT BÜYÜTÜLMÜŞ DİNAMİK LOGO -->
             <div class="cursor-pointer flex items-center py-2 md:py-4" onclick="navigate('home')">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-20 sm:h-24 md:h-32 lg:h-40 w-auto object-contain transition-all duration-500 hover:scale-105 mix-blend-multiply transform origin-left">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-16 sm:h-24 md:h-32 lg:h-40 w-auto object-contain transition-all duration-500 mix-blend-multiply transform origin-left">
             </div>
             
-            <div class="flex items-center space-x-3 md:space-x-5 ml-auto">
+            <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
                 
-                <div class="hidden sm:flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
+                <!-- MOBİLDE DE GÖRÜNEN SOSYAL İKONLAR (hidden kaldırıldı) -->
+                <div class="flex space-x-3 text-white social-icons mr-2 sm:mr-4 transition-colors duration-300">
                     <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
                     <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
                 </div>
@@ -336,9 +338,9 @@ function handleScroll() {
         header.classList.remove('bg-transparent');
         header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
         
-        // Logoyu aşağı inildiğinde küçült (Scroll-to-Shrink)
+        // Logoyu aşağı inildiğinde küçült (Scroll-to-Shrink Animasyonu)
         if(logo) {
-            logo.classList.remove('h-20', 'sm:h-24', 'md:h-32', 'lg:h-40');
+            logo.classList.remove('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
             logo.classList.add('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
         }
 
@@ -352,9 +354,9 @@ function handleScroll() {
         header.classList.add('bg-transparent');
         header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
         
-        // Logoyu en tepedeyken kocaman yap
+        // Logoyu en tepedeyken kocaman yap (Simetrik ve devasa)
         if(logo) {
-            logo.classList.add('h-20', 'sm:h-24', 'md:h-32', 'lg:h-40');
+            logo.classList.add('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
             logo.classList.remove('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
         }
 
@@ -393,22 +395,30 @@ function renderHomePage() {
         </div>
     `).join('');
 
+    // SİMETRİ İÇİN Hero Content Kapsayıcısı: max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8
     DOM.content.innerHTML = `
         <div class="relative w-full h-[100vh] flex overflow-hidden">
             <div class="absolute inset-0 z-0"><img src="${siteConfig.homeHero.backgroundImage}" class="w-full h-full object-cover"></div>
-            <div class="relative z-10 w-full md:w-[75%] lg:w-[60%] h-full bg-[#1a201c]/40 backdrop-blur-sm flex flex-col justify-center px-4 sm:px-10 md:px-16 pt-20">
-                <div class="max-w-2xl transform">
-                    <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight drop-shadow-lg">${siteConfig.homeHero.slogan[state.lang]}</h1>
-                    <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-medium drop-shadow-md">${siteConfig.homeHero.subSlogan[state.lang]}</p>
-                    <button onclick="navigate('ev-modelleri')" class="mt-6 sm:mt-8 md:mt-10 bg-brand-orange text-white font-bold px-5 py-3 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-xs sm:text-sm md:text-base w-max">
-                        Projeleri İncele <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
+            
+            <!-- Karartılmış arka plan efekti -->
+            <div class="absolute top-0 left-0 bottom-0 w-full md:w-[85%] lg:w-[65%] bg-[#1a201c]/40 backdrop-blur-sm z-10"></div>
+            
+            <div class="relative z-20 w-full h-full flex flex-col justify-center">
+                <!-- Header ile birebir aynı boşluk (px-4 sm:px-6 lg:px-8) ve hizalama -->
+                <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+                    <div class="max-w-2xl lg:max-w-3xl transform">
+                        <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight drop-shadow-lg">${siteConfig.homeHero.slogan[state.lang]}</h1>
+                        <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-medium drop-shadow-md">${siteConfig.homeHero.subSlogan[state.lang]}</p>
+                        <button onclick="navigate('ev-modelleri')" class="mt-6 sm:mt-8 md:mt-10 bg-brand-orange text-white font-bold px-5 py-3 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-xs sm:text-sm md:text-base w-max">
+                            Projeleri İncele <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="bg-white relative z-20 w-full py-12 sm:py-16 md:py-20 px-4 sm:px-6">
+        <div class="bg-white relative z-20 w-full py-12 sm:py-16 md:py-20 px-0">
             ${t().pageContents['home-intro']}
-            <div class="max-w-[1400px] mx-auto mt-6 sm:mt-8 md:mt-12">
+            <div class="max-w-[1400px] w-full mx-auto mt-6 sm:mt-8 md:mt-12 px-4 sm:px-6 lg:px-8">
                 <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-gray-900 mb-6 md:mb-8 text-center md:text-left">Öne Çıkan Projeler</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">${projectsHTML}</div>
             </div>
@@ -594,7 +604,7 @@ function renderProjectsPage(pageId) {
     `).join('') : `<div class="col-span-full text-center py-16 sm:py-20 md:py-32 text-gray-400 font-medium text-base sm:text-lg md:text-xl bg-white rounded-2xl shadow-sm border border-dashed border-gray-300 mx-2">Proje bulunamadı.</div>`;
 
     DOM.content.innerHTML = `
-        <div id="projects-grid" class="max-w-[1400px] mx-auto px-4 sm:px-6 py-8 md:py-12 mt-16 sm:mt-20 md:mt-24">
+        <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 mt-16 sm:mt-20 md:mt-24">
             <div class="mb-8 sm:mb-10 md:mb-16">
                 <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black text-gray-900 mb-3 sm:mb-4 md:mb-6 leading-tight">${t().pageTitles[pageId]}</h1>
                 <div class="w-12 sm:w-16 md:w-24 h-1 md:h-1.5 bg-brand-orange rounded-full"></div>
@@ -645,7 +655,7 @@ function renderProjectDetail(projectId) {
     `).join('');
 
     DOM.content.innerHTML = `
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-20 sm:py-24 md:py-32">
+        <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 md:py-32">
             <div class="mb-6 sm:mb-8 md:mb-10 flex flex-col md:flex-row justify-between md:items-end gap-4 md:gap-6">
                 <div>
                     <div class="flex items-center text-[10px] sm:text-xs md:text-sm font-semibold text-brand-orange space-x-2 mb-1 sm:mb-2 md:mb-4 flex-wrap gap-y-1">
@@ -701,8 +711,8 @@ function renderProjectDetail(projectId) {
 
 function renderFooter() {
     DOM.footer.innerHTML = `
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
-            <div class="w-40 sm:w-48 md:w-56 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 mix-blend-multiply" onclick="navigate('home')">
+        <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
+            <div class="w-48 sm:w-56 md:w-64 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 mix-blend-multiply" onclick="navigate('home')">
                 <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-full h-auto object-contain mix-blend-multiply">
             </div>
             <p class="text-xs sm:text-sm text-gray-500 font-medium tracking-wide text-center px-4">${t().footerText}</p>
