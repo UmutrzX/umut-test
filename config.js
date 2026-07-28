@@ -6,7 +6,7 @@
 
 export const siteConfig = {
     contact: {
-        logoSrc: "https://pbs.twimg.com/media/HOLR5R6XAAAe8QI?format=png&name=small", // YENİ ŞEFFAF LOGO
+        logoSrc: "https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small", 
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@kartechpanel.com",
@@ -18,7 +18,7 @@ export const siteConfig = {
     },
 
     homeHero: {
-        backgroundImage: "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg",
+        backgroundImage: "https://pbs.twimg.com/media/HOLXzKvXcAAOx2J?format=jpg&name=large",
         slogan: {
             tr: "Lüks ve Minimalizmin Birleşimi",
             en: "Fusion of Luxury and Minimalism"
@@ -62,9 +62,10 @@ export const siteConfig = {
      * Hiç kod bilmeseniz bile yeni proje ekleyebilirsiniz. Yeni bir proje için mevcut bir projenin { ... } arasındaki bloğunu kopyalayıp en alta yapıştırın.
      * 
      * ÖNEMLİ FOTOĞRAF BOYUTLARI (EN KALİTELİ GÖRÜNTÜ İÇİN):
+     * - Ana Ekran Görseli (Hero): 1920x1080px veya 2560x1440px (16:9 Oran)
      * - Ana Görsel (mainImage) ve Galeri (gallery) fotoğrafları YATAY (Landscape) olmalıdır.
      * - İdeal Oran: 4:3 (Dört bölü Üç) veya 16:9
-     * - Önerilen Çözünürlük: 1200x900 piksel veya 1920x1080 piksel boyutlarındadır.
+     * - Önerilen Çözünürlük: 1200x900 piksel boyutlarındadır.
      * 
      * ALANLARIN ANLAMLARI:
      * - id: Projeye özel benzersiz bir isim (boşluksuz, küçük harf, örn: "kis-bahcesi-premium")
@@ -119,7 +120,7 @@ export const siteConfig = {
                 "iletisim": "Bize Ulaşın"
             },
             
-            consultBtn: "Bize Ulaşın", // GÜNCELLENDİ
+            consultBtn: "Bize Ulaşın", 
             allProjectsTitle: "Tüm Seçenekler",
             categoryTitle: "Kategoriler",
             sqm: "m²",
@@ -146,7 +147,7 @@ export const siteConfig = {
 
             // DİNAMİK SİP PANEL VERİSİ
             sipPanelData: {
-                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg", // GÜNCELLENDİ
+                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
                 introTitle: "SİP (Yapısal Yalıtımlı Panel) Nedir?",
                 introText: "SİP (Structural Insulated Panel), yüksek yoğunluklu yalıtım çekirdeğinin (genellikle EPS) iki yapısal kaplama malzemesi (OSB-3) arasına preslenmesiyle oluşturulan, taşıyıcı kapasitesi olağanüstü yüksek, modern ve kompozit bir yapı malzemesidir. Geleneksel sistemlere göre %60'a varan enerji tasarrufu ve ultra hızlı kurulum sunar.",
                 
@@ -172,19 +173,19 @@ export const siteConfig = {
             
             pageContents: {
                 "home-intro": `
-                    <div class="text-left max-w-[1400px] w-full mx-auto mb-16 px-4 sm:px-6 lg:px-8">
+                    <div class="text-left max-w-[1400px] w-full mx-auto mb-8 sm:mb-16 px-4 sm:px-6 lg:px-8">
                         <div class="max-w-4xl">
-                            <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Geleceğin Yapı Teknolojisi</h2>
-                            <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">SİP (Yapısal Yalıtımlı Panel) teknolojisi ile evlerinizi hem daha hızlı inşa ediyor hem de maksimum enerji tasarrufu sağlıyoruz. Kartech Panel tecrübemizi doğayla buluşturuyoruz.</p>
-                            <div class="mt-6 w-20 h-1.5 bg-brand-orange rounded-full"></div>
+                            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4 sm:mb-6 tracking-tight leading-tight">Geleceğin Yapı Teknolojisi</h2>
+                            <p class="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed font-medium">SİP (Yapısal Yalıtımlı Panel) teknolojisi ile evlerinizi hem daha hızlı inşa ediyor hem de maksimum enerji tasarrufu sağlıyoruz. Kartech Panel tecrübemizi doğayla buluşturuyoruz.</p>
+                            <div class="mt-4 sm:mt-6 w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
                         </div>
                     </div>
                 `,
-                "uretim": `<p class="mb-6 text-xl text-gray-700 leading-relaxed font-medium break-words">Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz.</p>`,
-                "galeri": "<p class='text-center text-gray-500 text-xl font-medium break-words'>Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.</p>",
+                "uretim": `<p class="mb-6 text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed font-medium break-words">Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz.</p>`,
+                "galeri": "<p class='text-center text-gray-500 text-lg md:text-xl font-medium break-words'>Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.</p>",
                 "hakkimizda": `
-                    <h3 class="text-4xl font-black mb-6 text-gray-900 tracking-tight">Kartech Panel Structures House Systems</h3>
-                    <p class="mb-6 text-xl text-gray-700 leading-relaxed font-medium break-words">Yılların verdiği tecrübe ile yenilikçi yapı teknolojilerini Türkiye ile buluşturuyoruz.</p>
+                    <h3 class="text-2xl sm:text-3xl md:text-4xl font-black mb-4 sm:mb-6 text-gray-900 tracking-tight leading-tight">Kartech Panel Structures House Systems</h3>
+                    <p class="mb-6 text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed font-medium break-words">Yılların verdiği tecrübe ile yenilikçi yapı teknolojilerini Türkiye ile buluşturuyoruz.</p>
                 `
             },
             footerText: "© 2026 Kartech Panel Structures House Systems. Tüm hakları saklıdır."
@@ -229,17 +230,17 @@ export const siteConfig = {
             },
             pageContents: {
                 "home-intro": `
-                    <div class="text-left max-w-[1400px] w-full mx-auto mb-16 px-4 sm:px-6 lg:px-8">
+                    <div class="text-left max-w-[1400px] w-full mx-auto mb-8 sm:mb-16 px-4 sm:px-6 lg:px-8">
                         <div class="max-w-4xl">
-                            <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Future Building Technology</h2>
-                            <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">We build your homes faster and provide maximum energy savings with SIP technology.</p>
-                            <div class="mt-6 w-20 h-1.5 bg-brand-orange rounded-full"></div>
+                            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4 sm:mb-6 tracking-tight leading-tight">Future Building Technology</h2>
+                            <p class="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed font-medium">We build your homes faster and provide maximum energy savings with SIP technology.</p>
+                            <div class="mt-4 sm:mt-6 w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
                         </div>
                     </div>
                 `,
-                "uretim": "<p class='text-xl break-words'>Information about our production facility.</p>",
-                "galeri": "<p class='text-xl break-words'>Gallery coming soon.</p>",
-                "hakkimizda": "<p class='text-xl break-words'>About Kartech Panel Structures House Systems.</p>"
+                "uretim": "<p class='text-base sm:text-lg md:text-xl break-words'>Information about our production facility.</p>",
+                "galeri": "<p class='text-base sm:text-lg md:text-xl break-words'>Gallery coming soon.</p>",
+                "hakkimizda": "<p class='text-base sm:text-lg md:text-xl break-words'>About Kartech Panel Structures House Systems.</p>"
             },
             footerText: "© 2026 Kartech Panel Structures House Systems. All rights reserved."
         }
