@@ -88,7 +88,7 @@ export const siteConfig = {
             area: 25, rooms: 1,
             pageMenu: "bahce-yapilari", 
             categoryId: "by-kisbahcesi",
-            mainImage: "https://i.pinimg.com/736x/f5/63/fb/f563fbfa62243e86c0f6da8cf840507a.jpg",
+            mainImage: "https://i.pinimg.com/736x/fe/1a/64/fe1a6462fc8e84a9d1429b6900044ba8.jpg",
             gallery: [],
             description: { tr: "Dört mevsim bahçe keyfi.", en: "Enjoy your garden in all seasons." }
         },
@@ -99,7 +99,7 @@ export const siteConfig = {
             area: 40, rooms: 1,
             pageMenu: "garaj-sistemleri", 
             categoryId: "gs-ciftkapali",
-            mainImage: "https://i.pinimg.com/736x/a4/bc/d0/a4bcd06859dd6c323fca0cd3645802a4.jpg",
+            mainImage: "https://i.pinimg.com/1200x/3f/b2/f0/3fb2f0ef390fda1df627ba294679b175.jpg",
             gallery: [],
             description: { tr: "Araçlarınız için güvenli SİP panel garaj.", en: "Secure SIP panel garage for your vehicles." }
         }
