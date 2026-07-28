@@ -367,12 +367,10 @@ function renderHeader() {
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50">
             
             <div class="cursor-pointer h-full flex items-center py-2" onclick="navigate('home')">
-                 <!-- LOGO İÇİN DEV BOYUTLANDIRMA VE KAYDIRMA ANİMASYONU (ŞEFFAF ZEMİN İÇİN mix-blend-multiply eklendi) -->
                  <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-16 sm:h-24 md:h-32 lg:h-40 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left">
             </div>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
-                <!-- SOSYAL MEDYA İKONLARI ARTIK MOBİLDE DE GÖRÜNÜR: 'hidden sm:flex' KALDIRILDI -->
                 <div class="flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
                     <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
                     <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
@@ -397,7 +395,6 @@ function renderHeader() {
         <div id="vg-overlay-bg" onclick="window.closeMenuFromOutside(event)" class="vg-overlay">
             <div class="w-full p-6 sm:p-8 flex justify-end items-center shrink-0">
                 <div class="flex items-center space-x-4 md:space-x-6">
-                    <!-- MOBİL AÇILIR MENÜ İÇİ SOSYAL MEDYA (HER İHTİMALE KARŞI) -->
                     <div class="flex space-x-4 text-white mr-2">
                         <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-2xl transition-colors"><i class="fab fa-instagram"></i></a>
                         <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-2xl transition-colors"><i class="fab fa-facebook-f"></i></a>
