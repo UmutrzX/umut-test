@@ -54,9 +54,21 @@ export const siteConfig = {
                 "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
                 "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg"
             ],
+                    {
+            id: "sade-299", 
+            title: "Umut Projesi",
+            titleEn: "Umut House",
+            area: 79, rooms: 3,  
+            pageMenu: "ev-modelleri", 
+            categoryId: "ev-ahsap", 
+            mainImage: "https://i.pinimg.com/736x/b6/d9/5b/b6d95bd87d683312f44e043a467e8261.jpg",
+            gallery: [
+                "https://i.pinimg.com/1200x/d4/eb/71/d4eb71cfb6803ea5775651286b99c329.jpg",
+                "https://i.pinimg.com/736x/e2/64/d7/e264d7c82c6f258a4ae0216a2d54f533.jpg"
+            ],
             description: {
-                tr: "Kartech Panel kalitesiyle tasarlanmış modern iki katlı dubleks proje.",
-                en: "Modern two-story duplex SIP panel project."
+                tr: "Kartech Panel kalitesiyle tasarlanmış Sade güzel bir köy evi",
+                en: " two-story duplex SIP panel project."
             }
         },
         {
