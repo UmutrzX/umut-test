@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kartech-pwa-v1';
+const CACHE_NAME = 'kartech-pwa-v2'; // Sürümü güncelledik (v2)
 const urlsToCache = [
   './',
   './index.html',
@@ -34,13 +34,14 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Yalnızca GET isteklerini işle
+  // Yalnızca GET isteklerini işle (Performans güncellemesi)
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    fetch(event.request)
-      .then(networkResponse => {
-        // Geçerli bir ağ yanıtı ise önbelleğe al ve döndür
+    caches.match(event.request).then(cachedResponse => {
+      // Stale-while-revalidate stratejisi:
+      // Varsa hemen önbelleği (cache) döndür, ancak arka planda yeni veriyi ağdan çek ve önbelleği güncelle.
+      const fetchPromise = fetch(event.request).then(networkResponse => {
         if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then(cache => {
@@ -48,10 +49,12 @@ self.addEventListener('fetch', event => {
           });
         }
         return networkResponse;
-      })
-      .catch(() => {
-        // İnternet bağlantısı yoksa önbellekten sun
-        return caches.match(event.request);
-      })
+      }).catch(() => {
+         console.log("Offline mode - returning cache if available");
+      });
+
+      // Eğer önbellekte varsa önbelleği ver, yoksa ağı bekle.
+      return cachedResponse || fetchPromise;
+    })
   );
 });
