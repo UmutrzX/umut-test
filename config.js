@@ -6,7 +6,7 @@
 
 export const siteConfig = {
     contact: {
-        logoSrc: "https://pbs.twimg.com/media/HOLR5R6XAAAe8QI?format=png&name=small",
+        logoSrc: "https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small",
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@kartechpanel.com",
@@ -20,7 +20,7 @@ export const siteConfig = {
     homeHero: {
         // ANA SAYFA GÖRSELİ İÇİN ÖNERİ: En kaliteli, net ve keskin görünüm için 
         // 1920x1080 piksel (Full HD) veya 2560x1440 piksel (2K) boyutlarında görsel kullanın.
-        backgroundImage: "https://i.pinimg.com/1200x/bd/20/dd/bd20ddd04e4e1cac3fb9a6b88958749d.jpg",
+        backgroundImage: "https://pbs.twimg.com/media/HOLXzKvXcAAOx2J?format=jpg&name=large",
         slogan: {
             tr: "Lüks ve Minimalizmin Birleşimi",
             en: "Fusion of Luxury and Minimalism"
