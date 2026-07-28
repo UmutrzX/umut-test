@@ -1,0 +1,24 @@
+{
+"name": "Kartech Panel Structures",
+"short_name": "Kartech Panel",
+"description": "Lüks ve Minimalizmin Birleşimi. SİP Panel Teknolojisi.",
+"start_url": "./index.html",
+"display": "standalone",
+"background_color": "#0a0a0a",
+"theme_color": "#f39c12",
+"orientation": "portrait-primary",
+"icons": [
+{
+"src": "https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small",
+"sizes": "192x192",
+"type": "image/png",
+"purpose": "any maskable"
+},
+{
+"src": "https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small",
+"sizes": "512x512",
+"type": "image/png",
+"purpose": "any maskable"
+}
+]
+}
