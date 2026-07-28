@@ -2,7 +2,7 @@ import { siteConfig } from './config.js';
 
 const state = {
     lang: 'tr',       
-    currentView: 'home', // Ana sayfa girişi
+    currentView: 'home', 
     activeCategory: null,     
     sliderInterval: null,
     mobileMenuOpen: false,    
@@ -38,14 +38,12 @@ function updateDocumentTitle(viewOrId) {
 export function navigate(viewOrId, evt = null, keepCategory = false) {
     if (evt) evt.preventDefault(); 
     
-    // İletişim butonundan gelen yönlendirmeyi yönet
     if (viewOrId === 'contact') viewOrId = 'iletisim';
 
     if (state.mobileMenuOpen) window.toggleMobileMenu();
 
     if (state.currentView === viewOrId && !keepCategory && !state.activeCategory) return; 
 
-    // Eğer dışarıdan veya logodan tıklanırsa filtreyi sıfırla, menüden filtrelendiyse koru
     if (!keepCategory) state.activeCategory = null; 
     
     if (state.sliderInterval) { clearInterval(state.sliderInterval); state.sliderInterval = null; }
@@ -126,7 +124,7 @@ window.toggleMobileMenu = function() {
     if(state.mobileMenuOpen) {
         state.openAccordion = null; 
         document.body.classList.add('menu-open');
-        document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('open'));
+        document.querySelectorAll('.accordion-wrapper').forEach(el => el.classList.remove('open'));
         document.querySelectorAll('.accordion-icon').forEach(el => el.classList.remove('rotate-180'));
         if (overlay) overlay.classList.add('active');
     } else {
@@ -137,17 +135,21 @@ window.toggleMobileMenu = function() {
 
 window.toggleAccordion = function(menuId, evt) {
     if (evt) { evt.preventDefault(); evt.stopPropagation(); }
-    const targetContent = document.getElementById(`accordion-${menuId}`);
+    const targetWrapper = document.getElementById(`accordion-wrapper-${menuId}`);
     const targetIcon = document.getElementById(`icon-${menuId}`);
+    
     if (state.openAccordion === menuId) {
         state.openAccordion = null;
-        if (targetContent) targetContent.classList.remove('open');
+        if (targetWrapper) targetWrapper.classList.remove('open');
         if (targetIcon) targetIcon.classList.remove('rotate-180');
     } else {
-        document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('open'));
+        // Hepsini kapat
+        document.querySelectorAll('.accordion-wrapper').forEach(el => el.classList.remove('open'));
         document.querySelectorAll('.accordion-icon').forEach(el => el.classList.remove('rotate-180'));
+        
+        // Sadece seçileni aç
         state.openAccordion = menuId;
-        if (targetContent) targetContent.classList.add('open');
+        if (targetWrapper) targetWrapper.classList.add('open');
         if (targetIcon) targetIcon.classList.add('rotate-180');
     }
 };
@@ -236,7 +238,6 @@ window.submitTestForm = function(evt, form) {
 function renderHeader() {
     const menuItems = ['home', 'sip-panel', 'ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri', 'uretim', 'galeri', 'hakkimizda'];
 
-    // Menünün sabit yüksekliğini iptal edip tamamen flex'e bırakıyoruz
     DOM.header.classList.remove('h-[80px]');
 
     const overlayMenuHTML = menuItems.map(id => {
@@ -248,12 +249,14 @@ function renderHeader() {
             return `
             <div class="mb-3 md:mb-5">
                <div class="flex items-center justify-between cursor-pointer group w-full max-w-sm" onclick="window.toggleAccordion('${id}', event)">
-                   <span class="text-2xl md:text-4xl font-semibold text-gray-300 group-hover:text-white transition">${label}</span>
-                   <i id="icon-${id}" class="accordion-icon fas fa-chevron-down text-base md:text-xl text-gray-500 group-hover:text-white transition transform ${isOpen ? 'rotate-180' : ''}"></i>
+                   <span class="text-2xl md:text-4xl font-semibold text-gray-300 group-hover:text-white transition-colors duration-300">${label}</span>
+                   <i id="icon-${id}" class="accordion-icon fas fa-chevron-down text-base md:text-xl text-gray-500 group-hover:text-white transition-transform duration-400 transform ${isOpen ? 'rotate-180' : ''}"></i>
                </div>
-               <div id="accordion-${id}" class="accordion-content ${isOpen ? 'open' : ''} pl-4 md:pl-6 border-l border-gray-700 ml-2 flex flex-col">
-                   <a href="#" class="text-base md:text-xl text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-1.5" onclick="window.filterAndNavigate('${id}', 'all', event)">${t().allProjectsTitle}</a>
-                   ${categories.map(cat => `<a href="#" class="text-base md:text-xl text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-1.5" onclick="window.filterAndNavigate('${id}', '${cat.id}', event)">${cat[state.lang]}</a>`).join('')}
+               <div id="accordion-wrapper-${id}" class="accordion-wrapper ${isOpen ? 'open' : ''} ml-2">
+                   <div class="accordion-inner border-l border-gray-700 pl-4 md:pl-6 mt-4 flex flex-col space-y-3">
+                       <a href="#" class="text-base md:text-xl text-gray-400 hover:text-brand-orange hover:translate-x-2 transition-all duration-300 cursor-pointer font-medium block" onclick="window.filterAndNavigate('${id}', 'all', event)">${t().allProjectsTitle}</a>
+                       ${categories.map(cat => `<a href="#" class="text-base md:text-xl text-gray-400 hover:text-brand-orange hover:translate-x-2 transition-all duration-300 cursor-pointer font-medium block" onclick="window.filterAndNavigate('${id}', '${cat.id}', event)">${cat[state.lang]}</a>`).join('')}
+                   </div>
                </div>
             </div>`;
         } else {
@@ -261,30 +264,25 @@ function renderHeader() {
         }
     }).join('');
 
-    // HİZALAMA VE SİMETRİ İÇİN KAPSAYICI: max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8
+    // SİMETRİ İÇİN HİZALAMA: Logo object-left ile en sola yaslandı
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50">
-            <!-- 2 KAT BÜYÜTÜLMÜŞ DİNAMİK LOGO -->
-            <div class="cursor-pointer flex items-center py-2 md:py-4" onclick="navigate('home')">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-16 sm:h-24 md:h-32 lg:h-40 w-auto object-contain transition-all duration-500 mix-blend-multiply transform origin-left">
+            <div class="cursor-pointer flex items-center py-2 md:py-4 pl-0" onclick="navigate('home')">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-20 sm:h-28 md:h-40 lg:h-48 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left">
             </div>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
-                
-                <!-- MOBİLDE DE GÖRÜNEN SOSYAL İKONLAR (hidden kaldırıldı) -->
                 <div class="flex space-x-3 text-white social-icons mr-2 sm:mr-4 transition-colors duration-300">
                     <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
                     <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
                 </div>
                 
-                <!-- DİL SEÇİMİ (MASAÜSTÜ ANA MENÜ) -->
                 <div class="hidden md:flex items-center space-x-2 font-bold text-sm lg:text-base mr-2 border-r border-gray-500/30 pr-4">
                     <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'tr' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'}" onclick="changeLanguage('tr')">TR</span>
                     <span class="text-gray-400">|</span>
                     <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'en' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'}" onclick="changeLanguage('en')">EN</span>
                 </div>
 
-                <!-- BİZE ULAŞIN BUTONU -->
                 <button onclick="navigate('iletisim')" class="hidden md:block bg-brand-orange hover:bg-orange-500 text-white font-semibold py-2.5 px-6 sm:px-8 rounded-full shadow-md transition-all btn-press text-xs sm:text-sm whitespace-nowrap">
                     ${t().consultBtn}
                 </button>
@@ -331,16 +329,15 @@ function handleScroll() {
     const langTexts = header.querySelectorAll('.header-text-lang');
     const logo = document.getElementById('header-logo');
     
-    // Ana sayfa veya SİP panel sayfalarındaysak kahraman görsel (Hero) var demektir, yazı rengini beyazdan başlat
     const hasHero = ['home'].includes(state.currentView);
 
     if (window.scrollY > 50) {
         header.classList.remove('bg-transparent');
         header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
         
-        // Logoyu aşağı inildiğinde küçült (Scroll-to-Shrink Animasyonu)
+        // Akıllı Küçülme (Scroll-to-shrink)
         if(logo) {
-            logo.classList.remove('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
+            logo.classList.remove('h-20', 'sm:h-28', 'md:h-40', 'lg:h-48');
             logo.classList.add('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
         }
 
@@ -354,9 +351,9 @@ function handleScroll() {
         header.classList.add('bg-transparent');
         header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
         
-        // Logoyu en tepedeyken kocaman yap (Simetrik ve devasa)
+        // Başlangıç Devasa Logo
         if(logo) {
-            logo.classList.add('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
+            logo.classList.add('h-20', 'sm:h-28', 'md:h-40', 'lg:h-48');
             logo.classList.remove('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
         }
 
@@ -395,16 +392,14 @@ function renderHomePage() {
         </div>
     `).join('');
 
-    // SİMETRİ İÇİN Hero Content Kapsayıcısı: max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8
     DOM.content.innerHTML = `
         <div class="relative w-full h-[100vh] flex overflow-hidden">
             <div class="absolute inset-0 z-0"><img src="${siteConfig.homeHero.backgroundImage}" class="w-full h-full object-cover"></div>
             
-            <!-- Karartılmış arka plan efekti -->
             <div class="absolute top-0 left-0 bottom-0 w-full md:w-[85%] lg:w-[65%] bg-[#1a201c]/40 backdrop-blur-sm z-10"></div>
             
             <div class="relative z-20 w-full h-full flex flex-col justify-center">
-                <!-- Header ile birebir aynı boşluk (px-4 sm:px-6 lg:px-8) ve hizalama -->
+                <!-- LOGO İLE BİREBİR HİZALI METİN: px-4 sm:px-6 lg:px-8 kullanılarak kusursuz simetri sağlandı -->
                 <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-20">
                     <div class="max-w-2xl lg:max-w-3xl transform">
                         <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-tight drop-shadow-lg">${siteConfig.homeHero.slogan[state.lang]}</h1>
@@ -650,7 +645,7 @@ function renderProjectDetail(projectId) {
 
     const thumbnailsHTML = fullGallery.map((img, index) => `
         <div class="w-16 sm:w-20 md:w-24 lg:w-full aspect-square shrink-0 overflow-hidden rounded-lg md:rounded-xl border-2 md:border-4 border-white shadow-md hover:border-brand-orange cursor-pointer btn-press" onclick="window.setGalleryImage(${index})">
-             <img src="${img}" class="w-full h-full object-cover opacity-80 hover:opacity-100">
+             <img src="${img}" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
         </div>
     `).join('');
 
@@ -663,7 +658,7 @@ function renderProjectDetail(projectId) {
                         <i class="fas fa-arrow-right text-[8px] md:text-[10px] text-gray-300 mt-0.5"></i>
                         <span class="text-gray-900">${prjTitle}</span>
                     </div>
-                    <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">${prjTitle}</h1>
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-gray-900 leading-tight break-words">${prjTitle}</h1>
                 </div>
                 <button onclick="navigate('${project.pageMenu}')" class="w-full md:w-auto bg-gray-900 text-white px-4 py-2.5 sm:px-5 sm:py-3 md:px-6 rounded-full font-semibold hover:bg-brand-orange transition-colors flex justify-center items-center text-xs sm:text-sm md:text-base"><i class="fas fa-arrow-left mr-2"></i> ${t().backBtn}</button>
             </div>
@@ -695,7 +690,7 @@ function renderProjectDetail(projectId) {
                         <form class="space-y-2 sm:space-y-3 md:space-y-4" onsubmit="window.submitTestForm(event, this)">
                             <input type="text" placeholder="${t().formName}" required class="w-full px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange text-xs sm:text-sm md:text-base">
                             <input type="tel" placeholder="${t().formPhone}" required oninput="window.formatPhone(this)" class="w-full px-3 py-2 sm:px-4 sm:py-3 md:px-5 md:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange text-xs sm:text-sm md:text-base">
-                            <button type="submit" class="w-full bg-brand-orange text-white font-bold py-2.5 sm:py-3 md:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-1 sm:mt-2 text-xs sm:text-sm md:text-base">${t().submitBtn}</button>
+                            <button type="submit" class="w-full bg-brand-orange text-white font-bold py-2.5 sm:py-3 md:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-1 sm:mt-2 text-xs sm:text-sm md:text-base btn-press">${t().submitBtn}</button>
                         </form>
                     </div>
                 </div>
@@ -712,7 +707,7 @@ function renderProjectDetail(projectId) {
 function renderFooter() {
     DOM.footer.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8">
-            <div class="w-48 sm:w-56 md:w-64 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 mix-blend-multiply" onclick="navigate('home')">
+            <div class="w-48 sm:w-56 md:w-64 lg:w-72 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 mix-blend-multiply btn-press" onclick="navigate('home')">
                 <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-full h-auto object-contain mix-blend-multiply">
             </div>
             <p class="text-xs sm:text-sm text-gray-500 font-medium tracking-wide text-center px-4">${t().footerText}</p>
