@@ -38,7 +38,7 @@
         .btn-press { transition: all 0.15s ease; cursor: pointer; }
         .btn-press:active { transform: scale(0.92); }
         
-        /* Floating Buttons - MOBİL SİMETRİSİ DÜZELTİLDİ */
+        /* Floating Buttons - MOBİL SİMETRİSİ MÜKEMMELLEŞTİRİLDİ */
         .floating-btn {
             position: fixed; z-index: 50;
             width: 55px; height: 55px; border-radius: 50%;
@@ -49,7 +49,7 @@
         .floating-btn:hover { transform: scale(1.1) rotate(5deg); }
         .floating-btn:active { transform: scale(0.9); }
         
-        /* MOBİLDE KUSURSUZ SİMETRİ (20px Kenar, 20px Alt Boşluk) */
+        /* HER İKİ BUTON DA EŞİT UZAKLIKTA (KUSURSUZ SİMETRİ) */
         .btn-call { left: 20px; bottom: 20px; background-color: #f39c12; }
         .btn-chat { right: 20px; bottom: 20px; background-color: #25D366; z-index: 51; }
         
@@ -58,8 +58,9 @@
             .btn-chat { bottom: 30px; right: 30px; }
         }
 
+        /* YUKARI ÇIKMA BUTONU WHATSAPP'IN ÜSTÜNE YERLEŞTİRİLDİ */
         .btn-scroll-top { 
-            right: 20px; bottom: 90px; /* WhatsApp Butonuna Binmesin Diye Yukarı Alındı */
+            right: 20px; bottom: 90px; 
             background-color: #0a0a0a; opacity: 0; visibility: hidden; 
             transform: translateY(20px); width: 45px; height: 45px; font-size: 18px; z-index: 50; 
         }
@@ -135,17 +136,31 @@
         }
         .vg-overlay.active { opacity: 1; visibility: visible; }
 
-        .accordion-content {
-            max-height: 0; overflow: hidden; opacity: 0;
-            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out;
+        /* YENİ NESİL, PROFESYONEL ACCORDION EFEKTİ (CSS GRID TRANSITION) */
+        .accordion-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .accordion-content.open { max-height: 1000px; opacity: 1; margin-top: 1rem; }
+        .accordion-wrapper.open {
+            grid-template-rows: 1fr;
+        }
+        .accordion-inner {
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-15px);
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .accordion-wrapper.open .accordion-inner {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.4s ease 0.1s, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.1s;
+        }
     </style>
 </head>
 
 <body class="antialiased flex flex-col min-h-screen">
 
-    <!-- Header, script aracılığıyla oluşturulacak -->
     <header id="main-header" class="bg-transparent fixed top-0 w-full z-40 transition-all duration-300"></header>
 
     <main id="app-content" class="flex-grow w-full page-fade-in bg-white"></main>
@@ -155,17 +170,18 @@
     <!-- Sabit iletişim balonları -->
     <a id="btn-call-floating" href="tel:+905078807607" class="floating-btn btn-call btn-press" title="Bizi Arayın"><i class="fas fa-phone-alt"></i></a>
     <a id="btn-chat-floating" href="https://wa.me/905078807607" target="_blank" class="floating-btn btn-chat btn-press" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    
     <button id="btn-scroll-top" class="floating-btn btn-scroll-top btn-press transition-all duration-300" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Yukarı Çık">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <!-- Bildirim ve Lightbox sistemleri -->
     <div id="alert-modal" class="modal-overlay">
-        <div class="bg-white p-12 rounded-sm shadow-2xl max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300">
-            <i class="fas fa-check-circle text-7xl text-brand-green mb-6"></i>
-            <h3 id="modal-title" class="text-3xl font-black text-gray-900 mb-2 tracking-tight">Harika!</h3>
-            <p id="modal-message" class="text-gray-500 mb-8 text-lg leading-relaxed">Talebiniz başarıyla alındı. Müşteri temsilcimiz sizinle en kısa sürede iletişime geçecektir.</p>
-            <button onclick="document.getElementById('alert-modal').classList.remove('active')" class="btn-press bg-brand-green text-white px-8 py-4 rounded-full font-bold hover:bg-green-600 w-full text-lg shadow-md transition-colors">Tamam</button>
+        <div class="bg-white p-8 sm:p-12 rounded-sm shadow-2xl max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300">
+            <i class="fas fa-check-circle text-6xl sm:text-7xl text-brand-green mb-4 sm:mb-6"></i>
+            <h3 id="modal-title" class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 tracking-tight">Harika!</h3>
+            <p id="modal-message" class="text-gray-500 mb-6 sm:mb-8 text-base sm:text-lg leading-relaxed">Talebiniz başarıyla alındı. Müşteri temsilcimiz sizinle en kısa sürede iletişime geçecektir.</p>
+            <button onclick="document.getElementById('alert-modal').classList.remove('active')" class="btn-press bg-brand-green text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-bold hover:bg-green-600 w-full text-base sm:text-lg shadow-md transition-colors">Tamam</button>
         </div>
     </div>
 
