@@ -1,220 +1,202 @@
-export const siteConfig = {
-    contact: {
-        logoSrc: "https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small",
-        address: "Sakarya, Türkiye",
-        phone: "+90 507 880 76 07", 
-        email: "info@kartechpanel.com",
-        social: { 
-            facebook: "#", 
-            youtube: "#", 
-            instagram: "https://www.instagram.com/muhammet.tutkun/" 
-        }
-    },
-
-    homeHero: {
-        backgroundImage: "https://pbs.twimg.com/media/HOLXzKvXcAAOx2J?format=jpg&name=large",
-        slogan: {
-            tr: "Lüks ve Minimalizmin Birleşimi",
-            en: "Fusion of Luxury and Minimalism"
-        },
-        subSlogan: {
-            tr: "SİP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.",
-            en: "Reach your dream structure quickly with SIP Panel technology."
-        }
-    },
-
-    categories: {
-        "ev-modelleri": [
-            { id: "ev-standart", tr: "Standart Evler", en: "Standard Houses" },
-            { id: "ev-ahsap", tr: "Ahşap Kaplamalı Evler", en: "Wooden Clad Houses" },
-            { id: "ev-luks", tr: "Lüks Villalar", en: "Luxury Villas" }
-        ],
-        "bahce-yapilari": [
-            { id: "by-kamelya", tr: "Kamelya & Çardak", en: "Gazebos & Pergolas" },
-            { id: "by-kisbahcesi", tr: "Kış Bahçeleri", en: "Winter Gardens" },
-            { id: "by-depo", tr: "Bahçe Depoları", en: "Garden Sheds" }
-        ],
-        "garaj-sistemleri": [
-            { id: "gs-tekacik", tr: "Tek Araçlık Açık Garaj", en: "Single Car Open Garage" },
-            { id: "gs-ciftkapali", tr: "Çift Araçlık Kapalı Garaj", en: "Double Car Closed Garage" },
-            { id: "gs-atolye", tr: "Atölyeli Garajlar", en: "Garages with Workshop" }
-        ]
-    },
-
-    projects: [
-        {
-            id: "dubleks-298", 
-            title: "Zifin House",
-            titleEn: "Duplex Project - 298",
-            area: 61, rooms: 3,  
-            pageMenu: "ev-modelleri", 
-            categoryId: "ev-luks", 
-            mainImage: "https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg",
-            gallery: [
-                "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
-                "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg"
-            ],
-        {
-            id: "calanthe-145",
-            title: "Calanthe Modeli",
-            titleEn: "Calanthe Model - 145",
-            area: 54, rooms: 4,
-            pageMenu: "ev-modelleri", 
-            categoryId: "ev-standart",
-            mainImage: "https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg",
-            gallery: ["https://i.pinimg.com/1200x/be/d6/bf/bed6bfbffcea556193c1a2b9c7ce4b92.jpg"],
-            description: {
-                tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.",
-                en: "A stylish and useful house design."
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Kartech Panel Structures House Systems</title>
+    <meta id="meta-desc" name="description" content="Lüks ve Minimalizmin Birleşimi. SİP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.">
+    
+    <!-- PWA Meta Etiketleri -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Kartech Panel">
+    <link rel="apple-touch-icon" href="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
+    <link rel="icon" type="image/png" href="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            orange: '#f39c12', dark: '#0a0a0a', light: '#f8f9fa', gray: '#e5e7eb', green: '#2ecc71' 
+                        }
+                    }
+                }
             }
-        },
-        {
-            id: "kis-bahcesi-1",
-            title: "Premium Kış Bahçesi",
-            titleEn: "Premium Winter Garden",
-            area: 25, rooms: 1,
-            pageMenu: "bahce-yapilari", 
-            categoryId: "by-kisbahcesi",
-            mainImage: "https://i.pinimg.com/736x/fe/1a/64/fe1a6462fc8e84a9d1429b6900044ba8.jpg",
-            gallery: [],
-            description: { tr: "Dört mevsim bahçe keyfi.", en: "Enjoy your garden in all seasons." }
-        },
-        {
-            id: "garaj-1",
-            title: "Çift Araçlık Garaj",
-            titleEn: "Double Car Garage",
-            area: 40, rooms: 1,
-            pageMenu: "garaj-sistemleri", 
-            categoryId: "gs-ciftkapali",
-            mainImage: "https://i.pinimg.com/1200x/3f/b2/f0/3fb2f0ef390fda1df627ba294679b175.jpg",
-            gallery: [],
-            description: { tr: "Araçlarınız için güvenli SİP panel garaj.", en: "Secure SIP panel garage for your vehicles." }
         }
-    ],
+    </script>
 
-    i18n: {
-        tr: {
-            menu: {
-                "home": "Ana Sayfa",
-                "sip-panel": "Sip Panel", 
-                "ev-modelleri": "Ev Modelleri", 
-                "bahce-yapilari": "Bahçe Yapıları", 
-                "garaj-sistemleri": "Garaj Sistemleri", 
-                "uretim": "Üretim", 
-                "galeri": "Galeri", 
-                "hakkimizda": "Hakkımızda"
-            },
-            
-            consultBtn: "Bize Ulaşın",
-            allProjectsTitle: "Tüm Seçenekler",
-            categoryTitle: "Kategoriler",
-            sqm: "m²",
-            totalArea: "Toplam alan",
-            roomCount: "Oda sayısı",
-            getQuoteTitle: "Hemen Fiyat Alın",
-            formName: "İsminiz",
-            formPhone: "Telefon (Örn: 507 880 7607)",
-            submitBtn: "Gönder",
-            backBtn: "Geri Dön",
-            projectDetailsTitle: "Detaylar",
-            prevProject: "Önceki Proje",
-            nextProject: "Sonraki Proje",
-            formErrorName: "Lütfen isminizi giriniz.",
-            formErrorPhone: "Lütfen geçerli bir telefon numarası giriniz (10 hane).",
-            
-            pageTitles: {
-                "home": "Kartech Panel",
-                "iletisim": "Bize Ulaşın",
-                "uretim": "Üretim Tesisimiz",
-                "galeri": "Fotoğraf Galerisi",
-                "hakkimizda": "Hakkımızda",
-                "sip-panel": "Neden SİP Panel?",
-                "ev-modelleri": "Ev Modellerimiz",
-                "bahce-yapilari": "Bahçe Yapılarımız",
-                "garaj-sistemleri": "Garaj Sistemlerimiz"
-            },
-            
-            sipPanelData: {
-                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
-                introTitle: "Geleceğin Yapı Teknolojisi: SİP Panel",
-                introText: "SİP (Yapısal Yalıtımlı Panel) teknolojisi, yüksek yoğunluklu yalıtım malzemesinin (EPS) iki yapısal levha (OSB) arasına preslenmesiyle oluşturulan, günümüzün en gelişmiş ve enerji tasarruflu yapı sistemidir. Betonarmeye göre çok daha hafif, esnek ve depreme karşı dayanıklıdır.",
-                advantagesTitle: "SİP Panelin Avantajları",
-                advantages: [
-                    { icon: "fa-bolt", title: "Yüksek Enerji Tasarrufu", desc: "Mükemmel ısı yalıtımı sayesinde ısıtma ve soğutma giderlerinde %60'a varan tasarruf sağlar." },
-                    { icon: "fa-stopwatch", title: "Hızlı Kurulum", desc: "Fabrikada milimetrik hassasiyetle üretilen paneller, şantiyede haftalar yerine günler içinde birleştirilir." },
-                    { icon: "fa-shield-alt", title: "Deprem Güvenliği", desc: "Esnek ve hafif yapısı sayesinde deprem enerjisini emer, yıkılma riskini minimuma indirir." },
-                    { icon: "fa-leaf", title: "Çevre Dostu", desc: "Üretim sürecinde çok daha az karbon ayak izi bırakır ve malzemeler geri dönüştürülebilirdir." }
-                ],
-                specsTitle: "Teknik Özellikler ve Performans",
-                specsDesc: "Projelerimizde kullandığımız SİP paneller uluslararası standartlarda üretilmekte olup zorlu iklim koşullarına karşı test edilmiştir.",
-                technicalSpecs: [
-                    { label: "Panel Kalınlıkları (Dış Duvar)", value: "114 mm / 164 mm / 214 mm" },
-                    { label: "İzolasyon Özü (Core)", value: "16-30 kg/m³ Yoğunluklu EPS (Genleştirilmiş Polistiren)" },
-                    { label: "Dış ve İç Yüzey (Kaplama)", value: "11 mm - 15 mm OSB-3 (Neme Dayanıklı)" },
-                    { label: "Isı İletim Katsayısı (U-Değeri)", value: "0.14 - 0.20 W/m²K (Mükemmel Yalıtım)" },
-                    { label: "Yangın Dayanımı", value: "B-s1, d0 (Alev Yürütmez Sınıfı)" },
-                    { label: "Ses Yalıtımı (Akustik)", value: "40 dB - 45 dB Ses İndirgeme İndeksi" }
-                ]
-            },
-
-            pageContents: {
-                "uretim": "Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz.",
-                "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.",
-                "hakkimizda": "Yılların verdiği tecrübe ile yenilikçi yapı teknolojilerini Türkiye ile buluşturuyoruz."
-            },
-            footerText: "© 2026 Kartech Panel Structures House Systems. Tüm hakları saklıdır."
-        },
-        en: {
-            menu: {
-                "home": "Home",
-                "sip-panel": "Sip Panel", 
-                "ev-modelleri": "House Models", 
-                "bahce-yapilari": "Garden Structures", 
-                "garaj-sistemleri": "Garage Systems", 
-                "uretim": "Production", 
-                "galeri": "Gallery", 
-                "hakkimizda": "About Us"
-            },
-            consultBtn: "Contact Us", categoryTitle: "Categories",
-            allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
-            getQuoteTitle: "Get a Quote", formName: "Your Name", formPhone: "Phone",
-            submitBtn: "Submit", backBtn: "Go Back", projectDetailsTitle: "Details",
-            prevProject: "Previous Project", nextProject: "Next Project",
-            formErrorName: "Please enter your name.", formErrorPhone: "Please enter a valid phone number.",
-            pageTitles: {
-                "home": "Kartech Panel", "iletisim": "Contact Us",
-                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us",
-                "sip-panel": "Why SIP Panel?", "ev-modelleri": "House Models", 
-                "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
-            },
-            sipPanelData: {
-                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
-                introTitle: "Building Technology of the Future",
-                introText: "Structural Insulated Panels (SIPs) are a high-performance building system...",
-                advantagesTitle: "Advantages of SIPs",
-                advantages: [
-                    { icon: "fa-bolt", title: "Energy Efficient", desc: "Reduces energy costs by up to 60%." },
-                    { icon: "fa-stopwatch", title: "Fast Construction", desc: "Built in days, not weeks." },
-                    { icon: "fa-shield-alt", title: "Earthquake Safety", desc: "Flexible and resistant structure." },
-                    { icon: "fa-leaf", title: "Eco-Friendly", desc: "Low carbon footprint." }
-                ],
-                specsTitle: "Technical Specifications",
-                specsDesc: "Tested for extreme weather conditions.",
-                technicalSpecs: [
-                    { label: "Panel Thickness", value: "114 mm / 164 mm / 214 mm" },
-                    { label: "Core Material", value: "16-30 kg/m³ EPS" },
-                    { label: "Surfaces", value: "11 mm - 15 mm OSB-3" },
-                    { label: "U-Value", value: "0.14 - 0.20 W/m²K" },
-                    { label: "Fire Resistance", value: "B-s1, d0" },
-                    { label: "Sound Insulation", value: "40 dB - 45 dB" }
-                ]
-            },
-            pageContents: {
-                "uretim": "Information about our production facility.",
-                "galeri": "Gallery coming soon.",
-                "hakkimizda": "About Kartech Panel Structures House Systems."
-            },
-            footerText: "© 2026 Kartech Panel Structures House Systems. All rights reserved."
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #333; overflow-x: hidden; }
+        body.menu-open { overflow: hidden; height: 100vh; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .break-words { overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; }
+        
+        .project-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .project-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        
+        .btn-press { transition: all 0.15s ease; cursor: pointer; }
+        .btn-press:active { transform: scale(0.92); }
+        
+        .floating-btn {
+            position: fixed; z-index: 50;
+            width: 55px; height: 55px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 24px; box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s;
         }
-    }
-};
+        .floating-btn:hover { transform: scale(1.1) rotate(5deg); }
+        .floating-btn:active { transform: scale(0.9); }
+        
+        .btn-call { left: 20px; bottom: 20px; background-color: #f39c12; }
+        .btn-chat { right: 20px; bottom: 20px; background-color: #25D366; z-index: 51; }
+        
+        @media (min-width: 768px) {
+            .btn-call { bottom: 30px; left: 30px; }
+            .btn-chat { bottom: 30px; right: 30px; }
+        }
+
+        .btn-scroll-top { 
+            right: 20px; bottom: 90px; 
+            background-color: #0a0a0a; opacity: 0; visibility: hidden; 
+            transform: translateY(20px); width: 45px; height: 45px; font-size: 18px; z-index: 50; 
+        }
+        @media (min-width: 768px) { .btn-scroll-top { right: 30px; bottom: 100px; width: 50px; height: 50px;} }
+        .btn-scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .btn-scroll-top:hover { background-color: #2ecc71; }
+
+        #app-content { transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; }
+        .page-fade-out { opacity: 0; transform: translateY(20px); }
+        .page-fade-in { opacity: 1; transform: translateY(0); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8); display: none;
+            align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px);
+        }
+        .modal-overlay.active { display: flex; }
+
+        #toast-message {
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: #0a0a0a; color: white; padding: 16px 32px;
+            border-radius: 50px; font-weight: 600; font-size: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
+            opacity: 0; z-index: 1100; pointer-events: none;
+        }
+        #toast-message.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        #lightbox-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease; backdrop-filter: blur(10px);
+        }
+        #lightbox-overlay.active { opacity: 1; visibility: visible; }
+        #lightbox-img {
+            max-width: 95vw; max-height: 90vh; object-fit: contain;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #lightbox-overlay.active #lightbox-img { transform: scale(1); }
+        
+        .lightbox-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,255,255,0.1); color: white; width: 60px; height: 60px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 24px; cursor: pointer; transition: all 0.2s ease;
+        }
+        .lightbox-btn:hover { background: #2ecc71; scale: 1.1; border: none; }
+        .lightbox-btn:active { scale: 0.9; }
+        #lightbox-prev { left: 20px; }
+        #lightbox-next { right: 20px; }
+        #lightbox-close {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255,255,255,0.1); color: white; width: 50px; height: 50px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; transition: all 0.2s ease;
+        }
+        #lightbox-close:hover { background: #e74c3c; transform: rotate(90deg); }
+        .lightbox-counter {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            color: white; font-size: 15px; font-weight: 600; letter-spacing: 1px;
+            background: rgba(0,0,0,0.7); padding: 8px 24px; border-radius: 30px;
+        }
+
+        .vg-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #0a0a0a; z-index: 100; opacity: 0; visibility: hidden;
+            transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+            display: flex; flex-direction: column; overflow-y: auto; 
+        }
+        .vg-overlay.active { opacity: 1; visibility: visible; }
+
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+            opacity: 0;
+            overflow: hidden; 
+        }
+        .accordion-content.open { grid-template-rows: 1fr; opacity: 1; margin-top: 0.5rem; }
+        .accordion-content > div { overflow: hidden; }
+    </style>
+</head>
+
+<body class="antialiased flex flex-col min-h-screen">
+
+    <header id="main-header" class="bg-transparent fixed top-0 w-full z-40 transition-all duration-300"></header>
+    <main id="app-content" class="flex-grow w-full page-fade-in bg-white"></main>
+    <footer id="main-footer" class="bg-[#0a0a0a] text-white mt-auto"></footer>
+
+    <!-- Sabit iletişim balonları (Erişilebilirlik için aria-label eklendi) -->
+    <a id="btn-call-floating" href="tel:+905078807607" class="floating-btn btn-call btn-press" aria-label="Bizi Arayın" title="Bizi Arayın"><i class="fas fa-phone-alt"></i></a>
+    <a id="btn-chat-floating" href="https://wa.me/905078807607" target="_blank" class="floating-btn btn-chat btn-press" aria-label="WhatsApp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    
+    <button id="btn-scroll-top" class="floating-btn btn-scroll-top btn-press transition-all duration-300" aria-label="Yukarı Çık" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Yukarı Çık">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <div id="alert-modal" class="modal-overlay">
+        <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300">
+            <i class="fas fa-check-circle text-6xl sm:text-7xl text-brand-green mb-4 sm:mb-6"></i>
+            <h3 id="modal-title" class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 tracking-tight">Harika!</h3>
+            <p id="modal-message" class="text-gray-500 mb-6 sm:mb-8 text-base sm:text-lg leading-relaxed">Talebiniz başarıyla alındı. Müşteri temsilcimiz sizinle en kısa sürede iletişime geçecektir.</p>
+            <button onclick="document.getElementById('alert-modal').classList.remove('active')" class="btn-press bg-brand-green text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-bold hover:bg-green-600 w-full text-base sm:text-lg shadow-md transition-colors">Tamam</button>
+        </div>
+    </div>
+
+    <div id="toast-message"><i class="fas fa-info-circle mr-2 text-brand-green"></i>İşlem başarılı</div>
+
+    <div id="lightbox-overlay">
+        <button id="lightbox-close" aria-label="Kapat" class="btn-press" onclick="window.closeLightbox()"><i class="fas fa-times"></i></button>
+        <button id="lightbox-prev" aria-label="Önceki" class="lightbox-btn btn-press" onclick="window.changeLightboxImage(-1)"><i class="fas fa-chevron-left"></i></button>
+        <img id="lightbox-img" src="" alt="Tam Ekran Görsel" loading="lazy">
+        <button id="lightbox-next" aria-label="Sonraki" class="lightbox-btn btn-press" onclick="window.changeLightboxImage(1)"><i class="fas fa-chevron-right"></i></button>
+        <div id="lightbox-counter" class="lightbox-counter">1 / 1</div>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => console.log('ServiceWorker kaydı başarılı:', registration.scope))
+                    .catch(error => console.error('ServiceWorker kaydı başarısız:', error));
+            });
+        }
+    </script>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
