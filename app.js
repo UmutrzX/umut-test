@@ -47,19 +47,13 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
     if (evt) evt.preventDefault(); 
     
     if (state.mobileMenuOpen) window.toggleMobileMenu();
-
     if (state.currentView === viewOrId && !keepCategory && !state.activeCategory) return; 
-
     if (!keepCategory) state.activeCategory = null; 
-    
     if (state.sliderInterval) { clearInterval(state.sliderInterval); state.sliderInterval = null; }
 
     state.currentView = viewOrId;
     
-    // Hash Routing
-    if (!fromHash) {
-        window.history.pushState(null, '', '#' + viewOrId);
-    }
+    if (!fromHash) window.history.pushState(null, '', '#' + viewOrId);
     
     DOM.content.classList.remove('page-fade-in');
     DOM.content.classList.add('page-fade-out');
@@ -70,33 +64,23 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
         window.scrollTo({ top: 0, behavior: 'smooth' }); 
         
         if (viewOrId === 'home') {
-            updateMetaTags(viewOrId);
-            renderHomePage();
+            updateMetaTags(viewOrId); renderHomePage();
         } else if (viewOrId === 'sip-panel') {
-            updateMetaTags(viewOrId);
-            renderSipPanelPage();
+            updateMetaTags(viewOrId); renderSipPanelPage();
         } else if (viewOrId === 'iletisim') {
-            updateMetaTags(viewOrId);
-            renderContactPage();
+            updateMetaTags(viewOrId); renderContactPage();
         } else if (['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(viewOrId)) {
-            updateMetaTags(viewOrId);
-            renderProjectsPage(viewOrId);
+            updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
         } else if (['uretim', 'galeri', 'hakkimizda'].includes(viewOrId)) {
-            updateMetaTags(viewOrId);
-            renderGenericPage(viewOrId);
+            updateMetaTags(viewOrId); renderGenericPage(viewOrId);
         } else {
             const project = siteConfig.projects.find(p => p.id === viewOrId);
-            if (project) {
-                updateMetaTags(viewOrId, project);
-                renderProjectDetail(viewOrId);
-            } else {
-                navigate('home'); 
-            }
+            if (project) { updateMetaTags(viewOrId, project); renderProjectDetail(viewOrId); }
+            else { navigate('home'); }
         }
 
         DOM.content.classList.remove('page-fade-out');
         DOM.content.classList.add('page-fade-in');
-        
         window.dispatchEvent(new Event('scroll'));
     }, 350); 
 }
@@ -171,7 +155,6 @@ window.toggleAccordion = function(menuId, evt) {
     } else {
         document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('open'));
         document.querySelectorAll('.accordion-icon').forEach(el => el.classList.remove('rotate-180'));
-        
         state.openAccordion = menuId;
         if (targetContent) targetContent.classList.add('open');
         if (targetIcon) targetIcon.classList.add('rotate-180');
@@ -194,12 +177,10 @@ window.changeMainImage = function(index) {
     const container = document.getElementById('main-image-container');
     if(!container) return;
     
-    container.style.opacity = 0; 
-    container.style.transform = 'scale(0.95)';
-    
+    container.style.opacity = 0; container.style.transform = 'scale(0.95)';
     setTimeout(() => { 
         if(media.type === 'image') {
-            container.innerHTML = `<img id="detail-main-image" src="${media.url}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 hover:scale-105 pointer-events-auto">
+            container.innerHTML = `<img id="detail-main-image" src="${media.url}" alt="Project details" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 hover:scale-105 pointer-events-auto" loading="lazy">
             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
             <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur text-gray-900 px-4 sm:px-6 py-2 rounded-full font-bold text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-400 shadow-xl flex items-center pointer-events-none whitespace-nowrap">
                 <i class="fas fa-expand mr-2 text-brand-orange"></i> Tam Ekran
@@ -207,8 +188,7 @@ window.changeMainImage = function(index) {
         } else {
             container.innerHTML = `<iframe src="${media.embed}" class="absolute inset-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
         }
-        container.style.opacity = 1; 
-        container.style.transform = 'scale(1)';
+        container.style.opacity = 1; container.style.transform = 'scale(1)';
     }, 300); 
 };
 
@@ -231,7 +211,6 @@ window.openLightbox = function(startIndex) {
     
     let actualMedia = state.lightboxImages[startIndex];
     if(actualMedia.type !== 'image') return;
-    
     let newIndex = imagesOnly.findIndex(m => m.url === actualMedia.url);
 
     const overlay = document.getElementById('lightbox-overlay');
@@ -287,7 +266,6 @@ function showToast(message) {
 window.formatPhone = function(input) {
     let x = input.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
     input.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '') + (x[4] ? '-' + x[4] : '');
-    
     input.classList.remove('border-red-500');
     const err = document.getElementById(input.id + '-error');
     if(err) err.classList.add('hidden');
@@ -305,7 +283,6 @@ window.submitTestForm = function(evt, formId) {
     const form = document.getElementById(formId);
     const nameInput = document.getElementById(formId + '-name');
     const phoneInput = document.getElementById(formId + '-phone');
-    
     let hasError = false;
 
     if (nameInput.value.trim().length < 3) {
@@ -345,7 +322,6 @@ function renderHeader() {
                    <span class="text-2xl sm:text-3xl font-semibold text-gray-300 group-hover:text-white transition">${label}</span>
                    <i id="icon-${id}" class="accordion-icon fas fa-chevron-down text-lg sm:text-xl text-gray-500 group-hover:text-white transition transform ${isOpen ? 'rotate-180' : ''}"></i>
                </div>
-               
                <div id="accordion-${id}" class="accordion-content ${isOpen ? 'open' : ''}">
                    <div class="pl-4 border-l-2 border-brand-orange ml-1 flex flex-col">
                        <a href="#" class="text-base sm:text-lg text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-2" onclick="window.filterAndNavigate('${id}', 'all', event)">${t().allProjectsTitle}</a>
@@ -365,28 +341,24 @@ function renderHeader() {
 
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50">
-            
             <div class="cursor-pointer h-full flex items-center py-2" onclick="navigate('home')">
                  <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-16 sm:h-24 md:h-32 lg:h-40 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left">
             </div>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
                 <div class="flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
-                    <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
-                    <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="${siteConfig.contact.social.instagram}" target="_blank" aria-label="Instagram" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="${siteConfig.contact.social.facebook}" target="_blank" aria-label="Facebook" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
                 </div>
-
                 <div class="hidden lg:flex items-center space-x-2 font-bold text-sm mr-2 border-r border-gray-500/30 pr-4">
                     <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'tr' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'}" onclick="changeLanguage('tr')">TR</span>
                     <span class="text-gray-400">|</span>
                     <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'en' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'}" onclick="changeLanguage('en')">EN</span>
                 </div>
-
                 <button onclick="navigate('iletisim')" class="hidden md:block bg-brand-orange hover:bg-orange-500 text-white font-semibold py-2.5 px-6 sm:px-8 rounded-full shadow-md transition-all btn-press text-xs sm:text-sm whitespace-nowrap">
                     ${t().consultBtn}
                 </button>
-
-                <button onclick="window.toggleMobileMenu()" class="w-10 h-10 md:w-12 md:h-12 bg-[#1a1a1a] rounded-full flex items-center justify-center text-white hover:bg-brand-orange shadow-lg transition-all duration-300 btn-press focus:outline-none shrink-0 z-[101]">
+                <button onclick="window.toggleMobileMenu()" aria-label="Menü" class="w-10 h-10 md:w-12 md:h-12 bg-[#1a1a1a] rounded-full flex items-center justify-center text-white hover:bg-brand-orange shadow-lg transition-all duration-300 btn-press focus:outline-none shrink-0 z-[101]">
                     <i class="fas fa-bars text-base sm:text-lg pointer-events-none"></i>
                 </button>
             </div>
@@ -396,18 +368,16 @@ function renderHeader() {
             <div class="w-full p-6 sm:p-8 flex justify-end items-center shrink-0">
                 <div class="flex items-center space-x-4 md:space-x-6">
                     <div class="flex space-x-4 text-white mr-2">
-                        <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-2xl transition-colors"><i class="fab fa-instagram"></i></a>
-                        <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-2xl transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="${siteConfig.contact.social.instagram}" target="_blank" aria-label="Instagram" class="hover:text-brand-orange text-2xl transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="${siteConfig.contact.social.facebook}" target="_blank" aria-label="Facebook" class="hover:text-brand-orange text-2xl transition-colors"><i class="fab fa-facebook-f"></i></a>
                     </div>
-                    <button onclick="window.toggleMobileMenu()" class="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300 btn-press z-[105]">
+                    <button onclick="window.toggleMobileMenu()" aria-label="Kapat" class="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-red-500 transition-all duration-300 btn-press z-[105]">
                         <i class="fas fa-times text-xl sm:text-2xl pointer-events-none"></i>
                     </button>
                 </div>
             </div>
-
             <div class="w-full flex-grow px-8 sm:px-16 md:px-24 lg:px-40 flex flex-col justify-start pt-6 sm:pt-10 pb-24 overflow-y-auto no-scrollbar">
                 ${overlayMenuHTML}
-                
                 <div class="mt-8 pt-8 border-t border-gray-800 flex items-center space-x-6 w-[220px] sm:w-[280px]">
                     <div class="flex w-full justify-between items-center">
                         <span class="text-xl text-gray-400 font-semibold">Dil</span>
@@ -421,10 +391,7 @@ function renderHeader() {
             </div>
         </div>
     `;
-    
-    setTimeout(() => {
-        window.dispatchEvent(new Event('scroll'));
-    }, 50);
+    setTimeout(() => { window.dispatchEvent(new Event('scroll')); }, 50);
 }
 
 function handleScroll() {
@@ -438,46 +405,35 @@ function handleScroll() {
     const icons = header.querySelectorAll('.header-icon');
     const langTexts = header.querySelectorAll('.header-text-lang');
     const logo = document.getElementById('header-logo');
-    
     const hasHero = ['home'].includes(state.currentView);
 
     if (window.scrollY > 50) {
         header.classList.remove('bg-transparent');
         header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
-        
         if(logo) {
             logo.classList.remove('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
             logo.classList.add('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
         }
-
         icons.forEach(icon => { icon.classList.remove('text-white'); icon.classList.add('text-gray-900'); });
         langTexts.forEach(txt => { 
-            if(!txt.classList.contains('text-brand-orange')) {
-                txt.classList.remove('text-white'); txt.classList.add('text-gray-900'); 
-            }
+            if(!txt.classList.contains('text-brand-orange')) { txt.classList.remove('text-white'); txt.classList.add('text-gray-900'); }
         });
     } else {
         header.classList.add('bg-transparent');
         header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
-        
         if(logo) {
             logo.classList.add('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
             logo.classList.remove('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
         }
-
         if(hasHero) {
             icons.forEach(icon => { icon.classList.remove('text-gray-900'); icon.classList.add('text-white'); });
             langTexts.forEach(txt => { 
-                if(!txt.classList.contains('text-brand-orange')) {
-                    txt.classList.remove('text-gray-900'); txt.classList.add('text-white'); 
-                }
+                if(!txt.classList.contains('text-brand-orange')) { txt.classList.remove('text-gray-900'); txt.classList.add('text-white'); }
             });
         } else {
             icons.forEach(icon => { icon.classList.remove('text-white'); icon.classList.add('text-gray-900'); });
             langTexts.forEach(txt => { 
-                if(!txt.classList.contains('text-brand-orange')) {
-                    txt.classList.remove('text-white'); txt.classList.add('text-gray-900'); 
-                }
+                if(!txt.classList.contains('text-brand-orange')) { txt.classList.remove('text-white'); txt.classList.add('text-gray-900'); }
             });
         }
     }
@@ -488,7 +444,7 @@ function renderHomePage() {
     const projectsHTML = pageProjects.map(project => `
         <div class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group" onclick="navigate('${project.id}')">
             <div class="relative aspect-[4/3] overflow-hidden">
-                <img src="${project.mainImage}" class="w-full h-full object-cover">
+                <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-black/0 hover:bg-black/30 transition-colors duration-400 flex items-center justify-center pointer-events-none">
                      <span class="bg-brand-orange text-white px-6 py-2 md:px-8 md:py-3 rounded-full font-bold opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-400 shadow-2xl text-sm md:text-base flex items-center">${t().projectDetailsTitle} <i class="fas fa-arrow-right ml-2"></i></span>
                 </div>
@@ -502,7 +458,7 @@ function renderHomePage() {
 
     DOM.content.innerHTML = `
         <div class="relative w-full h-[100vh] flex overflow-hidden">
-            <div class="absolute inset-0 z-0"><img src="${siteConfig.homeHero.backgroundImage}" class="w-full h-full object-cover"></div>
+            <div class="absolute inset-0 z-0"><img src="${siteConfig.homeHero.backgroundImage}" alt="Hero Background" class="w-full h-full object-cover" loading="eager"></div>
             
             <div class="absolute top-0 left-0 bottom-0 w-full md:w-[85%] lg:w-[65%] bg-[#1a201c]/40 backdrop-blur-sm z-10"></div>
             
@@ -511,14 +467,18 @@ function renderHomePage() {
                     <div class="max-w-2xl lg:max-w-3xl transform">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
                         <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
-                        <button onclick="navigate('ev-modelleri')" class="mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
-                            Projeleri İncele <i class="fas fa-arrow-right ml-3"></i>
+                        
+                        <!-- PÜRÜZSÜZ KAYDIRMA EKLENDİ (SMOOTH SCROLL TO FEATURED) -->
+                        <button onclick="document.getElementById('featured-projects').scrollIntoView({behavior: 'smooth'})" class="mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
+                            Projeleri İncele <i class="fas fa-arrow-down ml-3"></i>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bg-white relative z-20 w-full py-16 sm:py-20 md:py-24">
+        
+        <!-- ID EKLENDİ: featured-projects -->
+        <div id="featured-projects" class="bg-white relative z-20 w-full py-16 sm:py-20 md:py-24">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-10 sm:mb-12 flex flex-col md:flex-row justify-between items-start md:items-end">
                     <div>
@@ -555,7 +515,7 @@ function renderSipPanelPage() {
     DOM.content.innerHTML = `
         <div class="relative w-full h-[50vh] md:h-[60vh] flex overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <img src="${data.heroImg}" class="w-full h-full object-cover">
+                <img src="${data.heroImg}" alt="SIP Panel Background" class="w-full h-full object-cover" loading="eager">
                 <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             </div>
             <div class="relative z-10 w-full h-full flex flex-col justify-center items-center text-center px-4 sm:px-6 pt-16">
@@ -563,10 +523,8 @@ function renderSipPanelPage() {
                 <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
             </div>
         </div>
-
         <div class="bg-gray-50 py-16 sm:py-24 px-4 sm:px-6">
             <div class="max-w-[1200px] mx-auto space-y-16 sm:space-y-24">
-                
                 <div class="bg-white p-6 sm:p-10 md:p-16 rounded-3xl shadow-xl flex flex-col lg:flex-row gap-8 lg:gap-16 items-center border border-gray-100">
                     <div class="w-full lg:w-1/2 order-2 lg:order-1">
                         <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4 sm:mb-6 tracking-tight">${data.introTitle}</h3>
@@ -574,30 +532,23 @@ function renderSipPanelPage() {
                         <button onclick="navigate('iletisim')" class="bg-gray-900 text-white font-bold px-8 py-3.5 rounded-full shadow-md hover:bg-brand-orange transition-all btn-press">Bilgi Alın</button>
                     </div>
                     <div class="w-full lg:w-1/2 rounded-2xl overflow-hidden shadow-2xl border-4 border-white order-1 lg:order-2">
-                        <img src="${data.heroImg}" alt="SIP Panel Structure" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                        <img src="${data.heroImg}" alt="SIP Panel Structure" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" loading="lazy">
                     </div>
                 </div>
-
                 <div>
                     <div class="text-center mb-10 sm:mb-16">
                         <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4">${data.advantagesTitle}</h3>
                         <div class="w-16 sm:w-24 h-1.5 bg-brand-orange mx-auto rounded-full"></div>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-                        ${advantagesHTML}
-                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">${advantagesHTML}</div>
                 </div>
-
                 <div class="bg-white p-6 sm:p-10 md:p-16 rounded-3xl shadow-xl border border-gray-100">
                     <div class="mb-8 sm:mb-12 border-l-4 border-brand-orange pl-4 sm:pl-6">
                         <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2">${data.specsTitle}</h3>
                         <p class="text-sm sm:text-base text-gray-500 font-medium">${data.specsDesc}</p>
                     </div>
-                    <div class="bg-gray-50 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-100 shadow-inner">
-                        ${specsHTML}
-                    </div>
+                    <div class="bg-gray-50 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-100 shadow-inner">${specsHTML}</div>
                 </div>
-                
             </div>
         </div>
     `;
@@ -686,7 +637,6 @@ function renderGenericPage(pageId) {
 
 function renderProjectsPage(pageId) {
     let pageProjects = siteConfig.projects.filter(p => p.pageMenu === pageId);
-    
     if (state.activeCategory) pageProjects = pageProjects.filter(p => p.categoryId === state.activeCategory);
     
     if (state.sortBy === 'areaAsc') pageProjects.sort((a, b) => a.area - b.area);
@@ -708,7 +658,7 @@ function renderProjectsPage(pageId) {
     const projectsHTML = pageProjects.length > 0 ? pageProjects.map(project => `
         <div class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group shadow-sm" onclick="navigate('${project.id}')">
             <div class="relative aspect-[4/3] overflow-hidden">
-                <img src="${project.mainImage}" class="w-full h-full object-cover">
+                <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
                 <div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gray-900/80 backdrop-blur-sm text-white px-3 py-1.5 sm:px-4 sm:py-1.5 font-bold rounded-lg shadow-lg z-10 text-xs sm:text-sm">${project.area} ${t().sqm}</div>
             </div>
             <div class="p-5 sm:p-6 md:p-8 bg-white flex-grow flex items-center justify-between">
@@ -734,7 +684,7 @@ function renderProjectsPage(pageId) {
                 <div class="w-full lg:w-3/4">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 bg-white p-3 sm:p-4 rounded-xl shadow-sm border border-gray-100 gap-3 sm:gap-4">
                         <span class="text-xs sm:text-sm font-bold text-gray-500 tracking-wider px-2">${pageProjects.length} Sonuç</span>
-                        <select onchange="window.sortProjects(this.value)" class="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-800 font-semibold text-xs sm:text-sm rounded-lg focus:ring-2 focus:ring-brand-orange py-2 sm:py-2.5 px-3 sm:px-4 cursor-pointer outline-none transition-colors">
+                        <select aria-label="Sıralama" onchange="window.sortProjects(this.value)" class="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-800 font-semibold text-xs sm:text-sm rounded-lg focus:ring-2 focus:ring-brand-orange py-2 sm:py-2.5 px-3 sm:px-4 cursor-pointer outline-none transition-colors">
                             <option value="default" ${state.sortBy === 'default' ? 'selected' : ''}>Varsayılan</option>
                             <option value="areaAsc" ${state.sortBy === 'areaAsc' ? 'selected' : ''}>m² (Artan)</option>
                             <option value="areaDesc" ${state.sortBy === 'areaDesc' ? 'selected' : ''}>m² (Azalan)</option>
@@ -756,7 +706,6 @@ function renderProjectDetail(projectId) {
     const nextProject = siteConfig.projects[projectIndex + 1] || siteConfig.projects[0];
 
     const prjTitle = state.lang === 'tr' ? project.title : project.titleEn;
-    
     const rawGallery = [project.mainImage, ...(project.gallery || []).filter(img => img !== project.mainImage)];
     const mediaItems = rawGallery.map(url => parseMedia(url));
     
@@ -773,7 +722,7 @@ function renderProjectDetail(projectId) {
         const isVideo = media.type !== 'image';
         return `
         <div class="w-20 sm:w-24 lg:w-full aspect-square shrink-0 overflow-hidden rounded-xl border-4 border-white shadow-md hover:border-brand-orange cursor-pointer btn-press relative group" onclick="window.setGalleryImage(${index})">
-             <img src="${media.thumb}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
+             <img src="${media.thumb}" alt="Thumbnail ${index + 1}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" loading="lazy">
              ${isVideo ? `<div class="absolute inset-0 flex items-center justify-center bg-black/30"><i class="fas fa-play-circle text-white text-2xl sm:text-3xl drop-shadow-md"></i></div>` : ''}
         </div>
     `}).join('');
@@ -781,7 +730,7 @@ function renderProjectDetail(projectId) {
     const initialMedia = mediaItems[0];
     let initialContainerHTML = '';
     if(initialMedia.type === 'image') {
-        initialContainerHTML = `<img id="detail-main-image" src="${initialMedia.url}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 hover:scale-105 pointer-events-auto">
+        initialContainerHTML = `<img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 hover:scale-105 pointer-events-auto" loading="eager">
         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
         <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur text-gray-900 px-4 sm:px-6 py-2 rounded-full font-bold text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-400 shadow-xl flex items-center pointer-events-none whitespace-nowrap">
             <i class="fas fa-expand mr-2 text-brand-orange"></i> Tam Ekran
@@ -810,7 +759,6 @@ function renderProjectDetail(projectId) {
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 xl:gap-16 mb-12 sm:mb-16">
                 <div class="xl:col-span-2 flex flex-col-reverse lg:flex-row gap-4 sm:gap-6">
                     <div class="w-full lg:w-28 flex flex-row lg:flex-col gap-3 sm:gap-4 overflow-x-auto no-scrollbar pb-2 lg:pb-0 snap-x">${thumbnailsHTML}</div>
-                    
                     <div class="flex-grow rounded-2xl shadow-xl overflow-hidden bg-gray-100">
                         <div id="main-image-container" class="w-full aspect-[4/3] relative cursor-zoom-in group transition-all duration-300" onclick="window.openLightboxCurrent()">
                             ${initialContainerHTML}
@@ -884,11 +832,35 @@ function renderProjectDetail(projectId) {
 
 function renderFooter() {
     DOM.footer.innerHTML = `
-        <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center space-y-6 sm:space-y-8">
-            <div class="w-48 sm:w-56 md:w-64 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 btn-press" onclick="navigate('home')">
-                <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-full h-auto object-contain">
+        <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mb-10 border-b border-gray-800 pb-10">
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-48 sm:w-56 mb-6 cursor-pointer hover:opacity-80 transition-opacity btn-press object-contain" onclick="navigate('home')">
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs font-medium">${siteConfig.homeHero.subSlogan[state.lang]}</p>
+                </div>
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <h4 class="text-white font-bold text-lg mb-5 tracking-wide uppercase text-sm">${t().menu['ev-modelleri'] || 'Projeler'}</h4>
+                    <ul class="space-y-3 text-gray-400 font-medium">
+                        <li><a href="#" onclick="navigate('ev-modelleri', event)" class="hover:text-brand-orange transition-colors">${t().menu['ev-modelleri']}</a></li>
+                        <li><a href="#" onclick="navigate('bahce-yapilari', event)" class="hover:text-brand-orange transition-colors">${t().menu['bahce-yapilari']}</a></li>
+                        <li><a href="#" onclick="navigate('garaj-sistemleri', event)" class="hover:text-brand-orange transition-colors">${t().menu['garaj-sistemleri']}</a></li>
+                        <li><a href="#" onclick="navigate('sip-panel', event)" class="hover:text-brand-orange transition-colors">${t().menu['sip-panel']}</a></li>
+                    </ul>
+                </div>
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <h4 class="text-white font-bold text-lg mb-5 tracking-wide uppercase text-sm">${t().pageTitles['iletisim']}</h4>
+                    <ul class="space-y-3 text-gray-400 font-medium">
+                        <li class="flex items-center justify-center md:justify-start"><i class="fas fa-phone-alt mr-3 text-brand-orange"></i> <a href="tel:${siteConfig.contact.phone.replace(/\s/g,'')}" class="hover:text-white transition-colors">${siteConfig.contact.phone}</a></li>
+                        <li class="flex items-center justify-center md:justify-start"><i class="fas fa-envelope mr-3 text-brand-orange"></i> <a href="mailto:${siteConfig.contact.email}" class="hover:text-white transition-colors break-all">${siteConfig.contact.email}</a></li>
+                        <li class="flex items-start justify-center md:justify-start mt-2"><i class="fas fa-map-marker-alt mr-3 mt-1 text-brand-orange"></i> <span>${siteConfig.contact.address}</span></li>
+                    </ul>
+                    <div class="flex space-x-4 mt-6 text-xl">
+                        <a href="${siteConfig.contact.social.instagram}" target="_blank" aria-label="Instagram" class="text-gray-400 hover:text-brand-orange transition-colors btn-press"><i class="fab fa-instagram"></i></a>
+                        <a href="${siteConfig.contact.social.facebook}" target="_blank" aria-label="Facebook" class="text-gray-400 hover:text-brand-orange transition-colors btn-press"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
             </div>
-            <p class="text-xs sm:text-sm text-gray-500 font-medium tracking-wide text-center px-4 break-words">${t().footerText}</p>
+            <p class="text-xs sm:text-sm text-gray-500 font-semibold tracking-wide text-center break-words">${t().footerText}</p>
         </div>
     `;
 }
@@ -896,18 +868,10 @@ function renderFooter() {
 function initApp() {
     renderHeader();
     renderFooter();
-    
     window.addEventListener('scroll', handleScroll);
-
     let hash = window.location.hash.substring(1);
-    if(hash) {
-        navigate(hash, null, true, true);
-    } else {
-        state.currentView = 'home';
-        updateMetaTags('home'); 
-        renderHomePage();
-    }
-    
+    if(hash) { navigate(hash, null, true, true); } 
+    else { state.currentView = 'home'; updateMetaTags('home'); renderHomePage(); }
     DOM.content.classList.remove('page-fade-out');
     DOM.content.classList.add('page-fade-in');
 }
