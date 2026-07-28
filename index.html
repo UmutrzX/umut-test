@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kartech Panel Structures House Systems</title>
+    <meta id="meta-desc" name="description" content="Lüks ve Minimalizmin Birleşimi. SİP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -38,7 +39,7 @@
         .btn-press { transition: all 0.15s ease; cursor: pointer; }
         .btn-press:active { transform: scale(0.92); }
         
-        /* Floating Buttons - MOBİL SİMETRİSİ MÜKEMMELLEŞTİRİLDİ */
+        /* MOBİL SİMETRİ & FLOATING BUTTONS */
         .floating-btn {
             position: fixed; z-index: 50;
             width: 55px; height: 55px; border-radius: 50%;
@@ -49,7 +50,7 @@
         .floating-btn:hover { transform: scale(1.1) rotate(5deg); }
         .floating-btn:active { transform: scale(0.9); }
         
-        /* HER İKİ BUTON DA EŞİT UZAKLIKTA (KUSURSUZ SİMETRİ) */
+        /* Kusursuz Simetri: Her iki taraf için boşluklar tamamen eşitlendi */
         .btn-call { left: 20px; bottom: 20px; background-color: #f39c12; }
         .btn-chat { right: 20px; bottom: 20px; background-color: #25D366; z-index: 51; }
         
@@ -58,7 +59,6 @@
             .btn-chat { bottom: 30px; right: 30px; }
         }
 
-        /* YUKARI ÇIKMA BUTONU WHATSAPP'IN ÜSTÜNE YERLEŞTİRİLDİ */
         .btn-scroll-top { 
             right: 20px; bottom: 90px; 
             background-color: #0a0a0a; opacity: 0; visibility: hidden; 
@@ -136,25 +136,22 @@
         }
         .vg-overlay.active { opacity: 1; visibility: visible; }
 
-        /* YENİ NESİL, PROFESYONEL ACCORDION EFEKTİ (CSS GRID TRANSITION) */
-        .accordion-wrapper {
+        /* YENİ NESİL, PROFESYONEL ACCORDION EFEKTİ (CSS GRID TRANSITION) - DÜZELTİLDİ */
+        .accordion-content {
             display: grid;
             grid-template-rows: 0fr;
-            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .accordion-wrapper.open {
-            grid-template-rows: 1fr;
-        }
-        .accordion-inner {
-            overflow: hidden;
+            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
             opacity: 0;
-            transform: translateY(-15px);
-            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden; /* Dış kutu taşmayı gizler */
         }
-        .accordion-wrapper.open .accordion-inner {
+        .accordion-content.open {
+            grid-template-rows: 1fr;
             opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.4s ease 0.1s, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.1s;
+            margin-top: 0.5rem;
+        }
+        /* Kırılmaları önlemek ve Grid hilesinin çalışması için içindeki tüm yapıyı saran div gizlenir */
+        .accordion-content > div {
+            overflow: hidden;
         }
     </style>
 </head>
@@ -177,7 +174,7 @@
 
     <!-- Bildirim ve Lightbox sistemleri -->
     <div id="alert-modal" class="modal-overlay">
-        <div class="bg-white p-8 sm:p-12 rounded-sm shadow-2xl max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300">
+        <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300">
             <i class="fas fa-check-circle text-6xl sm:text-7xl text-brand-green mb-4 sm:mb-6"></i>
             <h3 id="modal-title" class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 tracking-tight">Harika!</h3>
             <p id="modal-message" class="text-gray-500 mb-6 sm:mb-8 text-base sm:text-lg leading-relaxed">Talebiniz başarıyla alındı. Müşteri temsilcimiz sizinle en kısa sürede iletişime geçecektir.</p>
