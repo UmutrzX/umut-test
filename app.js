@@ -56,7 +56,7 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
 
     state.currentView = viewOrId;
     
-    // YÖNLENDİRME (HASH ROUTING) - URL Güncelleme
+    // Hash Routing
     if (!fromHash) {
         window.history.pushState(null, '', '#' + viewOrId);
     }
@@ -90,14 +90,13 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
                 updateMetaTags(viewOrId, project);
                 renderProjectDetail(viewOrId);
             } else {
-                navigate('home'); // Bulunamadıysa anasayfaya at
+                navigate('home'); 
             }
         }
 
         DOM.content.classList.remove('page-fade-out');
         DOM.content.classList.add('page-fade-in');
         
-        // Sayfa değiştiğinde scroll handler'ı tetikle (logonun boyutunu ayarlamak için)
         window.dispatchEvent(new Event('scroll'));
     }, 350); 
 }
@@ -181,7 +180,6 @@ window.toggleAccordion = function(menuId, evt) {
 
 window.closeMenuFromOutside = function(e) { if(e.target.id === 'vg-overlay-bg') window.toggleMobileMenu(); };
 
-// Medya Tipi Algılama Fonksiyonu (Resim mi Video mu?)
 function parseMedia(url) {
     let ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
     if (ytMatch) {
@@ -222,7 +220,7 @@ window.setGalleryImage = function(index) {
 
 window.openLightboxCurrent = function() {
     const media = state.lightboxImages[state.activeGalleryIndex];
-    if(media.type !== 'image') return; // Sadece resimlerde lightbox aç
+    if(media.type !== 'image') return; 
     if (state.sliderInterval) { clearInterval(state.sliderInterval); state.sliderInterval = null; }
     window.openLightbox(state.activeGalleryIndex);
 };
@@ -231,7 +229,6 @@ window.openLightbox = function(startIndex) {
     let imagesOnly = state.lightboxImages.filter(m => m.type === 'image');
     if(imagesOnly.length === 0) return;
     
-    // Orijinal index'i sadece resimlerin olduğu yeni array'deki index'e çevirme
     let actualMedia = state.lightboxImages[startIndex];
     if(actualMedia.type !== 'image') return;
     
@@ -239,7 +236,7 @@ window.openLightbox = function(startIndex) {
 
     const overlay = document.getElementById('lightbox-overlay');
     state.currentLightboxIndex = newIndex;
-    state.currentLightboxArray = imagesOnly; // Geçici olarak sadece resimleri tut
+    state.currentLightboxArray = imagesOnly; 
 
     document.getElementById('lightbox-img').src = imagesOnly[newIndex].url;
     document.getElementById('lightbox-counter').innerText = `${newIndex + 1} / ${imagesOnly.length}`;
@@ -291,7 +288,6 @@ window.formatPhone = function(input) {
     let x = input.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
     input.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '') + (x[4] ? '-' + x[4] : '');
     
-    // Yazdıkça hatayı temizle
     input.classList.remove('border-red-500');
     const err = document.getElementById(input.id + '-error');
     if(err) err.classList.add('hidden');
@@ -303,7 +299,6 @@ window.clearError = function(input) {
     if(err) err.classList.add('hidden');
 }
 
-// Canlı Hata Tespiti (Gelişmiş Form)
 window.submitTestForm = function(evt, formId) {
     evt.preventDefault();
     
@@ -313,14 +308,12 @@ window.submitTestForm = function(evt, formId) {
     
     let hasError = false;
 
-    // İsim Kontrolü
     if (nameInput.value.trim().length < 3) {
         nameInput.classList.add('border-red-500');
         document.getElementById(formId + '-name-error').classList.remove('hidden');
         hasError = true;
     }
 
-    // Telefon Kontrolü (Sadece rakamları say)
     const phoneDigits = phoneInput.value.replace(/\D/g, '');
     if (phoneDigits.length !== 10) {
         phoneInput.classList.add('border-red-500');
@@ -328,7 +321,7 @@ window.submitTestForm = function(evt, formId) {
         hasError = true;
     }
 
-    if(hasError) return; // Hata varsa durdur
+    if(hasError) return; 
 
     const message = `SİTE TALEBİ\nİsim: ${nameInput.value}\nTel: ${phoneInput.value}`;
     window.open(`https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
@@ -339,7 +332,6 @@ window.submitTestForm = function(evt, formId) {
 function renderHeader() {
     const menuItems = ['home', 'sip-panel', 'ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri', 'uretim', 'galeri', 'hakkimizda'];
     
-    // MENÜ SİMETRİSİ ÇÖZÜMÜ: Grid kapanma sorunu için linkleri iç div ile sarmaladık.
     const overlayMenuHTML = menuItems.map(id => {
         const isProjectMenu = ['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(id);
         const label = t().menu[id];
@@ -371,17 +363,17 @@ function renderHeader() {
         }
     }).join('');
 
-    // DÜZELTME: px-4 sm:px-6 lg:px-8 kullanıldı, Hero section ile tam hizalama sağlandı.
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50">
             
             <div class="cursor-pointer h-full flex items-center py-2" onclick="navigate('home')">
-                 <!-- LOGO İÇİN DEV BOYUTLANDIRMA VE KAYDIRMA ANİMASYONU -->
+                 <!-- LOGO İÇİN DEV BOYUTLANDIRMA VE KAYDIRMA ANİMASYONU (ŞEFFAF ZEMİN İÇİN mix-blend-multiply eklendi) -->
                  <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-16 sm:h-24 md:h-32 lg:h-40 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left">
             </div>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
-                <div class="hidden sm:flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
+                <!-- SOSYAL MEDYA İKONLARI ARTIK MOBİLDE DE GÖRÜNÜR: 'hidden sm:flex' KALDIRILDI -->
+                <div class="flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
                     <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
                     <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
                 </div>
@@ -405,7 +397,8 @@ function renderHeader() {
         <div id="vg-overlay-bg" onclick="window.closeMenuFromOutside(event)" class="vg-overlay">
             <div class="w-full p-6 sm:p-8 flex justify-end items-center shrink-0">
                 <div class="flex items-center space-x-4 md:space-x-6">
-                    <div class="flex sm:hidden space-x-4 text-white mr-2">
+                    <!-- MOBİL AÇILIR MENÜ İÇİ SOSYAL MEDYA (HER İHTİMALE KARŞI) -->
+                    <div class="flex space-x-4 text-white mr-2">
                         <a href="${siteConfig.contact.social.instagram}" target="_blank" class="hover:text-brand-orange text-2xl transition-colors"><i class="fab fa-instagram"></i></a>
                         <a href="${siteConfig.contact.social.facebook}" target="_blank" class="hover:text-brand-orange text-2xl transition-colors"><i class="fab fa-facebook-f"></i></a>
                     </div>
@@ -432,7 +425,6 @@ function renderHeader() {
         </div>
     `;
     
-    // Header render edildikten sonra scroll durumunu kontrol et
     setTimeout(() => {
         window.dispatchEvent(new Event('scroll'));
     }, 50);
@@ -456,7 +448,6 @@ function handleScroll() {
         header.classList.remove('bg-transparent');
         header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
         
-        // Logo Küçülme (Shrink) Animasyonu
         if(logo) {
             logo.classList.remove('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
             logo.classList.add('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
@@ -472,7 +463,6 @@ function handleScroll() {
         header.classList.add('bg-transparent');
         header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
         
-        // Logo Büyüme (Genişleme) Animasyonu - Başlangıç Boyutu
         if(logo) {
             logo.classList.add('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
             logo.classList.remove('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
@@ -770,7 +760,6 @@ function renderProjectDetail(projectId) {
 
     const prjTitle = state.lang === 'tr' ? project.title : project.titleEn;
     
-    // Medyaları (Resim ve Video) Ayrıştır
     const rawGallery = [project.mainImage, ...(project.gallery || []).filter(img => img !== project.mainImage)];
     const mediaItems = rawGallery.map(url => parseMedia(url));
     
@@ -872,7 +861,6 @@ function renderProjectDetail(projectId) {
                 <p class="text-gray-600 leading-relaxed text-sm sm:text-base md:text-lg font-medium">${project.description[state.lang]}</p>
             </div>
             
-            <!-- Projeler Arası Geçiş (Sonraki / Önceki) -->
             <div class="flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 pt-8 sm:pt-12 gap-4">
                  <div class="w-full sm:w-1/2 flex justify-start">
                      <button onclick="navigate('${prevProject.id}')" class="group flex items-center text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 p-4 rounded-2xl w-full max-w-sm transition-colors btn-press">
@@ -914,7 +902,6 @@ function initApp() {
     
     window.addEventListener('scroll', handleScroll);
 
-    // İlk açılışta Hash (Link) kontrolü
     let hash = window.location.hash.substring(1);
     if(hash) {
         navigate(hash, null, true, true);
