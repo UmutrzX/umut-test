@@ -15,7 +15,7 @@ export const siteConfig = {
         logoSrc: "https://media.discordapp.net/attachments/1531819616484196476/1532128007828013146/Adsz_tasarm__1_-removebg-preview.png?ex=6a6bb8e6&is=6a6a6766&hm=4afada63f997124315fa425ac4815986625fb9bfe0e5d772c24df9c545a3502f&=&format=webp&quality=lossless&width=942&height=335",
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
-        email: "info@kartechpanel.com",
+        email: "info@zemusippan.com",
         mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193307.7479707908!2d30.222728253198905!3d40.78161725359738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ccb2b73bc5e90d%3A0x63351ec30c4f8d22!2sSakarya!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str",
         social: { 
             facebook: "#", 
@@ -31,7 +31,7 @@ export const siteConfig = {
             en: "Fusion of Luxury and Minimalism"
         },
         subSlogan: {
-            tr: "SİP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.",
+            tr: "SIP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.",
             en: "Reach your dream structure quickly with SIP Panel technology."
         }
     },
@@ -77,7 +77,7 @@ export const siteConfig = {
                 "https://media.discordapp.net/attachments/1531819616484196476/1531819686763954277/WhatsApp_Image_2026-07-29_at_2.22.21_AM_2.jpeg?ex=6a6a99c1&is=6a694841&hm=e548ee3e40eae512e1c342ef5cfffcf7a483c68eb1a1aa832b420177e2529075&=&format=webp&width=1524&height=671"
             ],
             description: {
-                tr: "Kartech Panel kalitesiyle tasarlanmış modern iki katlı dubleks proje.",
+                tr: "ZEMU SIPPAN kalitesiyle tasarlanmış modern iki katlı dubleks proje.",
                 en: "Modern two-story duplex SIP panel project."
             }
         },
@@ -115,14 +115,14 @@ export const siteConfig = {
             categoryId: "gs-ciftkapali",
             mainImage: "https://i.pinimg.com/1200x/3f/b2/f0/3fb2f0ef390fda1df627ba294679b175.jpg",
             gallery: [],
-            description: { tr: "Araçlarınız için güvenli SİP panel garaj.", en: "Secure SIP panel garage for your vehicles." }
+            description: { tr: "Araçlarınız için güvenli SIP panel garaj.", en: "Secure SIP panel garage for your vehicles." }
         }
     ],
 
     i18n: {
         tr: {
             menu: {
-                "home": "Ana Sayfa", "sip-panel": "Sip Panel", "ev-modelleri": "Ev Modelleri", 
+                "home": "Ana Sayfa", "sip-panel": "SIP Panel", "ev-modelleri": "Ev Modelleri", 
                 "bahce-yapilari": "Bahçe Yapıları", "garaj-sistemleri": "Garaj Sistemleri", 
                 "uretim": "Üretim", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
             },
@@ -154,8 +154,8 @@ export const siteConfig = {
             cookieAccept: "Kabul Et",
 
             pageTitles: {
-                "home": "Kartech Panel", "iletisim": "Bize Ulaşın", "uretim": "Üretim Tesisimiz",
-                "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SİP Panel",
+                "home": "ZEMU SIPPAN", "iletisim": "Bize Ulaşın", "uretim": "Üretim Tesisimiz",
+                "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SIP Panel",
                 "ev-modelleri": "Ev Modellerimiz", "bahce-yapilari": "Bahçe Yapılarımız", "garaj-sistemleri": "Garaj Sistemlerimiz"
             },
 
@@ -164,7 +164,7 @@ export const siteConfig = {
             processSteps: [
                 { icon: "fa-comments", title: "Talep & Keşif", desc: "İhtiyaçlarınızı dinliyor ve arsanıza en uygun mimari çözümü tasarlıyoruz." },
                 { icon: "fa-pencil-ruler", title: "Projelendirme", desc: "Mimarlarımız projenizi 3D olarak çizip tarafınıza kesin fiyat teklifi sunar." },
-                { icon: "fa-cogs", title: "Fabrika Üretimi", desc: "Milimetrik hassasiyetle SİP panellerinizin kesim ve ebatlaması yapılır." },
+                { icon: "fa-cogs", title: "Fabrika Üretimi", desc: "Milimetrik hassasiyetle SIP panellerinizin kesim ve ebatlaması yapılır." },
                 { icon: "fa-hammer", title: "Hızlı Montaj", desc: "Hava şartlarına takılmadan haftalar içinde yapınız anahtar teslim kurulur." }
             ],
             
@@ -185,7 +185,7 @@ export const siteConfig = {
             hakkimizdaData: {
                 title: "Biz Kimiz?",
                 paragraphs: [
-                    "Kartech Panel, müşteri gereksinimlerine göre SİP (Yapısal Yalıtımlı Panel) panelleri tasarlayan, üreten ve ebatlayan, yenilikçi ve amaca yönelik bir yapı şirketidir.",
+                    "ZEMU SIPPAN, müşteri gereksinimlerine göre SIP (Yapısal Yalıtımlı Panel) panelleri tasarlayan, üreten ve ebatlayan, yenilikçi ve amaca yönelik bir yapı şirketidir.",
                     "Panellerimiz için yalnızca en üst sınıf malzemeleri kullanıyor, panel üretimiyle ilgili tüm süreçleri kontrollü sıcaklık ve iklim koşullarında gerçekleştirerek nihai ürünün kalitesini garanti altına alıyoruz.",
                     "Hem konsept ev modellerimizi tercih eden bireysel müşterilerimizle hem de kendi mimari projelerini hayata geçirmek isteyenlerle çalışıyoruz. Toplu konut projeleri geliştiren veya yüksek hacimli panel tedariği arayan kurumsal müşterilerimize, piyasadaki en kaliteli ürünü en rekabetçi fiyatlarla sunuyoruz."
                 ],
@@ -211,9 +211,9 @@ export const siteConfig = {
 
             sipPanelData: {
                 heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
-                introTitle: "SİP Panel Nedir?",
+                introTitle: "SIP Panel Nedir?",
                 introText: "SIP panel, yapı sektöründe son yıllarda hızla popülerleşen, yapısal yalıtımlı panel anlamına gelir. Dış yüzeylerinde taşıyıcı görevi gören OSB levhalar ve iç kısmında ise yüksek yoğunluklu yalıtım malzemesi (genellikle poliüretan, polistiren veya poliizosiyanurat) bulunan bu paneller, inşaat süreçlerini hızlandırırken aynı zamanda enerji verimli ve dayanıklı yapılar oluşturmayı sağlar.<br><br>Bu panelin en önemli özelliği, standart yapı elemanlarının aksine hem yük taşıyıcı iskelet hem de kusursuz bir yalıtım görevini aynı anda üstlenmesidir.",
-                advantagesTitle: "SİP Panelin Avantajları",
+                advantagesTitle: "SIP Panelin Avantajları",
                 advantages: [
                     { icon: "fa-stopwatch", title: "Hızlı ve Kolay Montaj", desc: "Büyük boyutlu ve hafif olması sayesinde geleneksel inşaat yöntemlerine göre çok daha kısa sürede yapı inşa etmeye imkan tanır." },
                     { icon: "fa-temperature-low", title: "Yüksek Isı Yalıtımı", desc: "İçerisindeki yalıtım malzemesi sayesinde enerji tasarrufu sağlar ve ısı kayıplarını minimuma indirir." },
@@ -233,10 +233,10 @@ export const siteConfig = {
                     "Zemin Sistemleri: Yüksek taşıyıcı kapasitesi sayesinde zemin döşemelerinde tercih edilir.",
                     "Ticari Yapılar: Ofis binaları, alışveriş merkezleri gibi büyük ölçekli yapılarda da kullanılır."
                 ],
-                futureTitle: "SİP Panelin Geleceği",
+                futureTitle: "SIP Panelin Geleceği",
                 futureText: "SIP paneller, inşaat sektöründe sürdürülebilirlik ve enerji verimliliği konularına olan ilginin artmasıyla birlikte daha da önem kazanmaktadır. Özellikle küresel ısınma ve enerji kaynaklarının daralması, SIP panellerin sağladığı izolasyon devrimini zorunlu kılmaktadır. Sonuç olarak; SIP panel, hızlı, çevreci ve dayanıklı yapılar oluşturmak için geleceğin rakipsiz yapı malzemesi olarak görülmektedir.",
                 specsTitle: "Teknik Özellikler ve Performans",
-                specsDesc: "Projelerimizde kullandığımız SİP paneller uluslararası standartlarda üretilmekte olup zorlu iklim koşullarına karşı test edilmiştir.",
+                specsDesc: "Projelerimizde kullandığımız SIP paneller uluslararası standartlarda üretilmekte olup zorlu iklim koşullarına karşı test edilmiştir.",
                 technicalSpecs: [
                     { label: "Panel Kalınlıkları (Dış Duvar)", value: "114 mm / 164 mm / 214 mm" },
                     { label: "İzolasyon Özü (Core)", value: "16-30 kg/m³ Yoğunluklu EPS (Genleştirilmiş Polistiren)" },
@@ -248,14 +248,14 @@ export const siteConfig = {
             },
 
             pageContents: {
-                "uretim": "Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz.",
+                "uretim": "Fabrikamızda en son teknoloji ile SIP panellerin üretimini gerçekleştiriyoruz.",
                 "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır."
             },
-            footerText: "© 2026 Kartech Panel Structures House Systems. Tüm hakları saklıdır."
+            footerText: "© 2026 ZEMU SIPPAN Structures House Systems. Tüm hakları saklıdır."
         },
         en: {
             menu: {
-                "home": "Home", "sip-panel": "Sip Panel", "ev-modelleri": "House Models", 
+                "home": "Home", "sip-panel": "SIP Panel", "ev-modelleri": "House Models", 
                 "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems", 
                 "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us"
             },
@@ -279,7 +279,7 @@ export const siteConfig = {
             cookieAccept: "Accept",
 
             pageTitles: {
-                "home": "Kartech Panel", "iletisim": "Contact Us", "uretim": "Production", 
+                "home": "ZEMU SIPPAN", "iletisim": "Contact Us", "uretim": "Production", 
                 "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
                 "ev-modelleri": "House Models", "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
             },
@@ -310,7 +310,7 @@ export const siteConfig = {
             hakkimizdaData: {
                 title: "Who We Are",
                 paragraphs: [
-                    "Kartech Panel is an innovative and purpose-driven building company that designs, manufactures, and sizes SIP (Structural Insulated Panels) according to customer requirements.",
+                    "ZEMU SIPPAN is an innovative and purpose-driven building company that designs, manufactures, and sizes SIP (Structural Insulated Panels) according to customer requirements.",
                     "We use only top-tier materials for our panels, conducting all panel production processes in controlled temperature and climate environments to guarantee the highest quality of the final product.",
                     "We work with both individual clients choosing from our concept home models and those looking to bring their own architectural projects to life. For corporate clients developing large-scale housing projects or seeking high-volume panel supplies, we offer the highest quality product at the most competitive market prices."
                 ],
@@ -375,7 +375,7 @@ export const siteConfig = {
                 "uretim": "Information about our production facility.",
                 "galeri": "Gallery coming soon."
             },
-            footerText: "© 2026 Kartech Panel Structures House Systems. All rights reserved."
+            footerText: "© 2026 ZEMU SIPPAN Structures House Systems. All rights reserved."
         }
     }
 };
