@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" href="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
     <link rel="icon" type="image/png" href="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
     
-    <!-- YENİ: Dinamik OG, Twitter ve SEO Etiketleri -->
+    <!-- Dinamik OG, Twitter ve SEO Etiketleri -->
     <meta property="og:type" content="website">
     <meta id="og-url" property="og:url" content="https://kartechpanel.com/">
     <meta id="og-title" property="og:title" content="Kartech Panel Structures House Systems">
@@ -27,7 +27,7 @@
     <link id="alternate-tr" rel="alternate" hreflang="tr" href="https://kartechpanel.com/">
     <link id="alternate-en" rel="alternate" hreflang="en" href="https://kartechpanel.com/">
     
-    <!-- YENİ: Yapısal Veri (Schema.org / JSON-LD) -->
+    <!-- Yapısal Veri (Schema.org / JSON-LD) -->
     <script id="schema-ld" type="application/ld+json"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,7 +65,6 @@
         .btn-press { transition: all 0.15s ease; cursor: pointer; }
         .btn-press:active { transform: scale(0.92); }
         
-        /* YENİ: Harekete Geçirici Mesaj (CTA) Odaklaması - Zarif ve Hafif Parıltı */
         @keyframes pulse-soft {
             0%, 100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.5); transform: scale(1); }
             50% { box-shadow: 0 0 0 12px rgba(243, 156, 18, 0); transform: scale(1.02); }
@@ -144,7 +143,7 @@
             border-radius: 8px;
             transform: scale(0.95); 
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-            opacity: 0; /* Changed for smoother transition */
+            opacity: 0; 
         }
         #lightbox-overlay.active #lightbox-img.loaded { transform: scale(1); opacity: 1; }
         
@@ -162,12 +161,11 @@
             background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.2); 
             color: white; width: 44px; height: 44px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; transition: all 0.2s ease;
-            z-index: 10001; /* Ensure it stays above everything */
+            z-index: 10001; 
             backdrop-filter: blur(4px);
         }
         #lightbox-close:hover { background: #e74c3c; border-color: #e74c3c; transform: rotate(90deg); }
         
-        /* Preloader for Lightbox */
         #lightbox-loader {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             color: #f39c12; font-size: 30px; opacity: 0; visibility: hidden; transition: 0.2s;
@@ -206,7 +204,6 @@
     <main id="app-content" class="flex-grow w-full page-fade-in bg-white"></main>
     <footer id="main-footer" class="bg-[#0a0a0a] text-white mt-auto"></footer>
 
-    <!-- Sabit iletişim balonları (Erişilebilirlik için aria-label eklendi) -->
     <a id="btn-call-floating" href="tel:+905078807607" class="floating-btn btn-call btn-press" aria-label="Bizi Arayın" title="Bizi Arayın"><i class="fas fa-phone-alt"></i></a>
     <a id="btn-chat-floating" href="https://wa.me/905078807607" target="_blank" class="floating-btn btn-chat btn-press" aria-label="WhatsApp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
     
