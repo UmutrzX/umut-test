@@ -60,16 +60,25 @@ export const siteConfig = {
 
     projects: [
         {
-            id: "dubleks-298", 
-            title: "Zifin House",
-            titleEn: "Duplex Project - 298",
+            id: "Test ev -001", 
+            title: "Test Projesi",
+            titleEn: "Test Project",
             area: 61, rooms: 3,  
             pageMenu: "ev-modelleri", 
-            categoryId: "ev-luks", 
-            mainImage: "https://i.pinimg.com/736x/e0/b9/e1/e0b9e1b995c80a7c916a8ad64fa09d83.jpg",
+            categoryId: "ev-ahsap", 
+            mainImage: "https://media.discordapp.net/attachments/1531819616484196476/1531819728350347294/WhatsApp_Image_2026-07-29_at_2.22.21_AM.jpeg?ex=6a6a99cb&is=6a69484b&hm=8e3969cd950ae08e0ea6692ed83da464536aad9dd12c3e8cfb2c33996cf0629c&=&format=webp&width=1524&height=671",
             gallery: [
-                "https://i.pinimg.com/736x/e4/9b/cb/e49bcbcb4078e3140f07f75687455669.jpg",
-                "https://i.pinimg.com/736x/4f/4e/11/4f4e11dbabea7f52a2425b3d04505b60.jpg"
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819727863677068/WhatsApp_Image_2026-07-29_at_2.22.21_AM_11.jpeg?ex=6a6a99ca&is=6a69484a&hm=757ecc4ffc4883efdc91466dd4dbf254316b2420d906ba34e97a35492c5ecd2b&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819727368753373/WhatsApp_Image_2026-07-29_at_2.22.21_AM_10.jpeg?ex=6a6a99ca&is=6a69484a&hm=423309aefd18a1c8923c948fdd0e552dcb2538d089dac552eb0bf73fa36a6e6d&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819727016693940/WhatsApp_Image_2026-07-29_at_2.22.21_AM_9.jpeg?ex=6a6a99ca&is=6a69484a&hm=bb3df8735478c64a0b1f67cce8097d4767dce3eee997530809d21040cf28ae5b&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819689649373517/WhatsApp_Image_2026-07-29_at_2.22.21_AM_8.jpeg?ex=6a6a99c1&is=6a694841&hm=4d4b196a9f85df6d724302e3bb4f5b2900aae4ba500686cafcbf98f820625408&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819689251049513/WhatsApp_Image_2026-07-29_at_2.22.21_AM_7.jpeg?ex=6a6a99c1&is=6a694841&hm=0d931dafef5d2bc2578075a74a3a6242438da2f5cd43817cfa832c30a3c17418&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819688848261230/WhatsApp_Image_2026-07-29_at_2.22.21_AM_6.jpeg?ex=6a6a99c1&is=6a694841&hm=6fbfbb110ba9ea55683abcf939b7d51ba342578dfc13611632816d511f12526a&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819687904808960/WhatsApp_Image_2026-07-29_at_2.22.21_AM_4.jpeg?ex=6a6a99c1&is=6a694841&hm=1286b3b8b2650cf03398478643bab9e497accd356d6acff923cd95d46cac030d&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819688336687236/WhatsApp_Image_2026-07-29_at_2.22.21_AM_5.jpeg?ex=6a6a99c1&is=6a694841&hm=cda2bcab4370e5d7fcb9c61f487ae3c48c842928478943056cd9c0e6bcb9cc8e&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819687288115350/WhatsApp_Image_2026-07-29_at_2.22.21_AM_3.jpeg?ex=6a6a99c1&is=6a694841&hm=bfcea051bec108f793bf600058cffe527d3ab08dad086b8fa938041b7ec20255&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819686361174226/WhatsApp_Image_2026-07-29_at_2.22.21_AM_1.jpeg?ex=6a6a99c1&is=6a694841&hm=4f9515060584ad3fd0f1024589d425fe38c817dcf20cc656c3df4188f2cc3b5b&=&format=webp&width=1524&height=671",
+                "https://media.discordapp.net/attachments/1531819616484196476/1531819686763954277/WhatsApp_Image_2026-07-29_at_2.22.21_AM_2.jpeg?ex=6a6a99c1&is=6a694841&hm=e548ee3e40eae512e1c342ef5cfffcf7a483c68eb1a1aa832b420177e2529075&=&format=webp&width=1524&height=671"
             ],
             description: {
                 tr: "Kartech Panel kalitesiyle tasarlanmış modern iki katlı dubleks proje.",
