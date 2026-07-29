@@ -1,7 +1,7 @@
 {
-"name": "Kartech Panel Structures",
-"short_name": "Kartech Panel",
-"description": "Lüks ve Minimalizmin Birleşimi. SİP Panel Teknolojisi.",
+"name": "ZEMU SIPPAN Structures",
+"short_name": "ZEMU SIPPAN",
+"description": "Lüks ve Minimalizmin Birleşimi. SIP Panel Teknolojisi.",
 "start_url": "./index.html",
 "display": "standalone",
 "background_color": "#0a0a0a",
