@@ -38,7 +38,6 @@ function updateMetaTags(viewOrId, projectData = null) {
     }
     
     document.title = title;
-    
     const metaDesc = document.getElementById('meta-desc');
     if (metaDesc) metaDesc.content = desc;
 }
@@ -52,7 +51,6 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
     if (state.sliderInterval) { clearInterval(state.sliderInterval); state.sliderInterval = null; }
 
     state.currentView = viewOrId;
-    
     if (!fromHash) window.history.pushState(null, '', '#' + viewOrId);
     
     DOM.content.classList.remove('page-fade-in');
@@ -91,6 +89,7 @@ export function changeLanguage(lang) {
     document.documentElement.lang = lang; 
     navigate(state.currentView, null, true);
     renderFooter();
+    checkCookies(true); 
 }
 
 window.navigate = navigate;
@@ -105,7 +104,6 @@ window.filterAndNavigate = function(menuId, catId, evt) {
     if(evt) { evt.preventDefault(); evt.stopPropagation(); }
     if (state.mobileMenuOpen) window.toggleMobileMenu();
     state.activeCategory = catId === 'all' ? null : catId;
-    
     if (state.currentView !== menuId) {
         navigate(menuId, null, true); 
     } else {
@@ -266,45 +264,146 @@ function showToast(message) {
 window.formatPhone = function(input) {
     let x = input.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
     input.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '') + (x[4] ? '-' + x[4] : '');
-    input.classList.remove('border-red-500');
-    const err = document.getElementById(input.id + '-error');
-    if(err) err.classList.add('hidden');
+    window.clearError(input);
 };
 
 window.clearError = function(input) {
     input.classList.remove('border-red-500');
-    const err = document.getElementById(input.id + '-error');
-    if(err) err.classList.add('hidden');
+    if (input.type === 'checkbox') {
+        const err = document.getElementById(input.id + '-error');
+        if (err) err.classList.add('hidden');
+    } else {
+        const err = document.getElementById(input.id + '-error');
+        if(err) err.classList.add('hidden');
+    }
 }
 
-window.submitTestForm = function(evt, formId) {
+// 5 API'Lİ YEDEKLİ (FALLBACK) GÖNDERİM SİSTEMİ
+window.submitTestForm = async function(evt, formId) {
     evt.preventDefault();
     
     const form = document.getElementById(formId);
     const nameInput = document.getElementById(formId + '-name');
     const phoneInput = document.getElementById(formId + '-phone');
+    const emailInput = document.getElementById(formId + '-email');
+    const kvkkInput = document.getElementById(formId + '-kvkk');
     let hasError = false;
 
+    // Doğrulamalar
     if (nameInput.value.trim().length < 3) {
         nameInput.classList.add('border-red-500');
         document.getElementById(formId + '-name-error').classList.remove('hidden');
         hasError = true;
     }
-
     const phoneDigits = phoneInput.value.replace(/\D/g, '');
     if (phoneDigits.length !== 10) {
         phoneInput.classList.add('border-red-500');
         document.getElementById(formId + '-phone-error').classList.remove('hidden');
         hasError = true;
     }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value.trim())) {
+        emailInput.classList.add('border-red-500');
+        document.getElementById(formId + '-email-error').classList.remove('hidden');
+        hasError = true;
+    }
+    if (!kvkkInput.checked) {
+        document.getElementById(formId + '-kvkk-error').classList.remove('hidden');
+        hasError = true;
+    }
 
     if(hasError) return; 
 
-    const message = `SİTE TALEBİ\nİsim: ${nameInput.value}\nTel: ${phoneInput.value}`;
-    window.open(`https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
-    document.getElementById('alert-modal').classList.add('active');
-    form.reset(); 
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnHTML = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Gönderiliyor...';
+    submitBtn.disabled = true;
+
+    // Mail kutusuna şık (tablo) ve anlaşılır gitmesi için Türkçe key'ler (Anahtarlar) kullanıyoruz.
+    const projectName = state.currentView !== 'iletisim' ? state.currentView : 'Genel İletişim (Bize Ulaşın Formu)';
+    const formData = {
+        "Ad_Soyad": nameInput.value.trim(),
+        "Telefon": phoneInput.value,
+        "E_Posta": emailInput.value.trim(),
+        "İlgilenilen_Proje": projectName,
+        "KVKK_Onayı": kvkkInput.checked ? "Okundu ve Onaylandı" : "Onaylanmadı",
+        "Tarih": new Date().toLocaleString('tr-TR'),
+        "_subject": `Yeni Talep: ${nameInput.value.trim()} - Kartech Panel`, // Mailin konusu
+        "_template": "table", // Gelen mailin şık bir tablo olmasını sağlar (FormSubmit için)
+        "_captcha": "false" // Gıcık robot doğrulamasını kapatır
+    };
+
+    const endpoints = siteConfig.formSubmission.endpoints;
+    let isSuccess = false;
+
+    // Yedekli (Fallback) Döngüsü: 1. API çökerse 2.'ye geçer
+    for (let api of endpoints) {
+        try {
+            console.log(`[Form Sistemi] Deneniyor: ${api.name}...`);
+            
+            let payload = { ...formData };
+            if (api.name === "Web3Forms" && api.key) payload.access_key = api.key;
+
+            const response = await fetch(api.url, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                console.log(`✅ [Form Sistemi] Başarılı! E-Posta "${api.name}" servisi üzerinden iletildi.`);
+                isSuccess = true;
+                break; // Bir tanesi başarılı olursa döngüyü durdur (5 kere mail atmasını engeller)
+            }
+        } catch (error) {
+            console.warn(`❌ [Form Sistemi] ${api.name} servisi yanıt vermedi. Bir sonraki sisteme geçiliyor...`);
+        }
+    }
+
+    if (isSuccess) {
+        document.getElementById('alert-modal').classList.add('active');
+        form.reset();
+    } else {
+        alert(state.lang === 'tr' ? "Sistemsel bir sorun oluştu, mail gönderilemedi. Lütfen WhatsApp üzerinden ulaşın." : "System error, mail not sent. Please contact via WhatsApp.");
+    }
+    
+    submitBtn.innerHTML = originalBtnHTML;
+    submitBtn.disabled = false;
 };
+
+// ÇEREZ ONAY BİLDİRİMİ (KVKK)
+function checkCookies(forceUpdate = false) {
+    const existingBanner = document.getElementById('cookie-banner');
+    if (existingBanner) existingBanner.remove();
+
+    if (!localStorage.getItem('cookieAccepted')) {
+        const banner = document.createElement('div');
+        banner.id = 'cookie-banner';
+        banner.className = 'fixed bottom-0 left-0 w-full bg-[#0a0a0a] border-t border-gray-800 z-[1000] p-4 flex flex-col sm:flex-row justify-center items-center gap-4 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] transform translate-y-full transition-transform duration-500';
+        banner.innerHTML = `
+            <p class="text-gray-300 text-xs sm:text-sm font-medium text-center sm:text-left max-w-4xl">${t().cookieText}</p>
+            <button onclick="window.acceptCookies()" class="bg-brand-orange hover:bg-orange-500 text-white font-bold py-2 px-6 sm:px-8 rounded-full text-sm transition-colors whitespace-nowrap shadow-lg">${t().cookieAccept}</button>
+        `;
+        document.body.appendChild(banner);
+        
+        setTimeout(() => {
+            banner.classList.remove('translate-y-full');
+        }, 500);
+    }
+}
+
+window.acceptCookies = function() {
+    localStorage.setItem('cookieAccepted', 'true');
+    const banner = document.getElementById('cookie-banner');
+    if(banner) {
+        banner.classList.add('translate-y-full');
+        setTimeout(() => banner.remove(), 500);
+    }
+}
+
 
 function renderHeader() {
     const menuItems = ['home', 'sip-panel', 'ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri', 'uretim', 'galeri', 'hakkimizda'];
@@ -468,7 +567,6 @@ function renderHomePage() {
                         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
                         <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                         
-                        <!-- PÜRÜZSÜZ KAYDIRMA EKLENDİ (SMOOTH SCROLL TO FEATURED) -->
                         <button onclick="document.getElementById('featured-projects').scrollIntoView({behavior: 'smooth'})" class="mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
                             Projeleri İncele <i class="fas fa-arrow-down ml-3"></i>
                         </button>
@@ -477,7 +575,6 @@ function renderHomePage() {
             </div>
         </div>
         
-        <!-- ID EKLENDİ: featured-projects -->
         <div id="featured-projects" class="bg-white relative z-20 w-full py-16 sm:py-20 md:py-24">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-10 sm:mb-12 flex flex-col md:flex-row justify-between items-start md:items-end">
@@ -600,17 +697,37 @@ function renderContactPage() {
                     </div>
 
                     <div class="bg-[#1a201c] p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl relative">
-                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-6 tracking-tight">${t().getQuoteTitle}</h3>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">${t().getQuoteTitle}</h3>
+                        
+                        <!-- YENİ BİLGİLENDİRME YAZISI EKLENDİ -->
+                        <p class="text-gray-400 text-xs sm:text-sm font-medium mb-6 sm:mb-8 relative z-10">${t().contactFormDesc}</p>
+                        
                         <form id="contact-form" class="space-y-4" onsubmit="window.submitTestForm(event, 'contact-form')">
                             <div>
-                                <input type="text" id="contact-form-name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
+                                <input type="text" id="contact-form-name" name="name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
                                 <div id="contact-form-name-error" class="text-red-500 text-xs sm:text-sm mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorName}</div>
                             </div>
                             <div>
-                                <input type="tel" id="contact-form-phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
+                                <input type="tel" id="contact-form-phone" name="phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
                                 <div id="contact-form-phone-error" class="text-red-500 text-xs sm:text-sm mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorPhone}</div>
                             </div>
-                            <button type="submit" class="w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-4 flex justify-center items-center text-base sm:text-lg btn-press">
+                            <div>
+                                <input type="email" id="contact-form-email" name="email" placeholder="${t().formEmail}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
+                                <div id="contact-form-email-error" class="text-red-500 text-xs sm:text-sm mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorEmail}</div>
+                            </div>
+                            
+                            <!-- KVKK Checkbox -->
+                            <div class="flex items-start mt-4 bg-black/20 p-3 rounded-lg border border-gray-800">
+                                <div class="flex items-center h-5 mt-0.5 shrink-0">
+                                    <input id="contact-form-kvkk" name="kvkk" type="checkbox" onchange="window.clearError(this)" class="w-5 h-5 rounded bg-black/40 border-gray-600 text-brand-orange focus:ring-brand-orange focus:ring-2 cursor-pointer accent-brand-orange">
+                                </div>
+                                <div class="ml-3 text-xs sm:text-sm">
+                                    <label for="contact-form-kvkk" class="text-gray-300 cursor-pointer font-medium leading-relaxed block">${t().kvkkText}</label>
+                                    <div id="contact-form-kvkk-error" class="text-red-500 font-bold text-xs mt-1.5 hidden"><i class="fas fa-exclamation-circle mr-1"></i>${t().kvkkError}</div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-6 flex justify-center items-center text-base sm:text-lg btn-press disabled:opacity-70">
                                 <i class="fas fa-paper-plane mr-2 md:mr-3"></i> ${t().submitBtn}
                             </button>
                         </form>
@@ -786,14 +903,30 @@ function renderProjectDetail(projectId) {
                         
                         <form id="project-form" class="space-y-4 relative z-10" onsubmit="window.submitTestForm(event, 'project-form')">
                             <div>
-                                <input type="text" id="project-form-name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm sm:text-base">
+                                <input type="text" id="project-form-name" name="name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm sm:text-base">
                                 <div id="project-form-name-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorName}</div>
                             </div>
                             <div>
-                                <input type="tel" id="project-form-phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all tracking-wider text-sm sm:text-base">
+                                <input type="tel" id="project-form-phone" name="phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all tracking-wider text-sm sm:text-base">
                                 <div id="project-form-phone-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorPhone}</div>
                             </div>
-                            <button type="submit" class="w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-2 flex justify-center items-center text-sm sm:text-base btn-press">
+                            <div>
+                                <input type="email" id="project-form-email" name="email" placeholder="${t().formEmail}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm sm:text-base">
+                                <div id="project-form-email-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorEmail}</div>
+                            </div>
+                            
+                            <!-- KVKK Checkbox -->
+                            <div class="flex items-start mt-4 bg-black/20 p-3 rounded-lg border border-gray-800">
+                                <div class="flex items-center h-5 mt-0.5 shrink-0">
+                                    <input id="project-form-kvkk" name="kvkk" type="checkbox" onchange="window.clearError(this)" class="w-5 h-5 rounded bg-black/40 border-gray-600 text-brand-orange focus:ring-brand-orange focus:ring-2 cursor-pointer accent-brand-orange">
+                                </div>
+                                <div class="ml-3 text-xs sm:text-sm">
+                                    <label for="project-form-kvkk" class="text-gray-300 cursor-pointer font-medium leading-tight block">${t().kvkkText}</label>
+                                    <div id="project-form-kvkk-error" class="text-red-500 font-bold text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>${t().kvkkError}</div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-4 flex justify-center items-center text-sm sm:text-base btn-press disabled:opacity-70">
                                 <i class="fas fa-paper-plane mr-2"></i> ${t().submitBtn}
                             </button>
                         </form>
