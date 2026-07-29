@@ -1,10 +1,7 @@
 export const siteConfig = {
     // FORM GÖNDERİM AYARLARI (5 YEDEKLİ API SİSTEMİ)
     formSubmission: {
-        // Maillerin düşeceği ana adres (Buradan tek tıkla değiştirebilirsiniz)
         targetEmail: "umuttrtgi@gmail.com",
-        
-        // Sistem sırayla bu API'leri dener. Biri çökerse diğerine geçer.
         endpoints: [
             { name: "FormSubmit", url: "https://formsubmit.co/ajax/umuttrtgi@gmail.com", type: "ajax" },
             { name: "Formspree", url: "https://formspree.io/f/YEDEK_ID_YAZIN", type: "json" },
@@ -19,6 +16,7 @@ export const siteConfig = {
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@kartechpanel.com",
+        mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193307.7479707908!2d30.222728253198905!3d40.78161725359738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ccb2b73bc5e90d%3A0x63351ec30c4f8d22!2sSakarya!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str",
         social: { 
             facebook: "#", 
             youtube: "#", 
@@ -160,6 +158,29 @@ export const siteConfig = {
                 "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SİP Panel",
                 "ev-modelleri": "Ev Modellerimiz", "bahce-yapilari": "Bahçe Yapılarımız", "garaj-sistemleri": "Garaj Sistemlerimiz"
             },
+
+            relatedProjectsTitle: "Bunlar da İlginizi Çekebilir",
+            processTitle: "Nasıl Çalışıyoruz?",
+            processSteps: [
+                { icon: "fa-comments", title: "Talep & Keşif", desc: "İhtiyaçlarınızı dinliyor ve arsanıza en uygun mimari çözümü tasarlıyoruz." },
+                { icon: "fa-pencil-ruler", title: "Projelendirme", desc: "Mimarlarımız projenizi 3D olarak çizip tarafınıza kesin fiyat teklifi sunar." },
+                { icon: "fa-cogs", title: "Fabrika Üretimi", desc: "Milimetrik hassasiyetle SİP panellerinizin kesim ve ebatlaması yapılır." },
+                { icon: "fa-hammer", title: "Hızlı Montaj", desc: "Hava şartlarına takılmadan haftalar içinde yapınız anahtar teslim kurulur." }
+            ],
+            
+            faqTitle: "Sıkça Sorulan Sorular",
+            faq: [
+                { q: "SIP Panel Nedir?", a: "SIP panel, iki adet yapısal dış cephe kaplaması arasına sıkıştırılmış yüksek yoğunluklu polistiren köpükten oluşan, yalıtım özelliği yüksek, hafif ve dayanıklı bir yapı elemanıdır. İnşaat sektöründe, özellikle de prefabrik ev yapımında sıklıkla tercih edilir." },
+                { q: "SIP Panelin En Büyük Avantajları Nelerdir?", a: "SIP panelin en önemli avantajları arasında yüksek yalıtım özelliği, hızlı inşaat süresi, dayanıklılık, hafiflik ve çevre dostu olması sayılabilir. Bu sayede enerji tasarrufu sağlanır, inşaat maliyetleri düşer ve daha konforlu yaşam alanları oluşturulur." },
+                { q: "SIP Panel Evler Depreme Dayanıklı mıdır?", a: "Evet, SIP panel evler depreme karşı oldukça dayanıklıdır. Panelin bütünleşik yapısı, yüksek mukavemeti ve esnekliği sayesinde depremde oluşabilecek hasarları minimize eder." },
+                { q: "SIP Panel Evlerin Ömrü Ne Kadardır?", a: "Doğru koşullarda kullanıldığında SIP panel evlerin ömrü 100 yılı aşabilir. Ancak bu, kullanılan malzemelerin kalitesine, bakımına ve iklim koşullarına göre değişiklik gösterebilir." },
+                { q: "SIP Panel Evlerin Maliyeti Nedir?", a: "SIP panel evlerin maliyeti, projenin büyüklüğüne, kullanılan malzemelere, ek özelliklere ve bölgeye göre değişiklik gösterir. Ancak genel olarak geleneksel yöntemlerle yapılan evlere göre daha ekonomik olduğu söylenebilir. Uzun vadede enerji tasarrufu sayesinde yatırımın kısa sürede geri döndüğü görülür." },
+                { q: "SIP Panel Evlerde Nem Problemi Olur mu?", a: "Doğru izolasyon ve havalandırma sistemi kullanıldığında SIP panel evlerde nem problemi yaşanmaz. SIP panelin yapısı nemi emmez ve dışarı atar." },
+                { q: "SIP Panel Evlerde Yangın Riski Var mıdır?", a: "SIP panelin iç kısmındaki polistiren köpük yanıcıdır. Ancak dış yüzeydeki yapısal malzemeler ve yangına dayanıklı kaplama sayesinde yangına karşı güvenlidir. Ayrıca yangın durumunda dumanın yayılmasını yavaşlatır ve yangının diğer bölümlere sıçramasını engeller." },
+                { q: "SIP Panel Evlerde Ses Yalıtımı Nasıldır?", a: "SIP panel, yüksek yoğunluklu polistiren köpük sayesinde mükemmel bir ses yalıtımı sağlar. Dışarıdan gelen sesleri ve içeriden dışarıya çıkan sesleri önemli ölçüde azaltır. Böylece daha sessiz ve huzurlu bir yaşam alanı sunar." },
+                { q: "SIP Panel Evlerin İnşaatı Ne Kadar Sürer?", a: "SIP panel evlerin inşaatı, geleneksel yöntemlere göre çok daha kısa sürede tamamlanır. Bu, panelin hafifliği ve kolay montaj edilebilmesi sayesinde mümkündür. Projenin büyüklüğüne göre değişmekle birlikte, ortalama bir SIP panel evin inşaatı birkaç hafta içinde tamamlanabilir." },
+                { q: "SIP Panel Evlerde Böceklenme Olur mu?", a: "SIP panelin yapısı böceklerin barınmasına uygun değildir. Ancak her yapı gibi SIP panel evlerde de düzenli bakım yapılması önemlidir." }
+            ],
             
             hakkimizdaData: {
                 title: "Biz Kimiz?",
@@ -262,6 +283,29 @@ export const siteConfig = {
                 "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
                 "ev-modelleri": "House Models", "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
             },
+
+            relatedProjectsTitle: "You May Also Like",
+            processTitle: "How We Work?",
+            processSteps: [
+                { icon: "fa-comments", title: "Request & Survey", desc: "We listen to your needs and design the best architectural solution." },
+                { icon: "fa-pencil-ruler", title: "Design", desc: "Our architects draw your project in 3D and offer a precise quote." },
+                { icon: "fa-cogs", title: "Factory Production", desc: "SIP panels are cut and sized with millimetric precision." },
+                { icon: "fa-hammer", title: "Fast Assembly", desc: "Your structure is delivered turnkey in weeks, unaffected by weather." }
+            ],
+            
+            faqTitle: "Frequently Asked Questions",
+            faq: [
+                { q: "What is a SIP Panel?", a: "A SIP panel is a highly insulating, lightweight, and durable building element consisting of high-density polystyrene foam sandwiched between two structural exterior claddings. It is frequently preferred in the construction industry, especially in prefabricated house construction." },
+                { q: "What are the Main Advantages of SIP Panels?", a: "The most important advantages of SIP panels include high insulation properties, fast construction time, durability, lightness, and eco-friendliness. This saves energy, reduces construction costs, and creates more comfortable living spaces." },
+                { q: "Are SIP Panel Houses Earthquake Resistant?", a: "Yes, SIP panel houses are highly resistant to earthquakes. The integrated structure, high strength, and flexibility of the panel minimize potential damage during an earthquake." },
+                { q: "What is the Lifespan of SIP Panel Houses?", a: "When used under proper conditions, the lifespan of SIP panel houses can exceed 100 years. However, this may vary depending on the quality of materials used, maintenance, and climate conditions." },
+                { q: "What is the Cost of SIP Panel Houses?", a: "The cost varies depending on the size of the project, materials used, additional features, and region. However, in general, they are more economical than houses built with traditional methods. Thanks to long-term energy savings, the investment pays off in a short time." },
+                { q: "Is There a Moisture Problem in SIP Panel Houses?", a: "When a proper insulation and ventilation system is used, there are no moisture problems. The structure of the SIP panel does not absorb moisture and expels it." },
+                { q: "Is There a Fire Risk in SIP Panel Houses?", a: "The polystyrene foam inside the SIP panel is flammable. However, thanks to the structural materials on the outer surface and the fire-resistant coating, it is safe against fire. It also slows down the spread of smoke in the event of a fire." },
+                { q: "How is the Sound Insulation in SIP Panel Houses?", a: "The SIP panel provides excellent sound insulation thanks to the high-density polystyrene foam. It significantly reduces sounds coming from outside and offers a quieter, more peaceful living space." },
+                { q: "How Long Does the Construction of SIP Panel Houses Take?", a: "Construction is completed in a much shorter time compared to traditional methods due to the lightness and easy installation of the panel. On average, construction can be completed in a few weeks." },
+                { q: "Do Bugs/Insects Infest SIP Panel Houses?", a: "The structure of the SIP panel is not suitable for insects to harbor. However, as with every structure, regular maintenance is important." }
+            ],
 
             hakkimizdaData: {
                 title: "Who We Are",
