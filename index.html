@@ -15,6 +15,21 @@
     <link rel="apple-touch-icon" href="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
     <link rel="icon" type="image/png" href="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
     
+    <!-- YENİ: Dinamik OG, Twitter ve SEO Etiketleri -->
+    <meta property="og:type" content="website">
+    <meta id="og-url" property="og:url" content="https://kartechpanel.com/">
+    <meta id="og-title" property="og:title" content="Kartech Panel Structures House Systems">
+    <meta id="og-description" property="og:description" content="Lüks ve Minimalizmin Birleşimi. SİP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.">
+    <meta id="og-image" property="og:image" content="https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <link id="canonical-link" rel="canonical" href="https://kartechpanel.com/">
+    <link id="alternate-tr" rel="alternate" hreflang="tr" href="https://kartechpanel.com/">
+    <link id="alternate-en" rel="alternate" hreflang="en" href="https://kartechpanel.com/">
+    
+    <!-- YENİ: Yapısal Veri (Schema.org / JSON-LD) -->
+    <script id="schema-ld" type="application/ld+json"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -49,6 +64,13 @@
         
         .btn-press { transition: all 0.15s ease; cursor: pointer; }
         .btn-press:active { transform: scale(0.92); }
+        
+        /* YENİ: Harekete Geçirici Mesaj (CTA) Odaklaması - Zarif ve Hafif Parıltı */
+        @keyframes pulse-soft {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 0 12px rgba(243, 156, 18, 0); transform: scale(1.02); }
+        }
+        .cta-pulse { animation: pulse-soft 3s infinite cubic-bezier(0.66, 0, 0, 1); }
         
         .floating-btn {
             position: fixed; z-index: 50;
@@ -155,7 +177,6 @@
 </head>
 
 <body class="antialiased flex flex-col min-h-screen">
-
     <header id="main-header" class="bg-transparent fixed top-0 w-full z-40 transition-all duration-300"></header>
     <main id="app-content" class="flex-grow w-full page-fade-in bg-white"></main>
     <footer id="main-footer" class="bg-[#0a0a0a] text-white mt-auto"></footer>
