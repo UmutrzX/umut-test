@@ -93,21 +93,25 @@ export const siteConfig = {
             pageMenu: "konutlar", 
             categoryId: "ev-standart",
             mainImage: "https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg",
-            gallery: ["https://i.pinimg.com/1200x/be/d6/bf/bed6bfbffcea556193c1a2b9c7ce4b92.jpg"],
+            gallery: [
+                     ],
             description: {
                 tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.",
                 en: "A stylish and useful house design."
             }
         },
         {
-            id: "okul-projesi-1",
-            title: "Modern Okul Binası",
+            id: "ana okul-projesi-1",
+            title: "Ana Okul",
             titleEn: "Modern School Building",
             area: 450, rooms: 12,
             pageMenu: "egitim-ticari", 
             categoryId: "et-okul",
-            mainImage: "https://i.pinimg.com/1200x/20/6c/fb/206cfb08ec4f51e04cf911961d56eab0.jpg",
-            gallery: [],
+            mainImage: "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-4.jpg",
+            gallery: ["https://www.sipeurope.eu/wp-content/uploads/2020/06/19-Rimavska-Sobota-Slovakia-sip-panel-building-3D.jpg",
+                      "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-1.jpg",
+                     "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-2.jpg"
+                     ],
             description: {
                 tr: "Eğitim kurumları için geniş, iyi yalıtımlı ve hızlı kurulan SIP panel yapılar.",
                 en: "Spacious, well-insulated, and fast-built SIP panel structures for educational institutions."
