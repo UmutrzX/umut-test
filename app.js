@@ -98,9 +98,9 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
             } else if (viewOrId === 'iletisim') {
                 updateMetaTags(viewOrId); renderContactPage();
                 state.pageCache[cacheKey] = DOM.content.innerHTML;
-            } else if (['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(viewOrId)) {
+            } else if (['konutlar', 'egitim-ticari', 'bahce-yapilari', 'garaj-yapilari'].includes(viewOrId)) {
                 updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
-            } else if (['uretim', 'galeri'].includes(viewOrId)) {
+            } else if (['galeri'].includes(viewOrId)) {
                 updateMetaTags(viewOrId); renderGenericPage(viewOrId);
                 state.pageCache[cacheKey] = DOM.content.innerHTML;
             } else {
@@ -154,8 +154,8 @@ window.filterAndNavigate = function(menuId, catId, evt) {
 window.filterCategory = function(catId, evt) {
     if(evt) evt.preventDefault();
     state.activeCategory = catId === 'all' ? null : catId;
-    if (!['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(state.currentView)) {
-        state.currentView = 'ev-modelleri';
+    if (!['konutlar', 'egitim-ticari', 'bahce-yapilari', 'garaj-yapilari'].includes(state.currentView)) {
+        state.currentView = 'konutlar';
     }
     renderProjectsPage(state.currentView);
 };
@@ -463,10 +463,10 @@ function sendFormWithFallback(data, apiIndex, btn, form) {
 }
 
 function renderHeader() {
-    const menuItems = ['home', 'sip-panel', 'ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri', 'uretim', 'galeri', 'hakkimizda'];
+    const menuItems = ['home', 'sip-panel', 'konutlar', 'egitim-ticari', 'bahce-yapilari', 'garaj-yapilari', 'galeri', 'hakkimizda'];
     
     const overlayMenuHTML = menuItems.map(id => {
-        const isProjectMenu = ['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(id);
+        const isProjectMenu = ['konutlar', 'egitim-ticari', 'bahce-yapilari', 'garaj-yapilari'].includes(id);
         const label = t().menu[id];
         
         if (isProjectMenu) {
@@ -657,12 +657,20 @@ function renderHomePage() {
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-3 sm:mb-4 tracking-tight">${state.lang === 'tr' ? 'Tüm Yapı Çözümlerimiz' : 'Our Building Solutions'}</h2>
                     <div class="w-16 md:w-24 h-1.5 bg-brand-orange rounded-full mx-auto"></div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-                    <a href="#ev-modelleri" onclick="navigate('ev-modelleri', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block">
-                        <img src="${siteConfig.projects.find(p=>p.pageMenu==='ev-modelleri')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Ev Modelleri" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                    <a href="#konutlar" onclick="navigate('konutlar', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block">
+                        <img src="${siteConfig.projects.find(p=>p.pageMenu==='konutlar')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Konutlar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 w-full p-6 sm:p-8">
-                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2">${t().menu['ev-modelleri']}</h3>
+                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2">${t().menu['konutlar']}</h3>
+                            <span class="text-brand-orange font-medium flex items-center group-hover:text-white transition-colors">${state.lang === 'tr' ? 'Modelleri Gör' : 'View Models'} <i class="fas fa-arrow-right ml-2"></i></span>
+                        </div>
+                    </a>
+                    <a href="#egitim-ticari" onclick="navigate('egitim-ticari', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block">
+                        <img src="${siteConfig.projects.find(p=>p.pageMenu==='egitim-ticari')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Eğitim ve Ticari Yapılar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 w-full p-6 sm:p-8">
+                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2">${t().menu['egitim-ticari']}</h3>
                             <span class="text-brand-orange font-medium flex items-center group-hover:text-white transition-colors">${state.lang === 'tr' ? 'Modelleri Gör' : 'View Models'} <i class="fas fa-arrow-right ml-2"></i></span>
                         </div>
                     </a>
@@ -674,11 +682,11 @@ function renderHomePage() {
                             <span class="text-brand-orange font-medium flex items-center group-hover:text-white transition-colors">${state.lang === 'tr' ? 'Modelleri Gör' : 'View Models'} <i class="fas fa-arrow-right ml-2"></i></span>
                         </div>
                     </a>
-                    <a href="#garaj-sistemleri" onclick="navigate('garaj-sistemleri', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block">
-                        <img src="${siteConfig.projects.find(p=>p.pageMenu==='garaj-sistemleri')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Garaj Sistemleri" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <a href="#garaj-yapilari" onclick="navigate('garaj-yapilari', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block">
+                        <img src="${siteConfig.projects.find(p=>p.pageMenu==='garaj-yapilari')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Garaj Yapıları" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 w-full p-6 sm:p-8">
-                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2">${t().menu['garaj-sistemleri']}</h3>
+                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2">${t().menu['garaj-yapilari']}</h3>
                             <span class="text-brand-orange font-medium flex items-center group-hover:text-white transition-colors">${state.lang === 'tr' ? 'Modelleri Gör' : 'View Models'} <i class="fas fa-arrow-right ml-2"></i></span>
                         </div>
                     </a>
@@ -764,7 +772,7 @@ function renderHomePage() {
             </div>
         </div>
 
-        <!-- SSS (FAQ) Alanı (İki Sütunlu Grid Layout) -->
+        <!-- SSS (FAQ) Alanı -->
         <div class="bg-white relative z-20 w-full py-16 sm:py-24 border-t border-gray-200">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12 sm:mb-16">
@@ -885,7 +893,7 @@ function renderSipPanelPage() {
                     <div class="border-t border-gray-100 pt-4">${specsHTML}</div>
                 </div>
 
-                <!-- YENİ BÜYÜK CTA BANDI (ORTALANMIŞ VE SİMETRİK) -->
+                <!-- YENİ BÜYÜK CTA BANDI (EN ALTTA ORTALANMIŞ) -->
                 <div class="bg-gray-50 rounded-[2rem] p-8 sm:p-12 md:p-16 border border-gray-200 text-center relative overflow-hidden mt-16 sm:mt-24">
                      <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4 relative z-10">${state.lang === 'tr' ? 'Projenizde SIP Panel Kullanmaya Hazır mısınız?' : 'Ready to Use SIP Panels in Your Project?'}</h3>
                      <p class="text-gray-600 text-lg font-medium mb-8 relative z-10 max-w-2xl mx-auto">${state.lang === 'tr' ? 'Hemen uzman ekibimizle iletişime geçin, size özel çözümleri ve fiyat avantajlarını konuşalım.' : 'Contact our expert team now to discuss custom solutions and pricing advantages.'}</p>
@@ -1238,7 +1246,7 @@ function renderProjectDetail(projectId) {
             <div class="w-full h-px bg-gray-200 my-12 sm:my-16"></div>
 
             <!-- ALT KISIM: İLETİŞİM FORMU -->
-            <div class="max-w-4xl mx-auto">
+        <div class="max-w-4xl mx-auto">
                 
                 <!-- FORM ALANI -->
                 <div class="bg-white mb-10">
@@ -1332,11 +1340,12 @@ function renderFooter() {
                     <p class="text-gray-400 text-sm leading-relaxed max-w-xs font-medium">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                 </div>
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <h4 class="text-white font-bold text-lg mb-5 tracking-wide uppercase text-sm">${t().menu['ev-modelleri'] || 'Projeler'}</h4>
+                    <h4 class="text-white font-bold text-lg mb-5 tracking-wide uppercase text-sm">${t().menu['konutlar'] || 'Projeler'}</h4>
                     <ul class="space-y-3 text-gray-400 font-medium">
-                        <li><a href="#ev-modelleri" onclick="navigate('ev-modelleri', event)" class="hover:text-brand-orange transition-colors">${t().menu['ev-modelleri']}</a></li>
+                        <li><a href="#konutlar" onclick="navigate('konutlar', event)" class="hover:text-brand-orange transition-colors">${t().menu['konutlar']}</a></li>
+                        <li><a href="#egitim-ticari" onclick="navigate('egitim-ticari', event)" class="hover:text-brand-orange transition-colors">${t().menu['egitim-ticari']}</a></li>
                         <li><a href="#bahce-yapilari" onclick="navigate('bahce-yapilari', event)" class="hover:text-brand-orange transition-colors">${t().menu['bahce-yapilari']}</a></li>
-                        <li><a href="#garaj-sistemleri" onclick="navigate('garaj-sistemleri', event)" class="hover:text-brand-orange transition-colors">${t().menu['garaj-sistemleri']}</a></li>
+                        <li><a href="#garaj-yapilari" onclick="navigate('garaj-yapilari', event)" class="hover:text-brand-orange transition-colors">${t().menu['garaj-yapilari']}</a></li>
                         <li><a href="#sip-panel" onclick="navigate('sip-panel', event)" class="hover:text-brand-orange transition-colors">${t().menu['sip-panel']}</a></li>
                     </ul>
                 </div>
