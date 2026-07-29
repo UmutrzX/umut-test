@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kartech-pwa-v2'; // Sürümü güncelledik (v2)
+const CACHE_NAME = 'kartech-pwa-v3'; // Sürümü güncelledik
 const urlsToCache = [
   './',
   './index.html',
