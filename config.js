@@ -1,7 +1,10 @@
 export const siteConfig = {
     // FORM GÖNDERİM AYARLARI (5 YEDEKLİ API SİSTEMİ)
     formSubmission: {
+        // Maillerin düşeceği ana adres (Buradan tek tıkla değiştirebilirsiniz)
         targetEmail: "umuttrtgi@gmail.com",
+        
+        // Sistem sırayla bu API'leri dener. Biri çökerse diğerine geçer.
         endpoints: [
             { name: "FormSubmit", url: "https://formsubmit.co/ajax/umuttrtgi@gmail.com", type: "ajax" },
             { name: "Formspree", url: "https://formspree.io/f/YEDEK_ID_YAZIN", type: "json" },
@@ -154,36 +157,63 @@ export const siteConfig = {
 
             pageTitles: {
                 "home": "Kartech Panel", "iletisim": "Bize Ulaşın", "uretim": "Üretim Tesisimiz",
-                "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Neden SİP Panel?",
+                "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SİP Panel",
                 "ev-modelleri": "Ev Modellerimiz", "bahce-yapilari": "Bahçe Yapılarımız", "garaj-sistemleri": "Garaj Sistemlerimiz"
             },
             
+            hakkimizdaData: {
+                title: "Biz Kimiz?",
+                paragraphs: [
+                    "Kartech Panel, müşteri gereksinimlerine göre SİP (Yapısal Yalıtımlı Panel) panelleri tasarlayan, üreten ve ebatlayan, yenilikçi ve amaca yönelik bir yapı şirketidir.",
+                    "Panellerimiz için yalnızca en üst sınıf malzemeleri kullanıyor, panel üretimiyle ilgili tüm süreçleri kontrollü sıcaklık ve iklim koşullarında gerçekleştirerek nihai ürünün kalitesini garanti altına alıyoruz.",
+                    "Hem konsept ev modellerimizi tercih eden bireysel müşterilerimizle hem de kendi mimari projelerini hayata geçirmek isteyenlerle çalışıyoruz. Toplu konut projeleri geliştiren veya yüksek hacimli panel tedariği arayan kurumsal müşterilerimize, piyasadaki en kaliteli ürünü en rekabetçi fiyatlarla sunuyoruz."
+                ],
+                techTitle: "Üretim ve Teknoloji Gücümüz",
+                features: [
+                    { 
+                        icon: "fa-layer-group", 
+                        title: "Yarı Otomatik Pres Hattı", 
+                        desc: "Panellerimiz, yapıştırıcının tüm yüzeye kusursuz dağılmasını ve standartlara uygun preslenmesini sağlayan modern makinelerde üretilir. 4 metre uzunluğa ve 1.5 metre genişliğe kadar standart dışı devasa panelleri tek parça halinde işleyebiliriz." 
+                    },
+                    { 
+                        icon: "fa-laptop-code", 
+                        title: "Hassas CNC Teknolojisi", 
+                        desc: "Panellerin ebatlanması ve son işlemleri, milimetrenin onda birine kadar hassasiyet sunan CNC kesme ve frezeleme makinelerinde yapılır. Bu sıfır hata toleransı, şantiyedeki kurulum hızını inanılmaz boyutlara taşır." 
+                    },
+                    { 
+                        icon: "fa-cogs", 
+                        title: "Mitek Posi-Joist Altyapısı", 
+                        desc: "Kiriş üretiminde dünyanın kabul ettiği Mitek Posi-Joist teknolojisini kullanarak, üst katlar ve düz çatılar için müşterilerimize ekstra hafif, yenilikçi ve sarsılmaz çözümler sunuyoruz." 
+                    }
+                ]
+            },
+
             sipPanelData: {
                 heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
                 introTitle: "SİP Panel Nedir?",
-                introText: "SIP panel, yapı sektöründe son yıllarda hızla popülerleşen, yapısal yalıtımlı panel anlamına gelir. Dış yüzeylerinde taşıyıcı görevi gören OSB levhalar ve iç kısmında ise yüksek yoğunluklu yalıtım malzemesi bulunan bu paneller, inşaat süreçlerini hızlandırırken aynı zamanda enerji verimli ve dayanıklı yapılar oluşturmayı sağlar.<br><br>Basitçe söylemek gerekirse, iki adet OSB (Oriented Strand Board) levhanın arasına yüksek yoğunluklu bir yalıtım malzemesi sıkıştırılmasıyla elde edilen bir yapı elemanıdır. Yalıtım malzemesi olarak genellikle poliüretan (PUR), polistiren (EPS) veya poliizosiyanurat (PIR) kullanılır. Bu panelin en önemli özelliği, hem taşıyıcı hem de yalıtım görevini aynı anda üstlenmesidir.",
+                introText: "SIP panel, yapı sektöründe son yıllarda hızla popülerleşen, yapısal yalıtımlı panel anlamına gelir. Dış yüzeylerinde taşıyıcı görevi gören OSB levhalar ve iç kısmında ise yüksek yoğunluklu yalıtım malzemesi (genellikle poliüretan, polistiren veya poliizosiyanurat) bulunan bu paneller, inşaat süreçlerini hızlandırırken aynı zamanda enerji verimli ve dayanıklı yapılar oluşturmayı sağlar.<br><br>Bu panelin en önemli özelliği, standart yapı elemanlarının aksine hem yük taşıyıcı iskelet hem de kusursuz bir yalıtım görevini aynı anda üstlenmesidir.",
                 advantagesTitle: "SİP Panelin Avantajları",
                 advantages: [
                     { icon: "fa-stopwatch", title: "Hızlı ve Kolay Montaj", desc: "Büyük boyutlu ve hafif olması sayesinde geleneksel inşaat yöntemlerine göre çok daha kısa sürede yapı inşa etmeye imkan tanır." },
                     { icon: "fa-temperature-low", title: "Yüksek Isı Yalıtımı", desc: "İçerisindeki yalıtım malzemesi sayesinde enerji tasarrufu sağlar ve ısı kayıplarını minimuma indirir." },
                     { icon: "fa-volume-mute", title: "Ses Yalıtımı", desc: "Dışarıdan gelen sesleri önemli ölçüde azaltarak daha sessiz ve konforlu yaşam alanları sunar." },
-                    { icon: "fa-shield-alt", title: "Dayanıklılık", desc: "Yüksek mukavemeti sayesinde deprem gibi doğal afetlere karşı daha dayanıklıdır." },
+                    { icon: "fa-shield-alt", title: "Sarsılmaz Dayanıklılık", desc: "Yüksek mukavemeti sayesinde deprem gibi doğal afetlere karşı esnek duruş sergiler ve yıkılmaz." },
                     { icon: "fa-tint-slash", title: "Su Geçirmezlik", desc: "Özellikle dış cephelerde kullanıldığında su sızdırmazlık özelliği sayesinde binayı dış etkenlere karşı korur." },
                     { icon: "fa-leaf", title: "Çevre Dostu", desc: "Üretiminde kullanılan malzemeler ve geri dönüştürülebilir olması çevreye duyarlı bir yapı malzemesi olduğunu gösterir." },
-                    { icon: "fa-fire-extinguisher", title: "Yangına Dayanıklılık", desc: "Yalıtım malzemesinin türüne göre yangına karşı farklı dayanım seviyelerine sahiptir." },
-                    { icon: "fa-sun", title: "Biyoklimatik Tasarım", desc: "Yapının iklim koşullarına uygun olarak tasarlanmasına olanak tanır." }
+                    { icon: "fa-fire-extinguisher", title: "Yangına Dayanıklılık", desc: "Kullanılan yalıtım malzemesinin türüne göre yangına karşı güvenli alev yürütmez seviyelere sahiptir." },
+                    { icon: "fa-sun", title: "Biyoklimatik Tasarım", desc: "Yapının bulunduğu bölgedeki sert iklim koşullarına tam uyum sağlayacak şekilde tasarlanmasına olanak tanır." }
                 ],
-                usageAreasTitle: "SİP Panelin Kullanım Alanları",
+                usageAreasTitle: "Kullanım Alanları",
                 usageAreas: [
                     "Prefabrik Evler: Hızlı ve ekonomik konut çözümleri sunar.",
                     "Bungalov Evler: Tatil evleri, bahçe evleri gibi küçük ölçekli yapıların inşasında kullanılır.",
                     "Çatı Sistemleri: Yüksek yalıtım özelliği sayesinde çatı katlarının daha verimli kullanılmasını sağlar.",
-                    "Duvar Sistemleri: İç ve dış duvarlarda kullanılabilen çok yönlü bir malzemedir.",
-                    "Zemin Sistemleri: Yüksek taşıyıcı kapasitesi sayesinde zemin döşemelerinde de tercih edilir.",
+                    "Duvar Sistemleri: İç ve dış duvarlarda kullanılabilen, inceliğiyle metrekare kazandıran malzemedir.",
+                    "Zemin Sistemleri: Yüksek taşıyıcı kapasitesi sayesinde zemin döşemelerinde tercih edilir.",
                     "Ticari Yapılar: Ofis binaları, alışveriş merkezleri gibi büyük ölçekli yapılarda da kullanılır."
                 ],
-                futureTitle: "SİP Panelin Geleceği ve Sonuç",
-                futureText: "SIP paneller, inşaat sektöründe sürdürülebilirlik ve enerji verimliliği konularına olan ilginin artmasıyla birlikte daha da önem kazanmaktadır. Özellikle küresel ısınma ve enerji kaynaklarının sınırlı olması gibi sorunlar, SIP panellerin kullanım alanlarını genişletmektedir. Gelecekte, daha hafif, daha güçlü ve daha çevre dostu SIP panellerin geliştirilmesi beklenmektedir.<br><br>Sonuç olarak; SIP panel, inşaat sektöründe hızlı, enerji verimli ve dayanıklı yapılar oluşturmak için kullanılan modern bir yapı malzemesidir. Hızlı montajı, yüksek yalıtım performansı ve çevre dostu özellikleri sayesinde geleceğin yapı malzemelerinden biri olarak görülmektedir.",
+                futureTitle: "SİP Panelin Geleceği",
+                futureText: "SIP paneller, inşaat sektöründe sürdürülebilirlik ve enerji verimliliği konularına olan ilginin artmasıyla birlikte daha da önem kazanmaktadır. Özellikle küresel ısınma ve enerji kaynaklarının daralması, SIP panellerin sağladığı izolasyon devrimini zorunlu kılmaktadır. Sonuç olarak; SIP panel, hızlı, çevreci ve dayanıklı yapılar oluşturmak için geleceğin rakipsiz yapı malzemesi olarak görülmektedir.",
                 specsTitle: "Teknik Özellikler ve Performans",
                 specsDesc: "Projelerimizde kullandığımız SİP paneller uluslararası standartlarda üretilmekte olup zorlu iklim koşullarına karşı test edilmiştir.",
                 technicalSpecs: [
@@ -198,8 +228,7 @@ export const siteConfig = {
 
             pageContents: {
                 "uretim": "Fabrikamızda en son teknoloji ile SİP panellerin üretimini gerçekleştiriyoruz.",
-                "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.",
-                "hakkimizda": "Yılların verdiği tecrübe ile yenilikçi yapı teknolojilerini Türkiye ile buluşturuyoruz."
+                "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır."
             },
             footerText: "© 2026 Kartech Panel Structures House Systems. Tüm hakları saklıdır."
         },
@@ -233,6 +262,34 @@ export const siteConfig = {
                 "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
                 "ev-modelleri": "House Models", "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
             },
+
+            hakkimizdaData: {
+                title: "Who We Are",
+                paragraphs: [
+                    "Kartech Panel is an innovative and purpose-driven building company that designs, manufactures, and sizes SIP (Structural Insulated Panels) according to customer requirements.",
+                    "We use only top-tier materials for our panels, conducting all panel production processes in controlled temperature and climate environments to guarantee the highest quality of the final product.",
+                    "We work with both individual clients choosing from our concept home models and those looking to bring their own architectural projects to life. For corporate clients developing large-scale housing projects or seeking high-volume panel supplies, we offer the highest quality product at the most competitive market prices."
+                ],
+                techTitle: "Our Production & Technology Power",
+                features: [
+                    { 
+                        icon: "fa-layer-group", 
+                        title: "Semi-Automatic Press Line", 
+                        desc: "Our panels are produced on modern machines that ensure perfect adhesive distribution and standard-compliant pressing. We can process non-standard, massive panels up to 4 meters in length and 1.5 meters in width as a single piece." 
+                    },
+                    { 
+                        icon: "fa-laptop-code", 
+                        title: "Precision CNC Technology", 
+                        desc: "Panel sizing and finishing are performed on precision CNC cutting and milling machines, accurate to a tenth of a millimeter. This zero-fault tolerance significantly accelerates installation speed on site." 
+                    },
+                    { 
+                        icon: "fa-cogs", 
+                        title: "Mitek Posi-Joist Infrastructure", 
+                        desc: "By utilizing globally recognized Mitek Posi-Joist technology in truss manufacturing, we offer our clients ultra-light, innovative, and robust solutions for upper floors and flat roofs." 
+                    }
+                ]
+            },
+
             sipPanelData: {
                 heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
                 introTitle: "What is a SIP Panel?",
@@ -248,7 +305,7 @@ export const siteConfig = {
                     { icon: "fa-fire-extinguisher", title: "Fire Resistance", desc: "Offers various levels of fire resistance depending on the insulation core." },
                     { icon: "fa-sun", title: "Bioclimatic Design", desc: "Allows structures to be designed in harmony with their climate conditions." }
                 ],
-                usageAreasTitle: "Usage Areas of SIP Panels",
+                usageAreasTitle: "Usage Areas",
                 usageAreas: [
                     "Prefabricated Houses: Quick and economical residential solutions.",
                     "Bungalows: Ideal for small-scale structures like holiday and garden homes.",
@@ -258,7 +315,7 @@ export const siteConfig = {
                     "Commercial Structures: Used in large-scale buildings like offices and malls."
                 ],
                 futureTitle: "The Future & Conclusion",
-                futureText: "As interest in sustainability and energy efficiency grows in the construction industry, SIP panels are becoming increasingly vital. The challenges of global warming and limited energy resources are expanding the applications of SIPs. In the future, we expect the development of even lighter, stronger, and more eco-friendly panels.<br><br>In conclusion, SIP panels are modern building materials that create fast, energy-efficient, and durable structures, firmly establishing themselves as the building material of the future.",
+                futureText: "As interest in sustainability and energy efficiency grows in the construction industry, SIP panels are becoming increasingly vital. The challenges of global warming and limited energy resources are expanding the applications of SIPs. In conclusion, SIP panels are modern building materials that create fast, energy-efficient, and durable structures, firmly establishing themselves as the building material of the future.",
                 specsTitle: "Technical Specifications",
                 specsDesc: "Tested for extreme weather conditions.",
                 technicalSpecs: [
@@ -272,8 +329,7 @@ export const siteConfig = {
             },
             pageContents: {
                 "uretim": "Information about our production facility.",
-                "galeri": "Gallery coming soon.",
-                "hakkimizda": "About Kartech Panel Structures House Systems."
+                "galeri": "Gallery coming soon."
             },
             footerText: "© 2026 Kartech Panel Structures House Systems. All rights reserved."
         }
