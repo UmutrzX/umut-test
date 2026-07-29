@@ -59,6 +59,23 @@ export const siteConfig = {
     },
 
     projects: [
+                {
+            id: "Test ev -001",
+            title: "Köy evleri",
+            titleEn: "Calanthe Model - 145",
+            area: 54, rooms: 4,
+            pageMenu: "konutlar", 
+            categoryId: "ev-standart",
+            mainImage: "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-8.jpg",
+            gallery: ["https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-5.jpg",
+                      "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-3.jpg",
+                      "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-1.jpg",
+                     ],
+            description: {
+                tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.",
+                en: "A stylish and useful house design."
+            }
+        },
         {
             id: "Test ev -002", 
             title: "Test Projesi",
