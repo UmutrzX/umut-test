@@ -10,14 +10,11 @@ const state = {
     sortBy: 'default',
     lightboxImages: [],
     currentLightboxIndex: 0,
-    activeGalleryIndex: 0
+    activeGalleryIndex: 0,
+    pageCache: {}
 };
 
 window.state = state;
-
-// YENİ: Uygulama İçi Önbellekleme (In-Memory Cache) Sistemi
-// Statik sayfaların (İletişim, Hakkımızda vb.) HTML'i hafızaya alınır, sayfa geçiş hızı 0 ms'ye iner.
-const pageCache = { tr: {}, en: {} };
 
 const DOM = {
     header: document.getElementById('main-header'),
@@ -29,16 +26,15 @@ function t() { return siteConfig.i18n[state.lang]; }
 
 function updateMetaTags(viewOrId, projectData = null) {
     const baseTitle = "Kartech Panel Structures";
-    const baseUrl = window.location.origin + window.location.pathname;
-    let currentUrl = baseUrl + "#" + viewOrId;
     let title = "";
     let desc = "";
-    let image = siteConfig.contact.logoSrc;
+    let img = siteConfig.contact.logoSrc;
+    let url = window.location.href;
 
     if (projectData) {
         title = `${state.lang === 'tr' ? projectData.title : projectData.titleEn} | ${baseTitle}`;
         desc = projectData.description[state.lang];
-        image = projectData.mainImage;
+        img = projectData.mainImage;
     } else {
         const pageTitles = t().pageTitles;
         title = `${pageTitles[viewOrId] || baseTitle} | ${baseTitle}`;
@@ -46,80 +42,28 @@ function updateMetaTags(viewOrId, projectData = null) {
     }
     
     document.title = title;
+    
     const metaDesc = document.getElementById('meta-desc');
     if (metaDesc) metaDesc.content = desc;
 
-    // YENİ: Dinamik OG ve Twitter Kartlarının Güncellenmesi (Sosyal Medya Paylaşımı İçin)
-    if (document.getElementById('og-title')) document.getElementById('og-title').content = title;
-    if (document.getElementById('og-description')) document.getElementById('og-description').content = desc;
-    if (document.getElementById('og-image')) document.getElementById('og-image').content = image;
-    if (document.getElementById('og-url')) document.getElementById('og-url').content = currentUrl;
+    const ogTitle = document.getElementById('og-title');
+    const ogDesc = document.getElementById('og-description');
+    const ogImg = document.getElementById('og-image');
+    const ogUrl = document.getElementById('og-url');
+    const canonical = document.getElementById('canonical-link');
     
-    // YENİ: Otomatik Canonical ve Dil Linkleri (SEO İçin)
-    if (document.getElementById('canonical-link')) document.getElementById('canonical-link').href = currentUrl;
-    
-    // Yardımcı Sistemleri Çalıştır
-    updateWhatsAppLink(viewOrId, projectData);
-    generateSchema(viewOrId, projectData, title, desc, image, currentUrl);
-}
-
-// YENİ: Akıllı WhatsApp Entegrasyonu
-function updateWhatsAppLink(viewOrId, projectData) {
-    const waBtn = document.getElementById('btn-chat-floating');
-    if(!waBtn) return;
-    
-    const phone = siteConfig.contact.phone.replace(/[^0-9]/g, '');
-    let message = state.lang === 'tr' ? "Merhaba, bilgi almak istiyorum." : "Hello, I would like to get some information.";
-    
-    if (projectData) {
-        const pTitle = state.lang === 'tr' ? projectData.title : projectData.titleEn;
-        message = state.lang === 'tr' 
-            ? `Merhaba, Kartech Panel web sitesini inceliyordum. ${pTitle} projeniz (${projectData.area} m²) hakkında bilgi alabilir miyim?`
-            : `Hello, I am reviewing the Kartech Panel website. Can I get information about your ${pTitle} project (${projectData.area} sqm)?`;
-    } else if (viewOrId === 'sip-panel') {
-        message = state.lang === 'tr' ? "Merhaba, SİP Panel sistemleri kurulum ve maliyetleri hakkında bilgi alabilir miyim?" : "Hello, can I get info about SIP Panel installation and costs?";
-    }
-    
-    waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-}
-
-// YENİ: Yapısal Veri (Schema.org / JSON-LD) Oluşturucu
-function generateSchema(viewOrId, projectData, title, desc, image, url) {
-    const schemaScript = document.getElementById('schema-ld');
-    if (!schemaScript) return;
-    
-    let schema = {};
-    if (projectData) {
-        schema = {
-            "@context": "https://schema.org/",
-            "@type": "Product",
-            "name": title,
-            "image": image,
-            "description": desc,
-            "brand": { "@type": "Brand", "name": "Kartech Panel" },
-            "offers": {
-                "@type": "AggregateOffer",
-                "priceCurrency": "TRY",
-                "availability": "https://schema.org/InStock",
-                "seller": { "@type": "Organization", "name": "Kartech Panel Structures" }
-            }
-        };
-    } else {
-        schema = {
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            "name": "Kartech Panel Structures",
-            "image": siteConfig.contact.logoSrc,
-            "telephone": siteConfig.contact.phone,
-            "address": { "@type": "PostalAddress", "streetAddress": siteConfig.contact.address, "addressCountry": "TR" },
-            "url": window.location.origin
-        };
-    }
-    schemaScript.textContent = JSON.stringify(schema);
+    if(ogTitle) ogTitle.content = title;
+    if(ogDesc) ogDesc.content = desc;
+    if(ogImg) ogImg.content = img;
+    if(ogUrl) ogUrl.content = url;
+    if(canonical) canonical.href = url.split('#')[0] + '#' + viewOrId;
 }
 
 export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = false) {
     if (evt) evt.preventDefault(); 
+    
+    // Boşluk karakterlerini düzelt (Örn: "Test ev -001")
+    viewOrId = decodeURIComponent(viewOrId);
     
     if (state.mobileMenuOpen) window.toggleMobileMenu();
     if (state.currentView === viewOrId && !keepCategory && !state.activeCategory) return; 
@@ -127,6 +71,7 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
     if (state.sliderInterval) { clearInterval(state.sliderInterval); state.sliderInterval = null; }
 
     state.currentView = viewOrId;
+    
     if (!fromHash) window.history.pushState(null, '', '#' + viewOrId);
     
     DOM.content.classList.remove('page-fade-in');
@@ -137,26 +82,36 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
     setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' }); 
         
-        if (viewOrId === 'home') {
-            updateMetaTags(viewOrId); renderHomePage();
-        } else if (viewOrId === 'sip-panel') {
-            updateMetaTags(viewOrId); renderSipPanelPage();
-        } else if (viewOrId === 'iletisim') {
-            updateMetaTags(viewOrId); renderContactPage();
-        } else if (['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(viewOrId)) {
-            updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
-        } else if (['uretim', 'galeri', 'hakkimizda'].includes(viewOrId)) {
-            updateMetaTags(viewOrId); renderGenericPage(viewOrId);
+        const cacheKey = `${viewOrId}-${state.lang}-${state.activeCategory || 'all'}-${state.sortBy}`;
+        
+        if (state.pageCache[cacheKey] && !['home'].includes(viewOrId) && !siteConfig.projects.find(p => p.id === viewOrId)) {
+            updateMetaTags(viewOrId);
+            DOM.content.innerHTML = state.pageCache[cacheKey];
         } else {
-            const project = siteConfig.projects.find(p => p.id === viewOrId);
-            if (project) { updateMetaTags(viewOrId, project); renderProjectDetail(viewOrId); }
-            else { navigate('home'); }
+            if (viewOrId === 'home') {
+                updateMetaTags(viewOrId); renderHomePage();
+            } else if (viewOrId === 'sip-panel') {
+                updateMetaTags(viewOrId); renderSipPanelPage();
+                state.pageCache[cacheKey] = DOM.content.innerHTML;
+            } else if (viewOrId === 'iletisim') {
+                updateMetaTags(viewOrId); renderContactPage();
+                state.pageCache[cacheKey] = DOM.content.innerHTML;
+            } else if (['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(viewOrId)) {
+                updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
+            } else if (['uretim', 'galeri', 'hakkimizda'].includes(viewOrId)) {
+                updateMetaTags(viewOrId); renderGenericPage(viewOrId);
+                state.pageCache[cacheKey] = DOM.content.innerHTML;
+            } else {
+                const project = siteConfig.projects.find(p => p.id === viewOrId);
+                if (project) { updateMetaTags(viewOrId, project); renderProjectDetail(viewOrId); }
+                else { navigate('home'); }
+            }
         }
 
         DOM.content.classList.remove('page-fade-out');
         DOM.content.classList.add('page-fade-in');
         window.dispatchEvent(new Event('scroll'));
-    }, 350); 
+    }, 300); 
 }
 
 export function changeLanguage(lang) {
@@ -165,21 +120,25 @@ export function changeLanguage(lang) {
     document.documentElement.lang = lang; 
     navigate(state.currentView, null, true);
     renderFooter();
-    checkCookies(true); 
 }
 
 window.navigate = navigate;
 window.changeLanguage = changeLanguage;
 
+// URL'deki hash değiştiğinde devreye girer (URL Encoded karakterleri decodeURIComponent ile çözeriz)
 window.addEventListener('hashchange', () => {
     let hash = window.location.hash.substring(1);
-    if(hash) navigate(hash, null, true, true);
+    if(hash) {
+        hash = decodeURIComponent(hash);
+        navigate(hash, null, true, true);
+    }
 });
 
 window.filterAndNavigate = function(menuId, catId, evt) {
     if(evt) { evt.preventDefault(); evt.stopPropagation(); }
     if (state.mobileMenuOpen) window.toggleMobileMenu();
     state.activeCategory = catId === 'all' ? null : catId;
+    
     if (state.currentView !== menuId) {
         navigate(menuId, null, true); 
     } else {
@@ -251,19 +210,19 @@ window.changeMainImage = function(index) {
     const container = document.getElementById('main-image-container');
     if(!container) return;
     
-    container.style.opacity = 0; container.style.transform = 'scale(0.95)';
+    container.style.opacity = 0; container.style.transform = 'scale(0.98)';
     setTimeout(() => { 
         if(media.type === 'image') {
             container.innerHTML = `<img id="detail-main-image" src="${media.url}" alt="Project details" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 hover:scale-105 pointer-events-auto" loading="lazy">
             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
-            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur text-gray-900 px-4 sm:px-6 py-2 rounded-full font-bold text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-400 shadow-xl flex items-center pointer-events-none whitespace-nowrap">
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur text-gray-900 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-400 shadow-lg flex items-center pointer-events-none whitespace-nowrap z-10">
                 <i class="fas fa-expand mr-2 text-brand-orange"></i> Tam Ekran
             </div>`;
         } else {
             container.innerHTML = `<iframe src="${media.embed}" class="absolute inset-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
         }
         container.style.opacity = 1; container.style.transform = 'scale(1)';
-    }, 300); 
+    }, 250); 
 };
 
 window.setGalleryImage = function(index) {
@@ -288,14 +247,22 @@ window.openLightbox = function(startIndex) {
     let newIndex = imagesOnly.findIndex(m => m.url === actualMedia.url);
 
     const overlay = document.getElementById('lightbox-overlay');
+    const imgEl = document.getElementById('lightbox-img');
+    
     state.currentLightboxIndex = newIndex;
     state.currentLightboxArray = imagesOnly; 
 
-    document.getElementById('lightbox-img').src = imagesOnly[newIndex].url;
+    imgEl.src = imagesOnly[newIndex].url;
     document.getElementById('lightbox-counter').innerText = `${newIndex + 1} / ${imagesOnly.length}`;
     
     overlay.classList.add('active');
     document.addEventListener('keydown', window.handleLightboxKeys);
+    
+    // Gelişmiş Ön Yükleme (Preload)
+    if(imagesOnly.length > 1) {
+        let nextIdx = (newIndex + 1) % imagesOnly.length;
+        let preloader = new Image(); preloader.src = imagesOnly[nextIdx].url;
+    }
 };
 
 window.closeLightbox = function() {
@@ -305,19 +272,27 @@ window.closeLightbox = function() {
 
 window.changeLightboxImage = function(direction) {
     let arr = state.currentLightboxArray;
+    if(arr.length <= 1) return;
+    
     state.currentLightboxIndex += direction;
     
     if (state.currentLightboxIndex < 0) state.currentLightboxIndex = arr.length - 1;
     else if (state.currentLightboxIndex >= arr.length) state.currentLightboxIndex = 0;
     
-    const img = document.getElementById('lightbox-img');
-    img.style.opacity = 0;
-    img.style.transform = direction > 0 ? 'translateX(100px) scale(0.9)' : 'translateX(-100px) scale(0.9)';
+    const imgEl = document.getElementById('lightbox-img');
+    
+    imgEl.style.opacity = 0;
+    imgEl.style.transform = direction > 0 ? 'translateX(50px) scale(0.95)' : 'translateX(-50px) scale(0.95)';
+    
     setTimeout(() => {
-        img.src = arr[state.currentLightboxIndex].url;
-        img.style.opacity = 1; img.style.transform = 'translateX(0) scale(1)';
+        imgEl.src = arr[state.currentLightboxIndex].url;
+        imgEl.style.transform = 'translateX(0) scale(1)';
+        imgEl.style.opacity = 1;
         document.getElementById('lightbox-counter').innerText = `${state.currentLightboxIndex + 1} / ${arr.length}`;
-    }, 250);
+        
+        let nextIdx = (state.currentLightboxIndex + direction + arr.length) % arr.length;
+        let preloader = new Image(); preloader.src = arr[nextIdx].url;
+    }, 200);
 };
 
 window.handleLightboxKeys = function(e) {
@@ -345,139 +320,101 @@ window.formatPhone = function(input) {
 
 window.clearError = function(input) {
     input.classList.remove('border-red-500');
-    if (input.type === 'checkbox') {
-        const err = document.getElementById(input.id + '-error');
-        if (err) err.classList.add('hidden');
-    } else {
-        const err = document.getElementById(input.id + '-error');
-        if(err) err.classList.add('hidden');
-    }
+    let errId = input.id === 'project-form-kvkk' ? 'project-form-kvkk-error' : (input.id + '-error');
+    const err = document.getElementById(errId);
+    if(err) err.classList.add('hidden');
 }
 
-// 5 API'Lİ YEDEKLİ (FALLBACK) GÖNDERİM SİSTEMİ
-window.submitTestForm = async function(evt, formId) {
+window.submitTestForm = function(evt, formId) {
     evt.preventDefault();
     
     const form = document.getElementById(formId);
     const nameInput = document.getElementById(formId + '-name');
     const phoneInput = document.getElementById(formId + '-phone');
     const emailInput = document.getElementById(formId + '-email');
-    const kvkkInput = document.getElementById(formId + '-kvkk');
+    const kvkkCheckbox = document.getElementById(formId + '-kvkk');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
     let hasError = false;
 
-    // Doğrulamalar
     if (nameInput.value.trim().length < 3) {
         nameInput.classList.add('border-red-500');
         document.getElementById(formId + '-name-error').classList.remove('hidden');
         hasError = true;
     }
+
     const phoneDigits = phoneInput.value.replace(/\D/g, '');
     if (phoneDigits.length !== 10) {
         phoneInput.classList.add('border-red-500');
         document.getElementById(formId + '-phone-error').classList.remove('hidden');
         hasError = true;
     }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailInput.value.trim())) {
+    if (!emailRegex.test(emailInput.value)) {
         emailInput.classList.add('border-red-500');
         document.getElementById(formId + '-email-error').classList.remove('hidden');
         hasError = true;
     }
-    if (!kvkkInput.checked) {
+
+    if (!kvkkCheckbox.checked) {
         document.getElementById(formId + '-kvkk-error').classList.remove('hidden');
         hasError = true;
     }
 
     if(hasError) return; 
 
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnHTML = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Gönderiliyor...';
-    submitBtn.disabled = true;
-
-    // Mail kutusuna şık (tablo) ve anlaşılır gitmesi için Türkçe key'ler (Anahtarlar) kullanıyoruz.
-    const projectName = state.currentView !== 'iletisim' ? state.currentView : 'Genel İletişim (Bize Ulaşın Formu)';
-    const formData = {
-        "Ad_Soyad": nameInput.value.trim(),
-        "Telefon": phoneInput.value,
-        "E_Posta": emailInput.value.trim(),
-        "İlgilenilen_Proje": projectName,
-        "KVKK_Onayı": kvkkInput.checked ? "Okundu ve Onaylandı" : "Onaylanmadı",
-        "Tarih": new Date().toLocaleString('tr-TR'),
-        "_subject": `Yeni Talep: ${nameInput.value.trim()} - Kartech Panel`, // Mailin konusu
-        "_template": "table", // Gelen mailin şık bir tablo olmasını sağlar (FormSubmit için)
-        "_captcha": "false" // Gıcık robot doğrulamasını kapatır
-    };
-
-    const endpoints = siteConfig.formSubmission.endpoints;
-    let isSuccess = false;
-
-    // Yedekli (Fallback) Döngüsü: 1. API çökerse 2.'ye geçer
-    for (let api of endpoints) {
-        try {
-            console.log(`[Form Sistemi] Deneniyor: ${api.name}...`);
-            
-            let payload = { ...formData };
-            if (api.name === "Web3Forms" && api.key) payload.access_key = api.key;
-
-            const response = await fetch(api.url, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (response.ok) {
-                console.log(`✅ [Form Sistemi] Başarılı! E-Posta "${api.name}" servisi üzerinden iletildi.`);
-                isSuccess = true;
-                break; // Bir tanesi başarılı olursa döngüyü durdur (5 kere mail atmasını engeller)
-            }
-        } catch (error) {
-            console.warn(`❌ [Form Sistemi] ${api.name} servisi yanıt vermedi. Bir sonraki sisteme geçiliyor...`);
-        }
-    }
-
-    if (isSuccess) {
-        document.getElementById('alert-modal').classList.add('active');
-        form.reset();
-    } else {
-        alert(state.lang === 'tr' ? "Sistemsel bir sorun oluştu, mail gönderilemedi. Lütfen WhatsApp üzerinden ulaşın." : "System error, mail not sent. Please contact via WhatsApp.");
+    let projectContext = "";
+    if (state.currentView !== 'home' && siteConfig.projects.find(p => p.id === state.currentView)) {
+        const pInfo = siteConfig.projects.find(p => p.id === state.currentView);
+        const pName = state.lang === 'tr' ? pInfo.title : pInfo.titleEn;
+        projectContext = `\nİlgilenilen Proje: ${pName} (${pInfo.area} m²)`;
     }
     
-    submitBtn.innerHTML = originalBtnHTML;
-    submitBtn.disabled = false;
+    const formData = {
+        name: nameInput.value,
+        phone: phoneInput.value,
+        email: emailInput.value,
+        project: projectContext,
+        _subject: "Yeni Web Sitesi Talebi (" + (projectContext ? "Proje" : "Genel") + ")"
+    };
+
+    submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Gönderiliyor...`;
+    submitBtn.disabled = true;
+
+    // Gerçek API Gönderimi (İlk API'den başlayarak)
+    sendFormWithFallback(formData, 0, submitBtn, form);
 };
 
-// ÇEREZ ONAY BİLDİRİMİ (KVKK)
-function checkCookies(forceUpdate = false) {
-    const existingBanner = document.getElementById('cookie-banner');
-    if (existingBanner) existingBanner.remove();
-
-    if (!localStorage.getItem('cookieAccepted')) {
-        const banner = document.createElement('div');
-        banner.id = 'cookie-banner';
-        banner.className = 'fixed bottom-0 left-0 w-full bg-[#0a0a0a] border-t border-gray-800 z-[1000] p-4 flex flex-col sm:flex-row justify-center items-center gap-4 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] transform translate-y-full transition-transform duration-500';
-        banner.innerHTML = `
-            <p class="text-gray-300 text-xs sm:text-sm font-medium text-center sm:text-left max-w-4xl">${t().cookieText}</p>
-            <button onclick="window.acceptCookies()" class="bg-brand-orange hover:bg-orange-500 text-white font-bold py-2 px-6 sm:px-8 rounded-full text-sm transition-colors whitespace-nowrap shadow-lg">${t().cookieAccept}</button>
-        `;
-        document.body.appendChild(banner);
-        
-        setTimeout(() => {
-            banner.classList.remove('translate-y-full');
-        }, 500);
+function sendFormWithFallback(data, apiIndex, btn, form) {
+    if (apiIndex >= siteConfig.formSubmission.endpoints.length) {
+        showToast("Sistem hatası. Lütfen WhatsApp üzerinden ulaşın.");
+        btn.innerHTML = `<i class="fas fa-paper-plane mr-2"></i> ${t().submitBtn}`;
+        btn.disabled = false;
+        return;
     }
-}
 
-window.acceptCookies = function() {
-    localStorage.setItem('cookieAccepted', 'true');
-    const banner = document.getElementById('cookie-banner');
-    if(banner) {
-        banner.classList.add('translate-y-full');
-        setTimeout(() => banner.remove(), 500);
-    }
+    const api = siteConfig.formSubmission.endpoints[apiIndex];
+    
+    fetch(api.url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById('alert-modal').classList.add('active');
+            form.reset(); 
+            btn.innerHTML = `<i class="fas fa-paper-plane mr-2"></i> ${t().submitBtn}`;
+            btn.disabled = false;
+        } else {
+            throw new Error('API Yanıt Vermedi');
+        }
+    })
+    .catch(error => {
+        console.warn(`${api.name} başarısız oldu. Bir sonraki API deneniyor...`);
+        sendFormWithFallback(data, apiIndex + 1, btn, form);
+    });
 }
 
 function renderHeader() {
@@ -498,8 +435,8 @@ function renderHeader() {
                </div>
                <div id="accordion-${id}" class="accordion-content ${isOpen ? 'open' : ''}">
                    <div class="pl-4 border-l-2 border-brand-orange ml-1 flex flex-col">
-                       <a href="#" class="text-base sm:text-lg text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-2" onclick="window.filterAndNavigate('${id}', 'all', event)">${t().allProjectsTitle}</a>
-                       ${categories.map(cat => `<a href="#" class="text-base sm:text-lg text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-2" onclick="window.filterAndNavigate('${id}', '${cat.id}', event)">${cat[state.lang]}</a>`).join('')}
+                       <a href="#${id}" class="text-base sm:text-lg text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-2" onclick="window.filterAndNavigate('${id}', 'all', event)">${t().allProjectsTitle}</a>
+                       ${categories.map(cat => `<a href="#${id}" class="text-base sm:text-lg text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-2" onclick="window.filterAndNavigate('${id}', '${cat.id}', event)">${cat[state.lang]}</a>`).join('')}
                    </div>
                </div>
             </div>`;
@@ -507,7 +444,7 @@ function renderHeader() {
             return `
             <div class="mb-4">
                 <div class="w-[220px] sm:w-[280px] flex items-center justify-between">
-                    <a href="#" onclick="navigate('${id}', event)" class="text-2xl sm:text-3xl font-semibold text-gray-300 hover:text-white transition block">${label}</a>
+                    <a href="#${id}" onclick="navigate('${id}', event)" class="text-2xl sm:text-3xl font-semibold text-gray-300 hover:text-white transition block">${label}</a>
                 </div>
             </div>`;
         }
@@ -515,9 +452,9 @@ function renderHeader() {
 
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50">
-            <div class="cursor-pointer h-full flex items-center py-2" onclick="navigate('home')">
+            <a href="#home" class="cursor-pointer h-full flex items-center py-2" onclick="navigate('home', event)">
                  <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-16 sm:h-24 md:h-32 lg:h-40 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left">
-            </div>
+            </a>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
                 <div class="flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
@@ -529,9 +466,9 @@ function renderHeader() {
                     <span class="text-gray-400">|</span>
                     <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'en' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'}" onclick="changeLanguage('en')">EN</span>
                 </div>
-                <button onclick="navigate('iletisim')" class="hidden md:block bg-brand-orange hover:bg-orange-500 text-white font-semibold py-2.5 px-6 sm:px-8 rounded-full shadow-md transition-all btn-press text-xs sm:text-sm whitespace-nowrap">
+                <a href="#iletisim" onclick="navigate('iletisim', event)" class="hidden md:block cta-pulse bg-brand-orange hover:bg-orange-500 text-white font-semibold py-2.5 px-6 sm:px-8 rounded-full shadow-md transition-all btn-press text-xs sm:text-sm whitespace-nowrap">
                     ${t().consultBtn}
-                </button>
+                </a>
                 <button onclick="window.toggleMobileMenu()" aria-label="Menü" class="w-10 h-10 md:w-12 md:h-12 bg-[#1a1a1a] rounded-full flex items-center justify-center text-white hover:bg-brand-orange shadow-lg transition-all duration-300 btn-press focus:outline-none shrink-0 z-[101]">
                     <i class="fas fa-bars text-base sm:text-lg pointer-events-none"></i>
                 </button>
@@ -616,7 +553,7 @@ function handleScroll() {
 function renderHomePage() {
     const pageProjects = [...siteConfig.projects].sort(() => 0.5 - Math.random()).slice(0, 3);
     const projectsHTML = pageProjects.map(project => `
-        <div class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group" onclick="navigate('${project.id}')">
+        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group block" onclick="navigate('${project.id}', event)">
             <div class="relative aspect-[4/3] overflow-hidden">
                 <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-black/0 hover:bg-black/30 transition-colors duration-400 flex items-center justify-center pointer-events-none">
@@ -627,22 +564,18 @@ function renderHomePage() {
                 <h3 class="text-gray-900 font-bold text-base sm:text-lg md:text-xl group-hover:text-brand-orange transition-colors truncate pr-2">${state.lang === 'tr' ? project.title : project.titleEn}</h3>
                 <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0"><i class="fas fa-chevron-right text-xs sm:text-sm"></i></div>
             </div>
-        </div>
+        </a>
     `).join('');
 
     DOM.content.innerHTML = `
         <div class="relative w-full h-[100vh] flex overflow-hidden">
             <div class="absolute inset-0 z-0"><img src="${siteConfig.homeHero.backgroundImage}" alt="Hero Background" class="w-full h-full object-cover" loading="eager"></div>
-            
             <div class="absolute top-0 left-0 bottom-0 w-full md:w-[85%] lg:w-[65%] bg-[#1a201c]/40 backdrop-blur-sm z-10"></div>
-            
             <div class="relative z-20 w-full h-full flex flex-col justify-center">
                 <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-20 lg:pt-32">
                     <div class="max-w-2xl lg:max-w-3xl transform">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
                         <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
-                        
-                        <!-- CTA FOCUS: 'cta-pulse' sınıfı eklendi -->
                         <button onclick="document.getElementById('featured-projects').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
                             Projeleri İncele <i class="fas fa-arrow-down ml-3"></i>
                         </button>
@@ -650,7 +583,6 @@ function renderHomePage() {
                 </div>
             </div>
         </div>
-        
         <div id="featured-projects" class="bg-white relative z-20 w-full py-16 sm:py-20 md:py-24">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-10 sm:mb-12 flex flex-col md:flex-row justify-between items-start md:items-end">
@@ -666,13 +598,7 @@ function renderHomePage() {
 }
 
 function renderSipPanelPage() {
-    // CACHE KONTROLÜ
-    if (pageCache[state.lang]['sip-panel']) {
-        DOM.content.innerHTML = pageCache[state.lang]['sip-panel']; return;
-    }
-
     const data = t().sipPanelData;
-    
     const advantagesHTML = data.advantages.map(adv => `
         <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-md border-t-4 border-brand-orange hover:shadow-xl transition-shadow group h-full flex flex-col">
             <div class="w-14 h-14 sm:w-16 sm:h-16 bg-orange-50 rounded-full flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
@@ -707,7 +633,7 @@ function renderSipPanelPage() {
                     <div class="w-full lg:w-1/2 order-2 lg:order-1">
                         <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4 sm:mb-6 tracking-tight">${data.introTitle}</h3>
                         <p class="text-base sm:text-lg text-gray-600 leading-relaxed font-medium mb-6">${data.introText}</p>
-                        <button onclick="navigate('iletisim')" class="bg-gray-900 text-white font-bold px-8 py-3.5 rounded-full shadow-md hover:bg-brand-orange transition-all btn-press">Bilgi Alın</button>
+                        <a href="#iletisim" onclick="navigate('iletisim', event)" class="inline-block bg-gray-900 text-white font-bold px-8 py-3.5 rounded-full shadow-md hover:bg-brand-orange transition-all btn-press">Bilgi Alın</a>
                     </div>
                     <div class="w-full lg:w-1/2 rounded-2xl overflow-hidden shadow-2xl border-4 border-white order-1 lg:order-2">
                         <img src="${data.heroImg}" alt="SIP Panel Structure" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" loading="lazy">
@@ -730,9 +656,6 @@ function renderSipPanelPage() {
             </div>
         </div>
     `;
-    
-    // HTML'İ HAFIZAYA AL
-    pageCache[state.lang]['sip-panel'] = DOM.content.innerHTML;
 }
 
 function renderContactPage() {
@@ -782,36 +705,33 @@ function renderContactPage() {
 
                     <div class="bg-[#1a201c] p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl relative">
                         <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">${t().getQuoteTitle}</h3>
-                        
-                        <p class="text-gray-400 text-xs sm:text-sm font-medium mb-6 sm:mb-8 relative z-10">${t().contactFormDesc}</p>
+                        <p class="text-gray-400 text-xs sm:text-sm font-medium mb-6 relative z-10">${t().contactFormDesc || "Talebinizi iletin, dönüş yapalım."}</p>
                         
                         <form id="contact-form" class="space-y-4" onsubmit="window.submitTestForm(event, 'contact-form')">
                             <div>
-                                <input type="text" id="contact-form-name" name="name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
+                                <input type="text" id="contact-form-name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-4 sm:py-3.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
                                 <div id="contact-form-name-error" class="text-red-500 text-xs sm:text-sm mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorName}</div>
                             </div>
                             <div>
-                                <input type="tel" id="contact-form-phone" name="phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
+                                <input type="tel" id="contact-form-phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-3 sm:px-4 sm:py-3.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors tracking-wider text-sm sm:text-base">
                                 <div id="contact-form-phone-error" class="text-red-500 text-xs sm:text-sm mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorPhone}</div>
                             </div>
                             <div>
-                                <input type="email" id="contact-form-email" name="email" placeholder="${t().formEmail}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
-                                <div id="contact-form-email-error" class="text-red-500 text-xs sm:text-sm mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorEmail}</div>
+                                <input type="email" id="contact-form-email" placeholder="${t().formEmail || 'E-Posta Adresi'}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-4 sm:py-3.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-colors text-sm sm:text-base">
+                                <div id="contact-form-email-error" class="text-red-500 text-xs sm:text-sm mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorEmail || 'Geçerli bir mail giriniz.'}</div>
                             </div>
                             
-                            <!-- KVKK Checkbox -->
-                            <div class="flex items-start mt-4 bg-black/20 p-3 rounded-lg border border-gray-800">
-                                <div class="flex items-center h-5 mt-0.5 shrink-0">
-                                    <input id="contact-form-kvkk" name="kvkk" type="checkbox" onchange="window.clearError(this)" class="w-5 h-5 rounded bg-black/40 border-gray-600 text-brand-orange focus:ring-brand-orange focus:ring-2 cursor-pointer accent-brand-orange">
+                            <div class="flex items-start mt-2 bg-black/20 p-3 rounded-lg border border-gray-800">
+                                <div class="flex items-center h-4 mt-0.5 shrink-0">
+                                    <input id="contact-form-kvkk" type="checkbox" onchange="window.clearError(this)" class="w-4 h-4 rounded bg-black/40 border-gray-600 text-brand-orange focus:ring-brand-orange focus:ring-2 cursor-pointer accent-brand-orange">
                                 </div>
                                 <div class="ml-3 text-xs sm:text-sm">
-                                    <label for="contact-form-kvkk" class="text-gray-300 cursor-pointer font-medium leading-relaxed block">${t().kvkkText}</label>
-                                    <div id="contact-form-kvkk-error" class="text-red-500 font-bold text-xs mt-1.5 hidden"><i class="fas fa-exclamation-circle mr-1"></i>${t().kvkkError}</div>
+                                    <label for="contact-form-kvkk" class="text-gray-300 cursor-pointer font-medium leading-snug block">${t().kvkkText}</label>
+                                    <div id="contact-form-kvkk-error" class="text-red-500 font-bold text-[11px] sm:text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>${t().kvkkError}</div>
                                 </div>
                             </div>
 
-                            <!-- CTA FOCUS: 'cta-pulse' sınıfı eklendi -->
-                            <button type="submit" class="cta-pulse w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-6 flex justify-center items-center text-base sm:text-lg btn-press disabled:opacity-70">
+                            <button type="submit" class="cta-pulse w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-4 flex justify-center items-center text-base sm:text-lg btn-press">
                                 <i class="fas fa-paper-plane mr-2 md:mr-3"></i> ${t().submitBtn}
                             </button>
                         </form>
@@ -823,11 +743,6 @@ function renderContactPage() {
 }
 
 function renderGenericPage(pageId) {
-    // CACHE KONTROLÜ
-    if (pageCache[state.lang][pageId]) {
-        DOM.content.innerHTML = pageCache[state.lang][pageId]; return;
-    }
-
     const title = t().pageTitles[pageId] || '';
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
@@ -839,9 +754,6 @@ function renderGenericPage(pageId) {
             <div class="bg-white p-6 sm:p-10 md:p-16 shadow-xl border border-gray-100 rounded-3xl break-words text-base sm:text-lg">${content}</div>
         </div>
     `;
-    
-    // HTML'İ HAFIZAYA AL
-    pageCache[state.lang][pageId] = DOM.content.innerHTML;
 }
 
 function renderProjectsPage(pageId) {
@@ -865,7 +777,7 @@ function renderProjectsPage(pageId) {
     `).join('');
 
     const projectsHTML = pageProjects.length > 0 ? pageProjects.map(project => `
-        <div class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group shadow-sm" onclick="navigate('${project.id}')">
+        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group shadow-sm block" onclick="navigate('${project.id}', event)">
             <div class="relative aspect-[4/3] overflow-hidden">
                 <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
                 <div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gray-900/80 backdrop-blur-sm text-white px-3 py-1.5 sm:px-4 sm:py-1.5 font-bold rounded-lg shadow-lg z-10 text-xs sm:text-sm">${project.area} ${t().sqm}</div>
@@ -874,11 +786,12 @@ function renderProjectsPage(pageId) {
                 <h3 class="text-gray-900 font-bold text-lg sm:text-xl group-hover:text-brand-orange transition-colors truncate pr-2">${state.lang === 'tr' ? project.title : project.titleEn}</h3>
                 <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0"><i class="fas fa-chevron-right text-xs sm:text-sm"></i></div>
             </div>
-        </div>
+        </a>
     `).join('') : `<div class="col-span-full text-center py-20 sm:py-32 text-gray-400 font-medium text-lg sm:text-xl bg-white rounded-3xl shadow-sm border border-dashed border-gray-300 mx-2">Proje bulunamadı.</div>`;
 
+    // Logo boşluğu için pt ve mt değerlerini artırdık
     DOM.content.innerHTML = `
-        <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20 sm:mt-24">
+        <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-28 sm:mt-36 lg:mt-40">
             <div class="mb-10 sm:mb-16">
                 <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4 sm:mb-6 leading-tight tracking-tight">${t().pageTitles[pageId]}</h1>
                 <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
@@ -927,12 +840,23 @@ function renderProjectDetail(projectId) {
         window.changeMainImage(state.activeGalleryIndex);
     }, 4500);
 
-    const thumbnailsHTML = mediaItems.map((media, index) => {
+    const MAX_THUMBNAILS = 5;
+    const visibleMedia = mediaItems.slice(0, MAX_THUMBNAILS);
+    const hiddenCount = mediaItems.length - MAX_THUMBNAILS;
+
+    const thumbnailsHTML = visibleMedia.map((media, index) => {
         const isVideo = media.type !== 'image';
+        const isLastVisible = index === MAX_THUMBNAILS - 1 && hiddenCount > 0;
+        const clickAction = isLastVisible ? `window.openLightbox(${index})` : `window.setGalleryImage(${index})`;
+
         return `
-        <div class="w-20 sm:w-24 lg:w-full aspect-square shrink-0 overflow-hidden rounded-xl border-4 border-white shadow-md hover:border-brand-orange cursor-pointer btn-press relative group" onclick="window.setGalleryImage(${index})">
-             <img src="${media.thumb}" alt="Thumbnail ${index + 1}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" loading="lazy">
-             ${isVideo ? `<div class="absolute inset-0 flex items-center justify-center bg-black/30"><i class="fas fa-play-circle text-white text-2xl sm:text-3xl drop-shadow-md"></i></div>` : ''}
+        <div class="w-20 sm:w-24 lg:w-32 aspect-video shrink-0 overflow-hidden rounded-xl border-2 border-transparent hover:border-brand-orange shadow-sm cursor-pointer btn-press relative group transition-all" onclick="${clickAction}">
+             <img src="${media.thumb}" alt="Thumbnail ${index + 1}" class="w-full h-full object-cover ${isLastVisible ? 'opacity-40' : 'opacity-70 group-hover:opacity-100'} transition-opacity" loading="lazy">
+             ${isVideo && !isLastVisible ? `<div class="absolute inset-0 flex items-center justify-center bg-black/30"><i class="fas fa-play-circle text-white text-xl drop-shadow-md"></i></div>` : ''}
+             ${isLastVisible ? `
+             <div class="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-[2px] group-hover:bg-black/50 transition-all">
+                 <span class="text-white font-black text-lg drop-shadow-lg">+${hiddenCount}</span>
+             </div>` : ''}
         </div>
     `}).join('');
 
@@ -941,84 +865,96 @@ function renderProjectDetail(projectId) {
     if(initialMedia.type === 'image') {
         initialContainerHTML = `<img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 hover:scale-105 pointer-events-auto" loading="eager">
         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
-        <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur text-gray-900 px-4 sm:px-6 py-2 rounded-full font-bold text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-400 shadow-xl flex items-center pointer-events-none whitespace-nowrap">
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur text-gray-900 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-400 shadow-lg flex items-center pointer-events-none whitespace-nowrap z-10">
             <i class="fas fa-expand mr-2 text-brand-orange"></i> Tam Ekran
         </div>`;
     } else {
         initialContainerHTML = `<iframe src="${initialMedia.embed}" class="absolute inset-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
     }
 
+    // pt değerlerini logonun arkasına geçmemesi için büyük tuttuk (pt-32 sm:pt-40 lg:pt-48)
+    // Bağlantıları href ile verdik ancak onclick ile JS navigasyonunu (smooth fade) tetikledik.
     DOM.content.innerHTML = `
-        <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
-            <div class="mb-8 sm:mb-12 flex flex-col md:flex-row justify-between md:items-end gap-4 md:gap-6">
+        <div class="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 lg:pt-48 pb-12 sm:pb-16">
+            
+            <div class="mb-6 sm:mb-8 flex flex-col md:flex-row justify-between md:items-end gap-4 md:gap-6">
                 <div>
-                    <div class="flex items-center text-xs sm:text-sm font-semibold text-brand-orange space-x-2 mb-2 sm:mb-4 flex-wrap gap-y-1">
-                        <span class="cursor-pointer hover:text-gray-900" onclick="navigate('${project.pageMenu}')">${t().menu[project.pageMenu]}</span>
-                        <i class="fas fa-arrow-right text-[10px] text-gray-300 mt-0.5"></i>
+                    <div class="flex items-center text-xs sm:text-sm font-semibold text-brand-orange space-x-2 mb-2 sm:mb-3 flex-wrap gap-y-1">
+                        <a href="#${project.pageMenu}" onclick="window.navigate('${project.pageMenu}', event)" class="hover:text-gray-900 transition-colors">${t().menu[project.pageMenu]}</a>
+                        <i class="fas fa-chevron-right text-[10px] text-gray-400 mt-0.5"></i>
                         <span class="text-gray-900">${prjTitle}</span>
                     </div>
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight break-words">${prjTitle}</h1>
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight tracking-tight break-words">${prjTitle}</h1>
                 </div>
                 <div class="flex space-x-3 w-full md:w-auto">
-                    <button onclick="window.shareProject(event)" class="flex-1 md:flex-none bg-white border-2 border-gray-200 hover:border-brand-orange text-gray-800 px-4 py-3 sm:px-6 rounded-full font-semibold transition-all flex justify-center items-center text-sm sm:text-base shadow-sm btn-press"><i class="fas fa-share-alt md:mr-2"></i> <span class="hidden md:inline">Paylaş</span></button>
-                    <button onclick="navigate('${project.pageMenu}')" class="flex-1 md:flex-none bg-gray-900 text-white px-4 py-3 sm:px-6 rounded-full font-semibold hover:bg-brand-orange transition-colors flex justify-center items-center text-sm sm:text-base btn-press shadow-lg"><i class="fas fa-arrow-left md:mr-2"></i> <span class="hidden md:inline">${t().backBtn}</span></button>
+                    <button onclick="window.shareProject(event)" class="flex-1 md:flex-none bg-white border-2 border-gray-200 hover:border-brand-orange text-gray-800 px-4 py-2.5 sm:px-5 rounded-full font-semibold transition-all flex justify-center items-center text-sm shadow-sm btn-press"><i class="fas fa-share-alt md:mr-2"></i> <span class="hidden md:inline">Paylaş</span></button>
+                    <a href="#${project.pageMenu}" onclick="window.navigate('${project.pageMenu}', event)" class="flex-1 md:flex-none bg-gray-900 text-white px-4 py-2.5 sm:px-5 rounded-full font-semibold hover:bg-brand-orange transition-colors flex justify-center items-center text-sm btn-press shadow-lg"><i class="fas fa-arrow-left md:mr-2"></i> <span class="hidden md:inline">${t().backBtn}</span></a>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 xl:gap-16 mb-12 sm:mb-16">
-                <div class="xl:col-span-2 flex flex-col-reverse lg:flex-row gap-4 sm:gap-6">
-                    <div class="w-full lg:w-28 flex flex-row lg:flex-col gap-3 sm:gap-4 overflow-x-auto no-scrollbar pb-2 lg:pb-0 snap-x">${thumbnailsHTML}</div>
-                    <div class="flex-grow rounded-2xl shadow-xl overflow-hidden bg-gray-100">
-                        <div id="main-image-container" class="w-full aspect-[4/3] relative cursor-zoom-in group transition-all duration-300" onclick="window.openLightboxCurrent()">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mb-8 sm:mb-12 items-start">
+                
+                <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4 w-full">
+                    <div class="w-full rounded-2xl shadow-md overflow-hidden bg-gray-100 border border-gray-200">
+                        <div id="main-image-container" class="w-full aspect-video relative cursor-zoom-in group transition-all duration-300" onclick="window.openLightboxCurrent()">
                             ${initialContainerHTML}
                         </div>
                     </div>
+                    
+                    <div class="w-full flex flex-row gap-2 sm:gap-3 overflow-x-auto no-scrollbar pb-1 snap-x">
+                        ${thumbnailsHTML}
+                    </div>
+                    
+                    <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-100 mt-2">
+                        <h3 class="text-base sm:text-lg font-bold mb-3 text-gray-900 border-l-4 border-brand-orange pl-3">${t().projectDetailsTitle}</h3>
+                        <p class="text-gray-600 leading-relaxed text-sm sm:text-base font-medium">${project.description[state.lang]}</p>
+                    </div>
                 </div>
 
-                <div class="xl:col-span-1 space-y-6 sm:space-y-8">
+                <div class="lg:col-span-5 xl:col-span-4 space-y-4 sm:space-y-6 lg:sticky lg:top-28">
+                    
                     <div class="grid grid-cols-2 gap-3 sm:gap-4">
-                        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-md border flex flex-col items-center text-center">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-brand-orange/10 flex items-center justify-center mb-3 sm:mb-4"><i class="fas fa-ruler-combined text-brand-orange text-lg sm:text-xl"></i></div>
-                            <span class="text-gray-400 font-bold text-[10px] sm:text-xs uppercase tracking-widest mb-1 block truncate">${t().totalArea}</span>
-                            <span class="font-black text-2xl sm:text-3xl text-gray-900">${project.area} <span class="text-sm sm:text-base text-brand-orange ml-1">m²</span></span>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:border-brand-orange transition-colors">
+                            <div class="w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center mb-2"><i class="fas fa-ruler-combined text-brand-orange text-lg"></i></div>
+                            <span class="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-1 block truncate">${t().totalArea}</span>
+                            <span class="font-black text-2xl text-gray-900">${project.area} <span class="text-sm text-brand-orange ml-1">m²</span></span>
                         </div>
-                        <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-md border flex flex-col items-center text-center">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-green-500/10 flex items-center justify-center mb-3 sm:mb-4"><i class="fas fa-door-open text-green-500 text-lg sm:text-xl"></i></div>
-                            <span class="text-gray-400 font-bold text-[10px] sm:text-xs uppercase tracking-widest mb-1 block truncate">${t().roomCount}</span>
-                            <span class="font-black text-2xl sm:text-3xl text-gray-900">${project.rooms}</span>
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:border-green-500 transition-colors">
+                            <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center mb-2"><i class="fas fa-door-open text-green-500 text-lg"></i></div>
+                            <span class="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-1 block truncate">${t().roomCount}</span>
+                            <span class="font-black text-2xl text-gray-900">${project.rooms}</span>
                         </div>
                     </div>
 
-                    <div class="bg-[#1a201c] p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl relative overflow-hidden">
-                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 relative z-10">${t().getQuoteTitle}</h3>
-                        <p class="text-gray-400 text-xs sm:text-sm font-medium mb-6 sm:mb-8 relative z-10">Mimarımız sizi arayıp bu proje hakkında detaylı bilgi versin.</p>
+                    <div class="bg-[#1a201c] p-6 sm:p-7 rounded-3xl shadow-xl relative overflow-hidden">
+                        <h3 class="text-xl font-bold text-white mb-2 relative z-10">${t().getQuoteTitle}</h3>
+                        <p class="text-gray-400 text-xs sm:text-sm font-medium mb-5 relative z-10">Mimarımız sizi arayıp bu proje hakkında detaylı bilgi versin.</p>
                         
-                        <form id="project-form" class="space-y-4 relative z-10" onsubmit="window.submitTestForm(event, 'project-form')">
+                        <form id="project-form" class="space-y-3.5 relative z-10" onsubmit="window.submitTestForm(event, 'project-form')">
                             <div>
-                                <input type="text" id="project-form-name" name="name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm sm:text-base">
+                                <input type="text" id="project-form-name" name="name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-2.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm">
                                 <div id="project-form-name-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorName}</div>
                             </div>
                             <div>
-                                <input type="tel" id="project-form-phone" name="phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all tracking-wider text-sm sm:text-base">
+                                <input type="tel" id="project-form-phone" name="phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-2.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all tracking-wider text-sm">
                                 <div id="project-form-phone-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorPhone}</div>
                             </div>
                             <div>
-                                <input type="email" id="project-form-email" name="email" placeholder="${t().formEmail}" oninput="window.clearError(this)" class="w-full px-4 py-3 sm:px-5 sm:py-4 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm sm:text-base">
-                                <div id="project-form-email-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorEmail}</div>
+                                <input type="email" id="project-form-email" name="email" placeholder="${t().formEmail || 'E-Posta Adresi'}" oninput="window.clearError(this)" class="w-full px-4 py-2.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm">
+                                <div id="project-form-email-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorEmail || 'Geçerli bir mail giriniz.'}</div>
                             </div>
                             
-                            <!-- KVKK Checkbox -->
-                            <div class="flex items-start mt-4 bg-black/20 p-3 rounded-lg border border-gray-800">
-                                <div class="flex items-center h-5 mt-0.5 shrink-0">
-                                    <input id="project-form-kvkk" name="kvkk" type="checkbox" onchange="window.clearError(this)" class="w-5 h-5 rounded bg-black/40 border-gray-600 text-brand-orange focus:ring-brand-orange focus:ring-2 cursor-pointer accent-brand-orange">
+                            <div class="flex items-start mt-2 bg-black/20 p-2.5 rounded-lg border border-gray-800">
+                                <div class="flex items-center h-4 mt-0.5 shrink-0">
+                                    <input id="project-form-kvkk" name="kvkk" type="checkbox" onchange="window.clearError(this)" class="w-4 h-4 rounded bg-black/40 border-gray-600 text-brand-orange focus:ring-brand-orange focus:ring-2 cursor-pointer accent-brand-orange">
                                 </div>
-                                <div class="ml-3 text-xs sm:text-sm">
+                                <div class="ml-2.5 text-[11px] sm:text-xs">
                                     <label for="project-form-kvkk" class="text-gray-300 cursor-pointer font-medium leading-tight block">${t().kvkkText}</label>
-                                    <div id="project-form-kvkk-error" class="text-red-500 font-bold text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>${t().kvkkError}</div>
+                                    <div id="project-form-kvkk-error" class="text-red-500 font-bold text-[10px] sm:text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>${t().kvkkError}</div>
                                 </div>
                             </div>
 
-                            <button type="submit" class="w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-4 flex justify-center items-center text-sm sm:text-base btn-press disabled:opacity-70">
+                            <button type="submit" class="cta-pulse w-full bg-brand-orange text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-3 flex justify-center items-center text-sm btn-press disabled:opacity-70">
                                 <i class="fas fa-paper-plane mr-2"></i> ${t().submitBtn}
                             </button>
                         </form>
@@ -1026,33 +962,35 @@ function renderProjectDetail(projectId) {
                 </div>
             </div>
             
-            <div class="bg-white p-6 sm:p-10 md:p-16 rounded-3xl shadow-xl border border-gray-100 max-w-4xl break-words mb-12 sm:mb-16">
-                <h3 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900 border-l-4 border-brand-orange pl-3 sm:pl-4">${t().projectDetailsTitle}</h3>
-                <p class="text-gray-600 leading-relaxed text-sm sm:text-base md:text-lg font-medium">${project.description[state.lang]}</p>
-            </div>
-            
-            <div class="flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 pt-8 sm:pt-12 gap-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 pt-8 gap-4">
                  <div class="w-full sm:w-1/2 flex justify-start">
-                     <button onclick="navigate('${prevProject.id}')" class="group flex items-center text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 p-4 rounded-2xl w-full max-w-sm transition-colors btn-press">
-                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center mr-4 shadow-sm group-hover:text-brand-orange transition-colors"><i class="fas fa-arrow-left"></i></div>
-                         <div>
-                             <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">${t().prevProject}</span>
-                             <span class="text-sm sm:text-base font-bold text-gray-900 truncate block">${state.lang === 'tr' ? prevProject.title : prevProject.titleEn}</span>
+                     <a href="#${prevProject.id}" onclick="window.navigate('${prevProject.id}', event)" class="group flex items-center text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 p-3 sm:p-4 rounded-2xl w-full max-w-sm transition-colors btn-press">
+                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white flex items-center justify-center mr-3 sm:mr-4 shadow-sm group-hover:text-brand-orange transition-colors shrink-0"><i class="fas fa-arrow-left text-sm"></i></div>
+                         <div class="overflow-hidden">
+                             <span class="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider block mb-0.5">${t().prevProject}</span>
+                             <span class="text-sm font-bold text-gray-900 truncate block">${state.lang === 'tr' ? prevProject.title : prevProject.titleEn}</span>
                          </div>
-                     </button>
+                     </a>
                  </div>
                  <div class="w-full sm:w-1/2 flex justify-end">
-                     <button onclick="navigate('${nextProject.id}')" class="group flex items-center text-right bg-gray-50 hover:bg-gray-100 border border-gray-200 p-4 rounded-2xl w-full max-w-sm transition-colors justify-end btn-press">
-                         <div>
-                             <span class="text-xs text-gray-400 font-bold uppercase tracking-wider block mb-1">${t().nextProject}</span>
-                             <span class="text-sm sm:text-base font-bold text-gray-900 truncate block">${state.lang === 'tr' ? nextProject.title : nextProject.titleEn}</span>
+                     <a href="#${nextProject.id}" onclick="window.navigate('${nextProject.id}', event)" class="group flex items-center text-right bg-gray-50 hover:bg-gray-100 border border-gray-200 p-3 sm:p-4 rounded-2xl w-full max-w-sm transition-colors justify-end btn-press">
+                         <div class="overflow-hidden">
+                             <span class="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider block mb-0.5">${t().nextProject}</span>
+                             <span class="text-sm font-bold text-gray-900 truncate block">${state.lang === 'tr' ? nextProject.title : nextProject.titleEn}</span>
                          </div>
-                         <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center ml-4 shadow-sm group-hover:text-brand-orange transition-colors"><i class="fas fa-arrow-right"></i></div>
-                     </button>
+                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white flex items-center justify-center ml-3 sm:ml-4 shadow-sm group-hover:text-brand-orange transition-colors shrink-0"><i class="fas fa-arrow-right text-sm"></i></div>
+                     </a>
                  </div>
             </div>
         </div>
     `;
+    
+    // Akıllı Mesaj Özelliği
+    const waChatBtn = document.getElementById('btn-chat-floating');
+    if (waChatBtn) {
+        let msg = `Merhaba, Kartech Panel web sitesini inceliyordum. ${prjTitle} projeniz (${project.area} m²) hakkında detaylı bilgi alabilir miyim?`;
+        waChatBtn.href = `https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`;
+    }
 }
 
 function renderFooter() {
@@ -1060,16 +998,18 @@ function renderFooter() {
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mb-10 border-b border-gray-800 pb-10">
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-48 sm:w-56 mb-6 cursor-pointer hover:opacity-80 transition-opacity btn-press object-contain" onclick="navigate('home')">
+                    <a href="#home" onclick="navigate('home', event)" class="cursor-pointer hover:opacity-80 transition-opacity btn-press block">
+                        <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-48 sm:w-56 mb-6 object-contain">
+                    </a>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-xs font-medium">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                 </div>
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
                     <h4 class="text-white font-bold text-lg mb-5 tracking-wide uppercase text-sm">${t().menu['ev-modelleri'] || 'Projeler'}</h4>
                     <ul class="space-y-3 text-gray-400 font-medium">
-                        <li><a href="#" onclick="navigate('ev-modelleri', event)" class="hover:text-brand-orange transition-colors">${t().menu['ev-modelleri']}</a></li>
-                        <li><a href="#" onclick="navigate('bahce-yapilari', event)" class="hover:text-brand-orange transition-colors">${t().menu['bahce-yapilari']}</a></li>
-                        <li><a href="#" onclick="navigate('garaj-sistemleri', event)" class="hover:text-brand-orange transition-colors">${t().menu['garaj-sistemleri']}</a></li>
-                        <li><a href="#" onclick="navigate('sip-panel', event)" class="hover:text-brand-orange transition-colors">${t().menu['sip-panel']}</a></li>
+                        <li><a href="#ev-modelleri" onclick="navigate('ev-modelleri', event)" class="hover:text-brand-orange transition-colors">${t().menu['ev-modelleri']}</a></li>
+                        <li><a href="#bahce-yapilari" onclick="navigate('bahce-yapilari', event)" class="hover:text-brand-orange transition-colors">${t().menu['bahce-yapilari']}</a></li>
+                        <li><a href="#garaj-sistemleri" onclick="navigate('garaj-sistemleri', event)" class="hover:text-brand-orange transition-colors">${t().menu['garaj-sistemleri']}</a></li>
+                        <li><a href="#sip-panel" onclick="navigate('sip-panel', event)" class="hover:text-brand-orange transition-colors">${t().menu['sip-panel']}</a></li>
                     </ul>
                 </div>
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
@@ -1095,7 +1035,32 @@ function initApp() {
     renderFooter();
     window.addEventListener('scroll', handleScroll);
     let hash = window.location.hash.substring(1);
-    if(hash) { navigate(hash, null, true, true); } 
+    
+    // Cookie Onay Barı Mantığı
+    if (!localStorage.getItem('cookie-accepted')) {
+        const cookieBar = document.createElement('div');
+        cookieBar.id = 'cookie-consent-bar';
+        cookieBar.className = 'fixed bottom-0 left-0 w-full bg-gray-900 border-t border-brand-orange text-white p-4 sm:p-6 z-[1000] transform transition-transform duration-500 flex flex-col sm:flex-row items-center justify-between shadow-2xl';
+        cookieBar.innerHTML = `
+            <div class="text-sm font-medium mb-4 sm:mb-0 max-w-4xl pr-0 sm:pr-8 text-center sm:text-left text-gray-300">
+                <i class="fas fa-cookie-bite text-brand-orange mr-2 text-lg"></i> ${t().cookieText}
+            </div>
+            <button id="accept-cookie-btn" class="bg-brand-orange hover:bg-orange-500 text-white font-bold py-2.5 px-8 rounded-full transition-colors whitespace-nowrap shadow-lg btn-press">
+                ${t().cookieAccept}
+            </button>
+        `;
+        document.body.appendChild(cookieBar);
+        document.getElementById('accept-cookie-btn').addEventListener('click', () => {
+            localStorage.setItem('cookie-accepted', 'true');
+            cookieBar.style.transform = 'translateY(100%)';
+            setTimeout(() => cookieBar.remove(), 500);
+        });
+    }
+
+    if(hash) { 
+        hash = decodeURIComponent(hash);
+        navigate(hash, null, true, true); 
+    } 
     else { state.currentView = 'home'; updateMetaTags('home'); renderHomePage(); }
     DOM.content.classList.remove('page-fade-out');
     DOM.content.classList.add('page-fade-in');
