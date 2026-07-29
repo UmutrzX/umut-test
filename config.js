@@ -59,7 +59,7 @@ export const siteConfig = {
     },
 
     projects: [
-                {
+        {
             id: "Test ev -001",
             title: "Köy evleri",
             titleEn: "Calanthe Model - 145",
@@ -67,10 +67,11 @@ export const siteConfig = {
             pageMenu: "konutlar", 
             categoryId: "ev-standart",
             mainImage: "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-8.jpg",
-            gallery: ["https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-5.jpg",
-                      "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-3.jpg",
-                      "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-1.jpg",
-                     ],
+            gallery: [
+                "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-5.jpg",
+                "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-3.jpg",
+                "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-1.jpg"
+            ],
             description: {
                 tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.",
                 en: "A stylish and useful house design."
@@ -110,10 +111,11 @@ export const siteConfig = {
             pageMenu: "egitim-ticari", 
             categoryId: "et-okul",
             mainImage: "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-4.jpg",
-            gallery: ["https://www.sipeurope.eu/wp-content/uploads/2020/06/19-Rimavska-Sobota-Slovakia-sip-panel-building-3D.jpg",
-                      "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-1.jpg",
-                     "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-2.jpg"
-                     ],
+            gallery: [
+                "https://www.sipeurope.eu/wp-content/uploads/2020/06/19-Rimavska-Sobota-Slovakia-sip-panel-building-3D.jpg",
+                "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-1.jpg",
+                "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-2.jpg"
+            ],
             description: {
                 tr: "Eğitim kurumları için geniş, iyi yalıtımlı ve hızlı kurulan SIP panel yapılar.",
                 en: "Spacious, well-insulated, and fast-built SIP panel structures for educational institutions."
