@@ -1,12 +1,7 @@
 export const siteConfig = {
     // FORM GÖNDERİM AYARLARI (5 YEDEKLİ API SİSTEMİ)
     formSubmission: {
-        // Maillerin düşeceği ana adres (Buradan tek tıkla değiştirebilirsiniz)
         targetEmail: "umuttrtgi@gmail.com",
-        
-        // Sistem sırayla bu API'leri dener. Biri çökerse diğerine geçer.
-        // Not: 1. API (FormSubmit) doğrudan targetEmail ile çalışır. 
-        // Diğerleri (Formspree vb.) için sitelerine üye olup ücretsiz ID'nizi buraya yazabilirsiniz.
         endpoints: [
             { name: "FormSubmit", url: "https://formsubmit.co/ajax/umuttrtgi@gmail.com", type: "ajax" },
             { name: "Formspree", url: "https://formspree.io/f/YEDEK_ID_YAZIN", type: "json" },
@@ -165,15 +160,30 @@ export const siteConfig = {
             
             sipPanelData: {
                 heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
-                introTitle: "Geleceğin Yapı Teknolojisi: SİP Panel",
-                introText: "SİP (Yapısal Yalıtımlı Panel) teknolojisi, yüksek yoğunluklu yalıtım malzemesinin (EPS) iki yapısal levha (OSB) arasına preslenmesiyle oluşturulan, günümüzün en gelişmiş ve enerji tasarruflu yapı sistemidir. Betonarmeye göre çok daha hafif, esnek ve depreme karşı dayanıklıdır.",
+                introTitle: "SİP Panel Nedir?",
+                introText: "SIP panel, yapı sektöründe son yıllarda hızla popülerleşen, yapısal yalıtımlı panel anlamına gelir. Dış yüzeylerinde taşıyıcı görevi gören OSB levhalar ve iç kısmında ise yüksek yoğunluklu yalıtım malzemesi bulunan bu paneller, inşaat süreçlerini hızlandırırken aynı zamanda enerji verimli ve dayanıklı yapılar oluşturmayı sağlar.<br><br>Basitçe söylemek gerekirse, iki adet OSB (Oriented Strand Board) levhanın arasına yüksek yoğunluklu bir yalıtım malzemesi sıkıştırılmasıyla elde edilen bir yapı elemanıdır. Yalıtım malzemesi olarak genellikle poliüretan (PUR), polistiren (EPS) veya poliizosiyanurat (PIR) kullanılır. Bu panelin en önemli özelliği, hem taşıyıcı hem de yalıtım görevini aynı anda üstlenmesidir.",
                 advantagesTitle: "SİP Panelin Avantajları",
                 advantages: [
-                    { icon: "fa-bolt", title: "Yüksek Enerji Tasarrufu", desc: "Mükemmel ısı yalıtımı sayesinde ısıtma ve soğutma giderlerinde %60'a varan tasarruf sağlar." },
-                    { icon: "fa-stopwatch", title: "Hızlı Kurulum", desc: "Fabrikada milimetrik hassasiyetle üretilen paneller, şantiyede haftalar yerine günler içinde birleştirilir." },
-                    { icon: "fa-shield-alt", title: "Deprem Güvenliği", desc: "Esnek ve hafif yapısı sayesinde deprem enerjisini emer, yıkılma riskini minimuma indirir." },
-                    { icon: "fa-leaf", title: "Çevre Dostu", desc: "Üretim sürecinde çok daha az karbon ayak izi bırakır ve malzemeler geri dönüştürülebilirdir." }
+                    { icon: "fa-stopwatch", title: "Hızlı ve Kolay Montaj", desc: "Büyük boyutlu ve hafif olması sayesinde geleneksel inşaat yöntemlerine göre çok daha kısa sürede yapı inşa etmeye imkan tanır." },
+                    { icon: "fa-temperature-low", title: "Yüksek Isı Yalıtımı", desc: "İçerisindeki yalıtım malzemesi sayesinde enerji tasarrufu sağlar ve ısı kayıplarını minimuma indirir." },
+                    { icon: "fa-volume-mute", title: "Ses Yalıtımı", desc: "Dışarıdan gelen sesleri önemli ölçüde azaltarak daha sessiz ve konforlu yaşam alanları sunar." },
+                    { icon: "fa-shield-alt", title: "Dayanıklılık", desc: "Yüksek mukavemeti sayesinde deprem gibi doğal afetlere karşı daha dayanıklıdır." },
+                    { icon: "fa-tint-slash", title: "Su Geçirmezlik", desc: "Özellikle dış cephelerde kullanıldığında su sızdırmazlık özelliği sayesinde binayı dış etkenlere karşı korur." },
+                    { icon: "fa-leaf", title: "Çevre Dostu", desc: "Üretiminde kullanılan malzemeler ve geri dönüştürülebilir olması çevreye duyarlı bir yapı malzemesi olduğunu gösterir." },
+                    { icon: "fa-fire-extinguisher", title: "Yangına Dayanıklılık", desc: "Yalıtım malzemesinin türüne göre yangına karşı farklı dayanım seviyelerine sahiptir." },
+                    { icon: "fa-sun", title: "Biyoklimatik Tasarım", desc: "Yapının iklim koşullarına uygun olarak tasarlanmasına olanak tanır." }
                 ],
+                usageAreasTitle: "SİP Panelin Kullanım Alanları",
+                usageAreas: [
+                    "Prefabrik Evler: Hızlı ve ekonomik konut çözümleri sunar.",
+                    "Bungalov Evler: Tatil evleri, bahçe evleri gibi küçük ölçekli yapıların inşasında kullanılır.",
+                    "Çatı Sistemleri: Yüksek yalıtım özelliği sayesinde çatı katlarının daha verimli kullanılmasını sağlar.",
+                    "Duvar Sistemleri: İç ve dış duvarlarda kullanılabilen çok yönlü bir malzemedir.",
+                    "Zemin Sistemleri: Yüksek taşıyıcı kapasitesi sayesinde zemin döşemelerinde de tercih edilir.",
+                    "Ticari Yapılar: Ofis binaları, alışveriş merkezleri gibi büyük ölçekli yapılarda da kullanılır."
+                ],
+                futureTitle: "SİP Panelin Geleceği ve Sonuç",
+                futureText: "SIP paneller, inşaat sektöründe sürdürülebilirlik ve enerji verimliliği konularına olan ilginin artmasıyla birlikte daha da önem kazanmaktadır. Özellikle küresel ısınma ve enerji kaynaklarının sınırlı olması gibi sorunlar, SIP panellerin kullanım alanlarını genişletmektedir. Gelecekte, daha hafif, daha güçlü ve daha çevre dostu SIP panellerin geliştirilmesi beklenmektedir.<br><br>Sonuç olarak; SIP panel, inşaat sektöründe hızlı, enerji verimli ve dayanıklı yapılar oluşturmak için kullanılan modern bir yapı malzemesidir. Hızlı montajı, yüksek yalıtım performansı ve çevre dostu özellikleri sayesinde geleceğin yapı malzemelerinden biri olarak görülmektedir.",
                 specsTitle: "Teknik Özellikler ve Performans",
                 specsDesc: "Projelerimizde kullandığımız SİP paneller uluslararası standartlarda üretilmekte olup zorlu iklim koşullarına karşı test edilmiştir.",
                 technicalSpecs: [
@@ -225,15 +235,30 @@ export const siteConfig = {
             },
             sipPanelData: {
                 heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
-                introTitle: "Building Technology of the Future",
-                introText: "Structural Insulated Panels (SIPs) are a high-performance building system...",
+                introTitle: "What is a SIP Panel?",
+                introText: "SIP (Structural Insulated Panel) is a highly popular building material in recent years. It consists of an insulating foam core sandwiched between two structural facings, typically oriented strand board (OSB). This combination provides extremely strong, energy-efficient, and cost-effective building systems.<br><br>The most important feature of this panel is that it acts as both a load-bearing structure and high-performance insulation simultaneously.",
                 advantagesTitle: "Advantages of SIPs",
                 advantages: [
-                    { icon: "fa-bolt", title: "Energy Efficient", desc: "Reduces energy costs by up to 60%." },
-                    { icon: "fa-stopwatch", title: "Fast Construction", desc: "Built in days, not weeks." },
-                    { icon: "fa-shield-alt", title: "Earthquake Safety", desc: "Flexible and resistant structure." },
-                    { icon: "fa-leaf", title: "Eco-Friendly", desc: "Low carbon footprint." }
+                    { icon: "fa-stopwatch", title: "Fast Construction", desc: "Built in days rather than weeks due to large and lightweight panels." },
+                    { icon: "fa-temperature-low", title: "High Insulation", desc: "Saves energy and minimizes heat loss thanks to the dense core." },
+                    { icon: "fa-volume-mute", title: "Soundproofing", desc: "Significantly reduces external noise, creating quieter living spaces." },
+                    { icon: "fa-shield-alt", title: "Durability", desc: "Highly resistant to natural disasters like earthquakes due to its structural strength." },
+                    { icon: "fa-tint-slash", title: "Water Resistance", desc: "Protects the building from external elements with its watertight features." },
+                    { icon: "fa-leaf", title: "Eco-Friendly", desc: "Manufactured using sustainable materials and a low carbon footprint." },
+                    { icon: "fa-fire-extinguisher", title: "Fire Resistance", desc: "Offers various levels of fire resistance depending on the insulation core." },
+                    { icon: "fa-sun", title: "Bioclimatic Design", desc: "Allows structures to be designed in harmony with their climate conditions." }
                 ],
+                usageAreasTitle: "Usage Areas of SIP Panels",
+                usageAreas: [
+                    "Prefabricated Houses: Quick and economical residential solutions.",
+                    "Bungalows: Ideal for small-scale structures like holiday and garden homes.",
+                    "Roof Systems: Ensures more efficient use of attic spaces with high insulation.",
+                    "Wall Systems: A versatile material for interior and exterior walls.",
+                    "Floor Systems: Preferred for flooring due to its high load-bearing capacity.",
+                    "Commercial Structures: Used in large-scale buildings like offices and malls."
+                ],
+                futureTitle: "The Future & Conclusion",
+                futureText: "As interest in sustainability and energy efficiency grows in the construction industry, SIP panels are becoming increasingly vital. The challenges of global warming and limited energy resources are expanding the applications of SIPs. In the future, we expect the development of even lighter, stronger, and more eco-friendly panels.<br><br>In conclusion, SIP panels are modern building materials that create fast, energy-efficient, and durable structures, firmly establishing themselves as the building material of the future.",
                 specsTitle: "Technical Specifications",
                 specsDesc: "Tested for extreme weather conditions.",
                 technicalSpecs: [
