@@ -568,6 +568,7 @@ function renderHomePage() {
     `).join('');
 
     DOM.content.innerHTML = `
+        <!-- HERO ALANI (HİÇ DOKUNULMADI) -->
         <div class="relative w-full h-[100vh] flex overflow-hidden">
             <div class="absolute inset-0 z-0"><img src="${siteConfig.homeHero.backgroundImage}" alt="Hero Background" class="w-full h-full object-cover" loading="eager"></div>
             <div class="absolute top-0 left-0 bottom-0 w-full md:w-[85%] lg:w-[65%] bg-[#1a201c]/40 backdrop-blur-sm z-10"></div>
@@ -576,22 +577,73 @@ function renderHomePage() {
                     <div class="max-w-2xl lg:max-w-3xl transform">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
                         <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
-                        <button onclick="document.getElementById('featured-projects').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
+                        <button onclick="document.getElementById('why-us-section').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
                             Projeleri İncele <i class="fas fa-arrow-down ml-3"></i>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="featured-projects" class="bg-white relative z-20 w-full py-16 sm:py-20 md:py-24">
+
+        <!-- YENİ: NEDEN BİZ? ALANI -->
+        <div id="why-us-section" class="bg-gray-50 relative z-20 w-full py-16 sm:py-24 border-b border-gray-200">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-10 sm:mb-12 flex flex-col md:flex-row justify-between items-start md:items-end">
-                    <div>
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-3 sm:mb-4 tracking-tight">Öne Çıkan Projeler</h2>
-                        <div class="w-16 md:w-24 h-1.5 bg-brand-orange rounded-full"></div>
+                <div class="text-center mb-12 sm:mb-16">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-3 sm:mb-4 tracking-tight">${state.lang === 'tr' ? 'Neden Kartech Panel?' : 'Why Kartech Panel?'}</h2>
+                    <div class="w-16 md:w-24 h-1.5 bg-brand-orange rounded-full mx-auto"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-gray-100 text-center hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-orange-50 text-brand-orange rounded-full flex items-center justify-center mx-auto mb-6 text-2xl sm:text-3xl"><i class="fas fa-bolt"></i></div>
+                        <h3 class="text-xl sm:text-2xl font-bold mb-3 text-gray-900">${state.lang === 'tr' ? 'Yüksek Enerji Verimliliği' : 'Energy Efficiency'}</h3>
+                        <p class="text-gray-500 font-medium text-sm sm:text-base leading-relaxed">${state.lang === 'tr' ? 'Mükemmel ısı yalıtımı sayesinde ısıtma ve soğutma giderlerinde %60\'a varan tasarruf sağlayın.' : 'Save up to 60% on your bills with excellent thermal insulation.'}</p>
+                    </div>
+                    <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-gray-100 text-center hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-orange-50 text-brand-orange rounded-full flex items-center justify-center mx-auto mb-6 text-2xl sm:text-3xl"><i class="fas fa-stopwatch"></i></div>
+                        <h3 class="text-xl sm:text-2xl font-bold mb-3 text-gray-900">${state.lang === 'tr' ? 'Ultra Hızlı Kurulum' : 'Fast Installation'}</h3>
+                        <p class="text-gray-500 font-medium text-sm sm:text-base leading-relaxed">${state.lang === 'tr' ? 'Aylar süren inşaat süreçlerine son. Fabrikada üretilen panellerle haftalar içinde anahtar teslim kurulum.' : 'Turnkey projects in weeks, not months.'}</p>
+                    </div>
+                    <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-gray-100 text-center hover:-translate-y-2 transition-transform duration-300">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-orange-50 text-brand-orange rounded-full flex items-center justify-center mx-auto mb-6 text-2xl sm:text-3xl"><i class="fas fa-shield-alt"></i></div>
+                        <h3 class="text-xl sm:text-2xl font-bold mb-3 text-gray-900">${state.lang === 'tr' ? 'Üstün Deprem Güvenliği' : 'Earthquake Safety'}</h3>
+                        <p class="text-gray-500 font-medium text-sm sm:text-base leading-relaxed">${state.lang === 'tr' ? 'Betonarmeye göre çok daha hafif ve esnek yapısı sayesinde depreme karşı sarsılmaz bir bütünlük sunar.' : 'Full resistance against earthquakes with its flexible and lightweight structure.'}</p>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ÖNE ÇIKAN PROJELER -->
+        <div id="featured-projects" class="bg-white relative z-20 w-full py-16 sm:py-24">
+            <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-10 sm:mb-12 flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4">
+                    <div class="text-center sm:text-left">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-3 sm:mb-4 tracking-tight">${state.lang === 'tr' ? 'Öne Çıkan Projeler' : 'Featured Projects'}</h2>
+                        <div class="w-16 md:w-24 h-1.5 bg-brand-orange rounded-full mx-auto sm:mx-0"></div>
+                    </div>
+                    <a href="#ev-modelleri" onclick="navigate('ev-modelleri', event)" class="hidden sm:flex items-center text-brand-orange font-bold text-sm md:text-base hover:text-gray-900 transition-colors btn-press">
+                        ${state.lang === 'tr' ? 'Tüm Modelleri İncele' : 'View All Models'} <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">${projectsHTML}</div>
+                
+                <!-- Mobil İçin Tümünü Gör Butonu -->
+                <div class="mt-8 text-center sm:hidden">
+                    <a href="#ev-modelleri" onclick="navigate('ev-modelleri', event)" class="inline-flex items-center justify-center bg-orange-50 text-brand-orange font-bold px-6 py-3 rounded-full hover:bg-brand-orange hover:text-white transition-colors btn-press w-full">
+                        ${state.lang === 'tr' ? 'Tüm Modelleri İncele' : 'View All Models'} <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- YENİ: HAREKETE GEÇİRİCİ MESAJ (CTA) BANDI -->
+        <div class="bg-[#1a201c] relative z-20 w-full py-16 sm:py-24 overflow-hidden border-t-4 border-brand-orange">
+            <div class="absolute inset-0 bg-brand-orange/5 pattern-dots pointer-events-none"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-tight">${state.lang === 'tr' ? 'Hayalinizdeki Yapıya Hemen Kavuşun' : 'Get Your Dream Structure Now'}</h2>
+                <p class="text-base sm:text-lg text-gray-400 mb-8 sm:mb-10 font-medium">${state.lang === 'tr' ? 'Mimarlarımızla projenizi detaylandırmak ve size özel, ücretsiz fiyat teklifi almak için iletişime geçin.' : 'Contact us to detail your project with our architects and get a custom free quote.'}</p>
+                <a href="#iletisim" onclick="navigate('iletisim', event)" class="cta-pulse inline-flex items-center justify-center bg-brand-orange text-white font-bold px-8 sm:px-10 py-4 sm:py-5 rounded-full shadow-2xl hover:bg-orange-500 transition-all btn-press text-base sm:text-lg">
+                    <i class="fas fa-paper-plane mr-3"></i> ${state.lang === 'tr' ? 'Ücretsiz Teklif Alın' : 'Get a Free Quote'}
+                </a>
             </div>
         </div>
     `;
