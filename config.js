@@ -37,17 +37,21 @@ export const siteConfig = {
     },
 
     categories: {
-        "ev-modelleri": [
+        "konutlar": [
             { id: "ev-standart", tr: "Standart Evler", en: "Standard Houses" },
             { id: "ev-ahsap", tr: "Ahşap Kaplamalı Evler", en: "Wooden Clad Houses" },
             { id: "ev-luks", tr: "Lüks Villalar", en: "Luxury Villas" }
+        ],
+        "egitim-ticari": [
+            { id: "et-okul", tr: "Eğitim Binaları", en: "Educational Buildings" },
+            { id: "et-ofis", tr: "Ofis ve Ticari Alanlar", en: "Office & Commercial Spaces" }
         ],
         "bahce-yapilari": [
             { id: "by-kamelya", tr: "Kamelya & Çardak", en: "Gazebos & Pergolas" },
             { id: "by-kisbahcesi", tr: "Kış Bahçeleri", en: "Winter Gardens" },
             { id: "by-depo", tr: "Bahçe Depoları", en: "Garden Sheds" }
         ],
-        "garaj-sistemleri": [
+        "garaj-yapilari": [
             { id: "gs-tekacik", tr: "Tek Araçlık Açık Garaj", en: "Single Car Open Garage" },
             { id: "gs-ciftkapali", tr: "Çift Araçlık Kapalı Garaj", en: "Double Car Closed Garage" },
             { id: "gs-atolye", tr: "Atölyeli Garajlar", en: "Garages with Workshop" }
@@ -60,7 +64,7 @@ export const siteConfig = {
             title: "Test Projesi",
             titleEn: "Test Project",
             area: 61, rooms: 3,  
-            pageMenu: "ev-modelleri", 
+            pageMenu: "konutlar", 
             categoryId: "ev-ahsap", 
             mainImage: "https://media.discordapp.net/attachments/1531819616484196476/1531819728350347294/WhatsApp_Image_2026-07-29_at_2.22.21_AM.jpeg?ex=6a6a99cb&is=6a69484b&hm=8e3969cd950ae08e0ea6692ed83da464536aad9dd12c3e8cfb2c33996cf0629c&=&format=webp&width=1524&height=671",
             gallery: [
@@ -86,13 +90,27 @@ export const siteConfig = {
             title: "Calanthe Modeli",
             titleEn: "Calanthe Model - 145",
             area: 54, rooms: 4,
-            pageMenu: "ev-modelleri", 
+            pageMenu: "konutlar", 
             categoryId: "ev-standart",
             mainImage: "https://i.pinimg.com/736x/b3/fc/38/b3fc3888aecdcc57cd78193d31f7bd46.jpg",
             gallery: ["https://i.pinimg.com/1200x/be/d6/bf/bed6bfbffcea556193c1a2b9c7ce4b92.jpg"],
             description: {
                 tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.",
                 en: "A stylish and useful house design."
+            }
+        },
+        {
+            id: "okul-projesi-1",
+            title: "Modern Okul Binası",
+            titleEn: "Modern School Building",
+            area: 450, rooms: 12,
+            pageMenu: "egitim-ticari", 
+            categoryId: "et-okul",
+            mainImage: "https://i.pinimg.com/1200x/20/6c/fb/206cfb08ec4f51e04cf911961d56eab0.jpg",
+            gallery: [],
+            description: {
+                tr: "Eğitim kurumları için geniş, iyi yalıtımlı ve hızlı kurulan SIP panel yapılar.",
+                en: "Spacious, well-insulated, and fast-built SIP panel structures for educational institutions."
             }
         },
         {
@@ -111,7 +129,7 @@ export const siteConfig = {
             title: "Çift Araçlık Garaj",
             titleEn: "Double Car Garage",
             area: 40, rooms: 1,
-            pageMenu: "garaj-sistemleri", 
+            pageMenu: "garaj-yapilari", 
             categoryId: "gs-ciftkapali",
             mainImage: "https://i.pinimg.com/1200x/3f/b2/f0/3fb2f0ef390fda1df627ba294679b175.jpg",
             gallery: [],
@@ -122,9 +140,9 @@ export const siteConfig = {
     i18n: {
         tr: {
             menu: {
-                "home": "Ana Sayfa", "sip-panel": "SIP Panel", "ev-modelleri": "Ev Modelleri", 
-                "bahce-yapilari": "Bahçe Yapıları", "garaj-sistemleri": "Garaj Sistemleri", 
-                "uretim": "Üretim", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
+                "home": "Ana Sayfa", "sip-panel": "SIP Panel", "konutlar": "Konutlar", 
+                "egitim-ticari": "Eğitim ve Ticari Yapılar", "bahce-yapilari": "Bahçe Yapıları", 
+                "garaj-yapilari": "Garaj Yapıları", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
             },
             
             consultBtn: "Bize Ulaşın",
@@ -154,9 +172,10 @@ export const siteConfig = {
             cookieAccept: "Kabul Et",
 
             pageTitles: {
-                "home": "ZEMU SIPPAN", "iletisim": "Bize Ulaşın", "uretim": "Üretim Tesisimiz",
+                "home": "ZEMU SIPPAN", "iletisim": "Bize Ulaşın", 
                 "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SIP Panel",
-                "ev-modelleri": "Ev Modellerimiz", "bahce-yapilari": "Bahçe Yapılarımız", "garaj-sistemleri": "Garaj Sistemlerimiz"
+                "konutlar": "Konut Modellerimiz", "egitim-ticari": "Eğitim ve Ticari Yapılar", 
+                "bahce-yapilari": "Bahçe Yapılarımız", "garaj-yapilari": "Garaj Yapılarımız"
             },
 
             relatedProjectsTitle: "Bunlar da İlginizi Çekebilir",
@@ -181,7 +200,7 @@ export const siteConfig = {
                 { q: "SIP Panel Evlerin İnşaatı Ne Kadar Sürer?", a: "SIP panel evlerin inşaatı, geleneksel yöntemlere göre çok daha kısa sürede tamamlanır. Bu, panelin hafifliği ve kolay montaj edilebilmesi sayesinde mümkündür. Projenin büyüklüğüne göre değişmekle birlikte, ortalama bir SIP panel evin inşaatı birkaç hafta içinde tamamlanabilir." },
                 { q: "SIP Panel Evlerde Böceklenme Olur mu?", a: "SIP panelin yapısı böceklerin barınmasına uygun değildir. Ancak her yapı gibi SIP panel evlerde de düzenli bakım yapılması önemlidir." }
             ],
-            
+
             hakkimizdaData: {
                 title: "Biz Kimiz?",
                 paragraphs: [
@@ -246,18 +265,16 @@ export const siteConfig = {
                     { label: "Ses Yalıtımı (Akustik)", value: "40 dB - 45 dB Ses İndirgeme İndeksi" }
                 ]
             },
-
             pageContents: {
-                "uretim": "Fabrikamızda en son teknoloji ile SIP panellerin üretimini gerçekleştiriyoruz.",
                 "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır."
             },
             footerText: "© 2026 ZEMU SIPPAN Structures House Systems. Tüm hakları saklıdır."
         },
         en: {
             menu: {
-                "home": "Home", "sip-panel": "SIP Panel", "ev-modelleri": "House Models", 
-                "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems", 
-                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us"
+                "home": "Home", "sip-panel": "SIP Panel", "konutlar": "Residences", 
+                "egitim-ticari": "Educational & Commercial", "bahce-yapilari": "Garden Structures", 
+                "garaj-yapilari": "Garage Structures", "galeri": "Gallery", "hakkimizda": "About Us"
             },
             consultBtn: "Contact Us", categoryTitle: "Categories",
             allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
@@ -279,9 +296,10 @@ export const siteConfig = {
             cookieAccept: "Accept",
 
             pageTitles: {
-                "home": "ZEMU SIPPAN", "iletisim": "Contact Us", "uretim": "Production", 
+                "home": "ZEMU SIPPAN", "iletisim": "Contact Us",
                 "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
-                "ev-modelleri": "House Models", "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
+                "konutlar": "Residential Models", "egitim-ticari": "Educational & Commercial", 
+                "bahce-yapilari": "Garden Structures", "garaj-yapilari": "Garage Structures"
             },
 
             relatedProjectsTitle: "You May Also Like",
@@ -372,7 +390,6 @@ export const siteConfig = {
                 ]
             },
             pageContents: {
-                "uretim": "Information about our production facility.",
                 "galeri": "Gallery coming soon."
             },
             footerText: "© 2026 ZEMU SIPPAN Structures House Systems. All rights reserved."
