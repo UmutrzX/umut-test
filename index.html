@@ -128,12 +128,25 @@
             transition: opacity 0.3s ease, visibility 0.3s ease; backdrop-filter: blur(10px);
         }
         #lightbox-overlay.active { opacity: 1; visibility: visible; }
-        #lightbox-img {
-            max-width: 95vw; max-height: 90vh; object-fit: contain;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        #lightbox-content-wrapper {
+            position: relative;
+            max-width: 90vw;
+            max-height: 85vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        #lightbox-overlay.active #lightbox-img { transform: scale(1); }
+        #lightbox-img {
+            max-width: 100%; 
+            max-height: 85vh; 
+            object-fit: contain;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border-radius: 8px;
+            transform: scale(0.95); 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+            opacity: 0; /* Changed for smoother transition */
+        }
+        #lightbox-overlay.active #lightbox-img.loaded { transform: scale(1); opacity: 1; }
         
         .lightbox-btn {
             position: absolute; top: 50%; transform: translateY(-50%);
@@ -146,10 +159,22 @@
         #lightbox-next { right: 20px; }
         #lightbox-close {
             position: absolute; top: 20px; right: 20px;
-            background: rgba(255,255,255,0.1); color: white; width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.2); 
+            color: white; width: 44px; height: 44px; border-radius: 50%;
             display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; transition: all 0.2s ease;
+            z-index: 10001; /* Ensure it stays above everything */
+            backdrop-filter: blur(4px);
         }
-        #lightbox-close:hover { background: #e74c3c; transform: rotate(90deg); }
+        #lightbox-close:hover { background: #e74c3c; border-color: #e74c3c; transform: rotate(90deg); }
+        
+        /* Preloader for Lightbox */
+        #lightbox-loader {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: #f39c12; font-size: 30px; opacity: 0; visibility: hidden; transition: 0.2s;
+            z-index: 9999;
+        }
+        #lightbox-loader.active { opacity: 1; visibility: visible; }
+
         .lightbox-counter {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
             color: white; font-size: 15px; font-weight: 600; letter-spacing: 1px;
@@ -203,7 +228,12 @@
     <div id="lightbox-overlay">
         <button id="lightbox-close" aria-label="Kapat" class="btn-press" onclick="window.closeLightbox()"><i class="fas fa-times"></i></button>
         <button id="lightbox-prev" aria-label="Önceki" class="lightbox-btn btn-press" onclick="window.changeLightboxImage(-1)"><i class="fas fa-chevron-left"></i></button>
-        <img id="lightbox-img" src="" alt="Tam Ekran Görsel" loading="lazy">
+        
+        <div id="lightbox-content-wrapper">
+            <i id="lightbox-loader" class="fas fa-circle-notch fa-spin"></i>
+            <img id="lightbox-img" src="" alt="Tam Ekran Görsel">
+        </div>
+        
         <button id="lightbox-next" aria-label="Sonraki" class="lightbox-btn btn-press" onclick="window.changeLightboxImage(1)"><i class="fas fa-chevron-right"></i></button>
         <div id="lightbox-counter" class="lightbox-counter">1 / 1</div>
     </div>
