@@ -25,7 +25,7 @@ const DOM = {
 function t() { return siteConfig.i18n[state.lang]; }
 
 function updateMetaTags(viewOrId, projectData = null) {
-    const baseTitle = "Kartech Panel Structures";
+    const baseTitle = "ZEMU SIPPAN Structures";
     let title = "";
     let desc = "";
     let img = siteConfig.contact.logoSrc;
@@ -498,7 +498,7 @@ function renderHeader() {
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50">
             <a href="#home" class="cursor-pointer h-full flex items-center py-2" onclick="navigate('home', event)">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="h-16 sm:h-24 md:h-32 lg:h-40 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-16 sm:h-24 md:h-32 lg:h-40 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left">
             </a>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
@@ -612,6 +612,7 @@ function renderHomePage() {
         </a>
     `).join('');
 
+    // Süreç Adımları HTML 
     const processHTML = (t().processSteps || []).map((step, idx) => `
         <div class="flex flex-col items-center text-center relative z-10 group">
             <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-gray-50 text-brand-orange text-3xl mb-4 group-hover:scale-110 group-hover:border-brand-orange transition-all duration-300">
@@ -622,14 +623,9 @@ function renderHomePage() {
         </div>
     `).join('');
 
-    // SSS (FAQ) Native Akordeon HTML - İki Sütunlu Mantık
-    const faqs = t().faq || [];
-    const half = Math.ceil(faqs.length / 2);
-    const leftFaqs = faqs.slice(0, half);
-    const rightFaqs = faqs.slice(half);
-
-    const renderFaqColumn = (list) => list.map(f => `
-        <details class="group bg-white rounded-xl shadow-sm border border-gray-100 mb-4 overflow-hidden">
+    // SSS (FAQ) Native Akordeon HTML
+    const faqHTML = (t().faq || []).map(f => `
+        <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-4 sm:p-5 text-gray-900 hover:text-brand-orange transition-colors">
                 <span class="text-sm sm:text-base pr-4 leading-snug">${f.q}</span>
                 <span class="transition group-open:rotate-180 shrink-0"><i class="fas fa-chevron-down text-brand-orange text-sm"></i></span>
@@ -703,20 +699,21 @@ function renderHomePage() {
             </div>
         </div>
 
+        <!-- ŞIK VE MODERN: NEDEN BİZ? ALANI -->
         <div class="bg-white relative z-20 w-full py-16 sm:py-24 border-b border-gray-200">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
                     <div class="w-full lg:w-1/2 lg:sticky lg:top-32">
-                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6 leading-tight tracking-tight">${state.lang === 'tr' ? 'Neden Kartech SİP Panel Teknolojisi?' : 'Why Kartech SIP Panel Technology?'}</h2>
+                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6 leading-tight tracking-tight">${state.lang === 'tr' ? 'Neden ZEMU SIPPAN SIP Panel Teknolojisi?' : 'Why ZEMU SIPPAN SIP Panel Technology?'}</h2>
                         <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full mb-8"></div>
                         <p class="text-gray-600 text-base sm:text-lg leading-relaxed mb-6 font-medium">
-                            ${state.lang === 'tr' ? 'Geleneksel betonarme veya hafif çelik sistemlerin ötesine geçin. SİP (Yapısal Yalıtımlı Panel) teknolojisi, üstün ısı yalıtımı ile enerji maliyetlerinizi düşürürken, fabrikasyon üretim sayesinde inşaat süresini aylardan haftalara indirir.' : 'Go beyond traditional concrete or light steel systems. SIP technology reduces energy costs with superior insulation while cutting construction time from months to weeks.'}
+                            ${state.lang === 'tr' ? 'Geleneksel betonarme veya hafif çelik sistemlerin ötesine geçin. SIP (Yapısal Yalıtımlı Panel) teknolojisi, üstün ısı yalıtımı ile enerji maliyetlerinizi düşürürken, fabrikasyon üretim sayesinde inşaat süresini aylardan haftalara indirir.' : 'Go beyond traditional concrete or light steel systems. SIP technology reduces energy costs with superior insulation while cutting construction time from months to weeks.'}
                         </p>
                         <p class="text-gray-600 text-base sm:text-lg leading-relaxed mb-8 font-medium">
                             ${state.lang === 'tr' ? 'Depreme karşı yekpare ve esnek bir duruş sergileyen yapılarımız, estetikten ödün vermeden doğayla uyumlu, uzun ömürlü ve güvenli yaşam alanları sunar.' : 'Providing a monolithic and flexible stance against earthquakes, our structures offer long-lasting, safe, and eco-friendly living spaces without compromising on aesthetics.'}
                         </p>
                         <a href="#sip-panel" onclick="navigate('sip-panel', event)" class="inline-flex items-center text-brand-orange font-bold text-base sm:text-lg hover:text-gray-900 transition-colors btn-press">
-                            ${state.lang === 'tr' ? 'SİP Panel Detaylarını İnceleyin' : 'Explore SIP Panel Details'} <i class="fas fa-arrow-right ml-2"></i>
+                            ${state.lang === 'tr' ? 'SIP Panel Detaylarını İnceleyin' : 'Explore SIP Panel Details'} <i class="fas fa-arrow-right ml-2"></i>
                         </a>
                     </div>
                     
@@ -767,17 +764,15 @@ function renderHomePage() {
             </div>
         </div>
 
-        <!-- 2 Sütunlu Şık SSS (FAQ) Alanı -->
+        <!-- SSS (FAQ) Alanı (İki Sütunlu Grid Layout) -->
         <div class="bg-white relative z-20 w-full py-16 sm:py-24 border-t border-gray-200">
-            <div class="max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12 sm:mb-16">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4">${t().faqTitle || 'Sıkça Sorulan Sorular'}</h2>
                     <div class="w-16 md:w-24 h-1.5 bg-brand-orange mx-auto rounded-full"></div>
                 </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-6">
-                    <div class="flex flex-col">${renderFaqColumn(leftFaqs)}</div>
-                    <div class="flex flex-col">${renderFaqColumn(rightFaqs)}</div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4 items-start">
+                    ${faqHTML}
                 </div>
             </div>
         </div>
@@ -890,15 +885,13 @@ function renderSipPanelPage() {
                     <div class="border-t border-gray-100 pt-4">${specsHTML}</div>
                 </div>
 
-                <!-- YENİDEN TASARLANMIŞ ŞIK CTA BANDI (Mükemmel Simetri ve Mobil Uyum) -->
-                <div class="bg-gray-50 rounded-[2rem] p-8 sm:p-12 md:p-16 border border-gray-200 text-center relative overflow-hidden mt-16 sm:mt-24 shadow-sm max-w-5xl mx-auto">
-                     <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-md border border-gray-100">
-                         <i class="fas fa-headset text-2xl text-brand-orange"></i>
-                     </div>
-                     <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4 relative z-10">${state.lang === 'tr' ? 'Projenizde SİP Panel Kullanmaya Hazır mısınız?' : 'Ready to Use SIP Panels in Your Project?'}</h3>
-                     <p class="text-gray-600 text-base sm:text-lg font-medium mb-8 relative z-10 max-w-2xl mx-auto">${state.lang === 'tr' ? 'Hemen uzman ekibimizle iletişime geçin, size özel çözümleri ve fiyat avantajlarını konuşalım.' : 'Contact our expert team now to discuss custom solutions and pricing advantages.'}</p>
-                     <a href="#iletisim" onclick="navigate('iletisim', event)" class="cta-pulse inline-flex items-center justify-center bg-brand-orange text-white font-bold px-8 py-4 sm:px-10 sm:py-5 rounded-full shadow-lg hover:bg-orange-600 transition-all btn-press text-base sm:text-lg relative z-10 w-full sm:w-auto mx-auto">
-                         ${state.lang === 'tr' ? 'Hemen Mimarlarımızla Görüşün' : 'Contact Our Architects Now'} <i class="fas fa-arrow-right ml-3"></i>
+                <!-- YENİ BÜYÜK CTA BANDI (ORTALANMIŞ VE SİMETRİK) -->
+                <div class="bg-gray-50 rounded-[2rem] p-8 sm:p-12 md:p-16 border border-gray-200 text-center relative overflow-hidden mt-16 sm:mt-24">
+                     <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4 relative z-10">${state.lang === 'tr' ? 'Projenizde SIP Panel Kullanmaya Hazır mısınız?' : 'Ready to Use SIP Panels in Your Project?'}</h3>
+                     <p class="text-gray-600 text-lg font-medium mb-8 relative z-10 max-w-2xl mx-auto">${state.lang === 'tr' ? 'Hemen uzman ekibimizle iletişime geçin, size özel çözümleri ve fiyat avantajlarını konuşalım.' : 'Contact our expert team now to discuss custom solutions and pricing advantages.'}</p>
+                     
+                     <a href="#iletisim" onclick="navigate('iletisim', event)" class="cta-pulse inline-flex items-center justify-center bg-brand-orange text-white font-bold px-8 sm:px-10 py-4 sm:py-5 rounded-full shadow-lg hover:bg-orange-600 transition-all btn-press text-base sm:text-lg relative z-10 mx-auto w-full sm:w-auto text-center">
+                         <i class="fas fa-headset mr-3"></i> ${state.lang === 'tr' ? 'Hemen Mimarlarımızla Görüşün' : 'Contact Our Architects Now'}
                      </a>
                 </div>
 
@@ -928,17 +921,20 @@ function renderAboutPage() {
         <div class="bg-white min-h-screen pt-36 sm:pt-44 lg:pt-48 pb-24">
             <div class="max-w-[1000px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 
+                <!-- Başlık -->
                 <div class="mb-16">
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tight">${t().pageTitles['hakkimizda']}</h1>
                     <div class="w-24 h-1.5 bg-brand-orange rounded-full"></div>
                 </div>
 
+                <!-- Metin -->
                 <div class="mb-24">
                     ${paragraphsHTML}
                 </div>
 
                 <div class="w-full h-px bg-gray-100 mb-20"></div>
 
+                <!-- Teknoloji -->
                 <div>
                     <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-12">${data.techTitle}</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
@@ -946,11 +942,12 @@ function renderAboutPage() {
                     </div>
                 </div>
                 
+                <!-- İletişim CTA -->
                 <div class="mt-24 bg-gray-50 rounded-[2rem] p-8 sm:p-12 border border-gray-200 text-center">
                     <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">${state.lang === 'tr' ? 'Projeleriniz için bizimle iletişime geçin' : 'Contact us for your projects'}</h3>
                     <p class="text-gray-500 font-medium mb-8">${state.lang === 'tr' ? 'Uzman mimarlarımız ve mühendislerimizle hayalinizdeki yapıyı inşa edelim.' : 'Let us build your dream structure with our expert architects and engineers.'}</p>
-                    <a href="#iletisim" onclick="navigate('iletisim', event)" class="inline-flex bg-gray-900 text-white font-bold px-8 py-4 rounded-full hover:bg-brand-orange transition-colors btn-press text-lg">
-                        ${t().consultBtn}
+                    <a href="#iletisim" onclick="navigate('iletisim', event)" class="inline-flex items-center justify-center bg-gray-900 text-white font-bold px-8 sm:px-10 py-4 sm:py-5 rounded-full shadow-lg hover:bg-brand-orange transition-colors btn-press text-base sm:text-lg w-full sm:w-auto">
+                        <i class="fas fa-paper-plane mr-3"></i> ${t().consultBtn}
                     </a>
                 </div>
 
@@ -970,7 +967,7 @@ function renderContactPage() {
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 bg-white p-6 sm:p-10 md:p-12 rounded-3xl shadow-xl border border-gray-100">
                     
-                    <div class="space-y-8 lg:pr-8 flex flex-col">
+                    <div class="space-y-8 lg:pr-8">
                         <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 border-b-2 border-gray-100 pb-4">İletişim Bilgilerimiz</h3>
                         
                         <div class="flex items-start space-x-4 sm:space-x-5">
@@ -1001,10 +998,6 @@ function renderContactPage() {
                                 <h4 class="font-bold text-gray-900 mb-1 text-base sm:text-lg">E-Posta</h4>
                                 <a href="mailto:${siteConfig.contact.email}" class="text-gray-600 hover:text-brand-orange transition-colors text-sm sm:text-base break-all font-medium">${siteConfig.contact.email}</a>
                             </div>
-                        </div>
-
-                        <div class="mt-8 flex-grow bg-gray-100 rounded-2xl overflow-hidden min-h-[250px]">
-                            <iframe src="${siteConfig.contact.mapEmbedUrl}" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
 
@@ -1178,30 +1171,6 @@ function renderProjectDetail(projectId) {
         initialContainerHTML = `<iframe src="${initialMedia.embed}" class="absolute inset-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
     }
 
-    let relatedProjectsHTML = '';
-    const relatedProjects = siteConfig.projects.filter(p => p.categoryId === project.categoryId && p.id !== project.id).slice(0, 3);
-    if (relatedProjects.length > 0) {
-        relatedProjectsHTML = `
-            <div class="mt-20 border-t border-gray-200 pt-16">
-                <h3 class="text-2xl font-black text-gray-900 mb-8">${t().relatedProjectsTitle || 'Bunlar da İlginizi Çekebilir'}</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    ${relatedProjects.map(rp => `
-                        <a href="#${rp.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group shadow-sm block" onclick="navigate('${rp.id}', event)">
-                            <div class="relative aspect-[16/10] overflow-hidden">
-                                <img src="${rp.mainImage}" alt="Related Project" class="w-full h-full object-cover" loading="lazy">
-                                <div class="absolute top-3 right-3 bg-gray-900/80 text-white px-3 py-1.5 font-bold rounded-lg text-xs">${rp.area} ${t().sqm}</div>
-                            </div>
-                            <div class="p-4 bg-white flex-grow flex items-center justify-between border-t border-gray-50">
-                                <h3 class="text-gray-900 font-bold text-base group-hover:text-brand-orange transition-colors truncate pr-2">${state.lang === 'tr' ? rp.title : rp.titleEn}</h3>
-                                <i class="fas fa-chevron-right text-gray-300 group-hover:text-brand-orange"></i>
-                            </div>
-                        </a>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
     DOM.content.innerHTML = `
         <div class="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-36 sm:pt-44 lg:pt-48 pb-16 relative z-10">
             
@@ -1218,8 +1187,10 @@ function renderProjectDetail(projectId) {
                 </button>
             </div>
 
+            <!-- ÜST KISIM: RESİM VE BİLGİLER -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 
+                <!-- SOL SÜTUN: GALERİ -->
                 <div class="lg:col-span-7 flex flex-col gap-4">
                     <div class="w-full rounded-2xl shadow-sm overflow-hidden bg-gray-50 border border-gray-100">
                         <div id="main-image-container" class="w-full aspect-[4/3] sm:aspect-video relative transition-all duration-300">
@@ -1231,11 +1202,13 @@ function renderProjectDetail(projectId) {
                     </div>
                 </div>
 
+                <!-- SAĞ SÜTUN: BİLGİLER -->
                 <div class="lg:col-span-5 flex flex-col">
                     ${catName ? `<span class="inline-block bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full w-max mb-3">${catName}</span>` : ''}
                     <h1 class="text-3xl sm:text-4xl font-black text-gray-900 leading-tight mb-4">${prjTitle}</h1>
                     <p class="text-gray-600 text-base leading-relaxed mb-6 font-medium">${project.description[state.lang]}</p>
                     
+                    <!-- ÖZELLİKLER TABLOSU -->
                     <div class="border border-gray-200 rounded-xl p-6 sm:p-8 bg-white shadow-sm mb-6">
                         <h4 class="font-bold text-lg text-gray-900 mb-4 border-b border-gray-100 pb-3">Özellikler</h4>
                         
@@ -1253,6 +1226,7 @@ function renderProjectDetail(projectId) {
                         </div>
                     </div>
 
+                    <!-- GÜVEN İKONLARI -->
                     <ul class="space-y-3 text-sm sm:text-base text-gray-600 font-semibold">
                         <li class="flex items-center"><i class="fas fa-check text-brand-green mr-3"></i> 24 saat içinde geri dönüş</li>
                         <li class="flex items-center"><i class="fas fa-check text-brand-green mr-3"></i> Müşteri memnuniyeti tecrübesi</li>
@@ -1263,7 +1237,10 @@ function renderProjectDetail(projectId) {
 
             <div class="w-full h-px bg-gray-200 my-12 sm:my-16"></div>
 
+            <!-- ALT KISIM: İLETİŞİM FORMU -->
             <div class="max-w-4xl mx-auto">
+                
+                <!-- FORM ALANI -->
                 <div class="bg-white mb-10">
                     <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2">Bu Modelle İlgileniyorum</h2>
                     <p class="text-gray-500 font-medium mb-8">Formu doldurun, detaylı bilgi ve fiyat teklifi gönderelim.</p>
@@ -1319,6 +1296,7 @@ function renderProjectDetail(projectId) {
                     </form>
                 </div>
 
+                <!-- TELEFON BANT -->
                 <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-200 shadow-sm mt-8">
                     <span class="text-sm sm:text-base text-gray-500 block mb-2 font-medium">Telefonla acil iletişim ve destek için:</span>
                     <a href="tel:${siteConfig.contact.phone.replace(/\s/g,'')}" class="text-2xl sm:text-3xl font-black text-gray-900 hover:text-brand-orange transition-colors inline-flex items-center">
@@ -1332,15 +1310,13 @@ function renderProjectDetail(projectId) {
                 </div>
 
             </div>
-            
-            ${relatedProjectsHTML}
-
         </div>
     `;
     
+    // Akıllı Mesaj Özelliği
     const waChatBtn = document.getElementById('btn-chat-floating');
     if (waChatBtn) {
-        let msg = `Merhaba, Kartech Panel web sitesini inceliyordum. ${prjTitle} projeniz (${project.area} m²) hakkında detaylı bilgi alabilir miyim?`;
+        let msg = `Merhaba, ZEMU SIPPAN web sitesini inceliyordum. ${prjTitle} projeniz (${project.area} m²) hakkında detaylı bilgi alabilir miyim?`;
         waChatBtn.href = `https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`;
     }
 }
@@ -1351,7 +1327,7 @@ function renderFooter() {
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mb-10 border-b border-gray-800 pb-10">
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
                     <a href="#home" onclick="navigate('home', event)" class="cursor-pointer hover:opacity-80 transition-opacity btn-press block">
-                        <img src="${siteConfig.contact.logoSrc}" alt="Kartech Panel" class="w-48 sm:w-56 mb-6 object-contain">
+                        <img src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="w-48 sm:w-56 mb-6 object-contain">
                     </a>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-xs font-medium">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                 </div>
