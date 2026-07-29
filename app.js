@@ -15,6 +15,10 @@ const state = {
 
 window.state = state;
 
+// YENİ: Uygulama İçi Önbellekleme (In-Memory Cache) Sistemi
+// Statik sayfaların (İletişim, Hakkımızda vb.) HTML'i hafızaya alınır, sayfa geçiş hızı 0 ms'ye iner.
+const pageCache = { tr: {}, en: {} };
+
 const DOM = {
     header: document.getElementById('main-header'),
     content: document.getElementById('app-content'),
@@ -25,12 +29,16 @@ function t() { return siteConfig.i18n[state.lang]; }
 
 function updateMetaTags(viewOrId, projectData = null) {
     const baseTitle = "Kartech Panel Structures";
+    const baseUrl = window.location.origin + window.location.pathname;
+    let currentUrl = baseUrl + "#" + viewOrId;
     let title = "";
     let desc = "";
+    let image = siteConfig.contact.logoSrc;
 
     if (projectData) {
         title = `${state.lang === 'tr' ? projectData.title : projectData.titleEn} | ${baseTitle}`;
         desc = projectData.description[state.lang];
+        image = projectData.mainImage;
     } else {
         const pageTitles = t().pageTitles;
         title = `${pageTitles[viewOrId] || baseTitle} | ${baseTitle}`;
@@ -40,6 +48,74 @@ function updateMetaTags(viewOrId, projectData = null) {
     document.title = title;
     const metaDesc = document.getElementById('meta-desc');
     if (metaDesc) metaDesc.content = desc;
+
+    // YENİ: Dinamik OG ve Twitter Kartlarının Güncellenmesi (Sosyal Medya Paylaşımı İçin)
+    if (document.getElementById('og-title')) document.getElementById('og-title').content = title;
+    if (document.getElementById('og-description')) document.getElementById('og-description').content = desc;
+    if (document.getElementById('og-image')) document.getElementById('og-image').content = image;
+    if (document.getElementById('og-url')) document.getElementById('og-url').content = currentUrl;
+    
+    // YENİ: Otomatik Canonical ve Dil Linkleri (SEO İçin)
+    if (document.getElementById('canonical-link')) document.getElementById('canonical-link').href = currentUrl;
+    
+    // Yardımcı Sistemleri Çalıştır
+    updateWhatsAppLink(viewOrId, projectData);
+    generateSchema(viewOrId, projectData, title, desc, image, currentUrl);
+}
+
+// YENİ: Akıllı WhatsApp Entegrasyonu
+function updateWhatsAppLink(viewOrId, projectData) {
+    const waBtn = document.getElementById('btn-chat-floating');
+    if(!waBtn) return;
+    
+    const phone = siteConfig.contact.phone.replace(/[^0-9]/g, '');
+    let message = state.lang === 'tr' ? "Merhaba, bilgi almak istiyorum." : "Hello, I would like to get some information.";
+    
+    if (projectData) {
+        const pTitle = state.lang === 'tr' ? projectData.title : projectData.titleEn;
+        message = state.lang === 'tr' 
+            ? `Merhaba, Kartech Panel web sitesini inceliyordum. ${pTitle} projeniz (${projectData.area} m²) hakkında bilgi alabilir miyim?`
+            : `Hello, I am reviewing the Kartech Panel website. Can I get information about your ${pTitle} project (${projectData.area} sqm)?`;
+    } else if (viewOrId === 'sip-panel') {
+        message = state.lang === 'tr' ? "Merhaba, SİP Panel sistemleri kurulum ve maliyetleri hakkında bilgi alabilir miyim?" : "Hello, can I get info about SIP Panel installation and costs?";
+    }
+    
+    waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+}
+
+// YENİ: Yapısal Veri (Schema.org / JSON-LD) Oluşturucu
+function generateSchema(viewOrId, projectData, title, desc, image, url) {
+    const schemaScript = document.getElementById('schema-ld');
+    if (!schemaScript) return;
+    
+    let schema = {};
+    if (projectData) {
+        schema = {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": title,
+            "image": image,
+            "description": desc,
+            "brand": { "@type": "Brand", "name": "Kartech Panel" },
+            "offers": {
+                "@type": "AggregateOffer",
+                "priceCurrency": "TRY",
+                "availability": "https://schema.org/InStock",
+                "seller": { "@type": "Organization", "name": "Kartech Panel Structures" }
+            }
+        };
+    } else {
+        schema = {
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": "Kartech Panel Structures",
+            "image": siteConfig.contact.logoSrc,
+            "telephone": siteConfig.contact.phone,
+            "address": { "@type": "PostalAddress", "streetAddress": siteConfig.contact.address, "addressCountry": "TR" },
+            "url": window.location.origin
+        };
+    }
+    schemaScript.textContent = JSON.stringify(schema);
 }
 
 export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = false) {
@@ -404,7 +480,6 @@ window.acceptCookies = function() {
     }
 }
 
-
 function renderHeader() {
     const menuItems = ['home', 'sip-panel', 'ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri', 'uretim', 'galeri', 'hakkimizda'];
     
@@ -567,7 +642,8 @@ function renderHomePage() {
                         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
                         <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                         
-                        <button onclick="document.getElementById('featured-projects').scrollIntoView({behavior: 'smooth'})" class="mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
+                        <!-- CTA FOCUS: 'cta-pulse' sınıfı eklendi -->
+                        <button onclick="document.getElementById('featured-projects').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
                             Projeleri İncele <i class="fas fa-arrow-down ml-3"></i>
                         </button>
                     </div>
@@ -590,6 +666,11 @@ function renderHomePage() {
 }
 
 function renderSipPanelPage() {
+    // CACHE KONTROLÜ
+    if (pageCache[state.lang]['sip-panel']) {
+        DOM.content.innerHTML = pageCache[state.lang]['sip-panel']; return;
+    }
+
     const data = t().sipPanelData;
     
     const advantagesHTML = data.advantages.map(adv => `
@@ -649,6 +730,9 @@ function renderSipPanelPage() {
             </div>
         </div>
     `;
+    
+    // HTML'İ HAFIZAYA AL
+    pageCache[state.lang]['sip-panel'] = DOM.content.innerHTML;
 }
 
 function renderContactPage() {
@@ -699,7 +783,6 @@ function renderContactPage() {
                     <div class="bg-[#1a201c] p-6 sm:p-8 md:p-10 rounded-2xl shadow-2xl relative">
                         <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">${t().getQuoteTitle}</h3>
                         
-                        <!-- YENİ BİLGİLENDİRME YAZISI EKLENDİ -->
                         <p class="text-gray-400 text-xs sm:text-sm font-medium mb-6 sm:mb-8 relative z-10">${t().contactFormDesc}</p>
                         
                         <form id="contact-form" class="space-y-4" onsubmit="window.submitTestForm(event, 'contact-form')">
@@ -727,7 +810,8 @@ function renderContactPage() {
                                 </div>
                             </div>
 
-                            <button type="submit" class="w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-6 flex justify-center items-center text-base sm:text-lg btn-press disabled:opacity-70">
+                            <!-- CTA FOCUS: 'cta-pulse' sınıfı eklendi -->
+                            <button type="submit" class="cta-pulse w-full bg-brand-orange text-white font-bold py-3.5 sm:py-4 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-6 flex justify-center items-center text-base sm:text-lg btn-press disabled:opacity-70">
                                 <i class="fas fa-paper-plane mr-2 md:mr-3"></i> ${t().submitBtn}
                             </button>
                         </form>
@@ -739,6 +823,11 @@ function renderContactPage() {
 }
 
 function renderGenericPage(pageId) {
+    // CACHE KONTROLÜ
+    if (pageCache[state.lang][pageId]) {
+        DOM.content.innerHTML = pageCache[state.lang][pageId]; return;
+    }
+
     const title = t().pageTitles[pageId] || '';
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
@@ -750,6 +839,9 @@ function renderGenericPage(pageId) {
             <div class="bg-white p-6 sm:p-10 md:p-16 shadow-xl border border-gray-100 rounded-3xl break-words text-base sm:text-lg">${content}</div>
         </div>
     `;
+    
+    // HTML'İ HAFIZAYA AL
+    pageCache[state.lang][pageId] = DOM.content.innerHTML;
 }
 
 function renderProjectsPage(pageId) {
