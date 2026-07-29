@@ -62,7 +62,6 @@ function updateMetaTags(viewOrId, projectData = null) {
 export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = false) {
     if (evt) evt.preventDefault(); 
     
-    // Boşluk karakterlerini düzelt (Örn: "Test ev -001")
     viewOrId = decodeURIComponent(viewOrId);
     
     if (state.mobileMenuOpen) window.toggleMobileMenu();
@@ -125,7 +124,6 @@ export function changeLanguage(lang) {
 window.navigate = navigate;
 window.changeLanguage = changeLanguage;
 
-// URL'deki hash değiştiğinde devreye girer (URL Encoded karakterleri decodeURIComponent ile çözeriz)
 window.addEventListener('hashchange', () => {
     let hash = window.location.hash.substring(1);
     if(hash) {
@@ -210,6 +208,18 @@ window.changeMainImage = function(index) {
     const container = document.getElementById('main-image-container');
     if(!container) return;
     
+    document.querySelectorAll('.thumb-wrapper').forEach((el, i) => {
+        if(i === index) {
+            el.classList.add('border-brand-orange');
+            el.classList.remove('border-transparent');
+            el.style.opacity = '1';
+        } else {
+            el.classList.remove('border-brand-orange');
+            el.classList.add('border-transparent');
+            el.style.opacity = '0.7';
+        }
+    });
+    
     container.style.opacity = 0; container.style.transform = 'scale(0.98)';
     setTimeout(() => { 
         if(media.type === 'image') {
@@ -248,9 +258,18 @@ window.openLightbox = function(startIndex) {
 
     const overlay = document.getElementById('lightbox-overlay');
     const imgEl = document.getElementById('lightbox-img');
+    const loader = document.getElementById('lightbox-loader');
     
     state.currentLightboxIndex = newIndex;
     state.currentLightboxArray = imagesOnly; 
+
+    imgEl.classList.remove('loaded');
+    if(loader) loader.classList.add('active');
+
+    imgEl.onload = function() {
+        if(loader) loader.classList.remove('active');
+        imgEl.classList.add('loaded');
+    };
 
     imgEl.src = imagesOnly[newIndex].url;
     document.getElementById('lightbox-counter').innerText = `${newIndex + 1} / ${imagesOnly.length}`;
@@ -258,7 +277,6 @@ window.openLightbox = function(startIndex) {
     overlay.classList.add('active');
     document.addEventListener('keydown', window.handleLightboxKeys);
     
-    // Gelişmiş Ön Yükleme (Preload)
     if(imagesOnly.length > 1) {
         let nextIdx = (newIndex + 1) % imagesOnly.length;
         let preloader = new Image(); preloader.src = imagesOnly[nextIdx].url;
@@ -268,6 +286,7 @@ window.openLightbox = function(startIndex) {
 window.closeLightbox = function() {
     document.getElementById('lightbox-overlay').classList.remove('active');
     document.removeEventListener('keydown', window.handleLightboxKeys);
+    document.getElementById('lightbox-img').classList.remove('loaded');
 };
 
 window.changeLightboxImage = function(direction) {
@@ -280,19 +299,22 @@ window.changeLightboxImage = function(direction) {
     else if (state.currentLightboxIndex >= arr.length) state.currentLightboxIndex = 0;
     
     const imgEl = document.getElementById('lightbox-img');
+    const loader = document.getElementById('lightbox-loader');
     
-    imgEl.style.opacity = 0;
-    imgEl.style.transform = direction > 0 ? 'translateX(50px) scale(0.95)' : 'translateX(-50px) scale(0.95)';
+    imgEl.classList.remove('loaded');
+    if(loader) loader.classList.add('active');
     
     setTimeout(() => {
+        imgEl.onload = function() {
+            if(loader) loader.classList.remove('active');
+            imgEl.classList.add('loaded');
+        };
         imgEl.src = arr[state.currentLightboxIndex].url;
-        imgEl.style.transform = 'translateX(0) scale(1)';
-        imgEl.style.opacity = 1;
         document.getElementById('lightbox-counter').innerText = `${state.currentLightboxIndex + 1} / ${arr.length}`;
         
         let nextIdx = (state.currentLightboxIndex + direction + arr.length) % arr.length;
         let preloader = new Image(); preloader.src = arr[nextIdx].url;
-    }, 200);
+    }, 150);
 };
 
 window.handleLightboxKeys = function(e) {
@@ -320,7 +342,8 @@ window.formatPhone = function(input) {
 
 window.clearError = function(input) {
     input.classList.remove('border-red-500');
-    let errId = input.id === 'project-form-kvkk' ? 'project-form-kvkk-error' : (input.id + '-error');
+    let errId = input.id === 'project-form-kvkk' ? 'project-form-kvkk-error' : 
+                input.id === 'contact-form-kvkk' ? 'contact-form-kvkk-error' : (input.id + '-error');
     const err = document.getElementById(errId);
     if(err) err.classList.add('hidden');
 }
@@ -333,32 +356,47 @@ window.submitTestForm = function(evt, formId) {
     const phoneInput = document.getElementById(formId + '-phone');
     const emailInput = document.getElementById(formId + '-email');
     const kvkkCheckbox = document.getElementById(formId + '-kvkk');
+    
+    const locationInput = document.getElementById(formId + '-location');
+    const messageInput = document.getElementById(formId + '-message');
+
     const submitBtn = form.querySelector('button[type="submit"]');
     
     let hasError = false;
 
     if (nameInput.value.trim().length < 3) {
         nameInput.classList.add('border-red-500');
-        document.getElementById(formId + '-name-error').classList.remove('hidden');
+        const err = document.getElementById(formId + '-name-error');
+        if(err) err.classList.remove('hidden');
         hasError = true;
     }
 
     const phoneDigits = phoneInput.value.replace(/\D/g, '');
     if (phoneDigits.length !== 10) {
         phoneInput.classList.add('border-red-500');
-        document.getElementById(formId + '-phone-error').classList.remove('hidden');
+        const err = document.getElementById(formId + '-phone-error');
+        if(err) err.classList.remove('hidden');
         hasError = true;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailInput.value)) {
+    if (emailInput && !emailRegex.test(emailInput.value)) {
         emailInput.classList.add('border-red-500');
-        document.getElementById(formId + '-email-error').classList.remove('hidden');
+        const err = document.getElementById(formId + '-email-error');
+        if(err) err.classList.remove('hidden');
+        hasError = true;
+    }
+    
+    if (locationInput && locationInput.value.trim().length < 2) {
+        locationInput.classList.add('border-red-500');
+        const err = document.getElementById(formId + '-location-error');
+        if(err) err.classList.remove('hidden');
         hasError = true;
     }
 
-    if (!kvkkCheckbox.checked) {
-        document.getElementById(formId + '-kvkk-error').classList.remove('hidden');
+    if (kvkkCheckbox && !kvkkCheckbox.checked) {
+        const err = document.getElementById(formId + '-kvkk-error');
+        if(err) err.classList.remove('hidden');
         hasError = true;
     }
 
@@ -374,22 +412,23 @@ window.submitTestForm = function(evt, formId) {
     const formData = {
         name: nameInput.value,
         phone: phoneInput.value,
-        email: emailInput.value,
+        email: emailInput ? emailInput.value : undefined,
+        location: locationInput ? locationInput.value : "Belirtilmedi",
+        message: messageInput ? messageInput.value : "Mesaj yok.",
         project: projectContext,
-        _subject: "Yeni Web Sitesi Talebi (" + (projectContext ? "Proje" : "Genel") + ")"
+        _subject: "Yeni Müşteri Talebi (" + (projectContext ? "Proje" : "Genel") + ")"
     };
 
     submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Gönderiliyor...`;
     submitBtn.disabled = true;
 
-    // Gerçek API Gönderimi (İlk API'den başlayarak)
     sendFormWithFallback(formData, 0, submitBtn, form);
 };
 
 function sendFormWithFallback(data, apiIndex, btn, form) {
     if (apiIndex >= siteConfig.formSubmission.endpoints.length) {
         showToast("Sistem hatası. Lütfen WhatsApp üzerinden ulaşın.");
-        btn.innerHTML = `<i class="fas fa-paper-plane mr-2"></i> ${t().submitBtn}`;
+        btn.innerHTML = `<i class="fas fa-paper-plane mr-2"></i> Gönder`;
         btn.disabled = false;
         return;
     }
@@ -405,8 +444,11 @@ function sendFormWithFallback(data, apiIndex, btn, form) {
         if (response.ok) {
             document.getElementById('alert-modal').classList.add('active');
             form.reset(); 
-            btn.innerHTML = `<i class="fas fa-paper-plane mr-2"></i> ${t().submitBtn}`;
-            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-check-circle mr-2"></i> Başarıyla Gönderildi`;
+            setTimeout(() => {
+                btn.innerHTML = `Ücretsiz Teklif Al`;
+                btn.disabled = false;
+            }, 3000);
         } else {
             throw new Error('API Yanıt Vermedi');
         }
@@ -523,7 +565,7 @@ function handleScroll() {
         header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
         if(logo) {
             logo.classList.remove('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
-            logo.classList.add('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
+            logo.classList.add('h-14', 'sm:h-16', 'md:h-18', 'lg:h-20');
         }
         icons.forEach(icon => { icon.classList.remove('text-white'); icon.classList.add('text-gray-900'); });
         langTexts.forEach(txt => { 
@@ -534,7 +576,7 @@ function handleScroll() {
         header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
         if(logo) {
             logo.classList.add('h-16', 'sm:h-24', 'md:h-32', 'lg:h-40');
-            logo.classList.remove('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
+            logo.classList.remove('h-14', 'sm:h-16', 'md:h-18', 'lg:h-20');
         }
         if(hasHero) {
             icons.forEach(icon => { icon.classList.remove('text-gray-900'); icon.classList.add('text-white'); });
@@ -553,14 +595,14 @@ function handleScroll() {
 function renderHomePage() {
     const pageProjects = [...siteConfig.projects].sort(() => 0.5 - Math.random()).slice(0, 3);
     const projectsHTML = pageProjects.map(project => `
-        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group block" onclick="navigate('${project.id}', event)">
+        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group block shadow-sm" onclick="navigate('${project.id}', event)">
             <div class="relative aspect-[4/3] overflow-hidden">
                 <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
-                <div class="absolute inset-0 bg-black/0 hover:bg-black/30 transition-colors duration-400 flex items-center justify-center pointer-events-none">
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-400 flex items-center justify-center pointer-events-none">
                      <span class="bg-brand-orange text-white px-6 py-2 md:px-8 md:py-3 rounded-full font-bold opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-400 shadow-2xl text-sm md:text-base flex items-center">${t().projectDetailsTitle} <i class="fas fa-arrow-right ml-2"></i></span>
                 </div>
             </div>
-            <div class="p-4 sm:p-5 md:p-6 bg-white flex-grow flex items-center justify-between border-t border-gray-50">
+            <div class="p-5 bg-white flex-grow flex items-center justify-between border-t border-gray-50">
                 <h3 class="text-gray-900 font-bold text-base sm:text-lg md:text-xl group-hover:text-brand-orange transition-colors truncate pr-2">${state.lang === 'tr' ? project.title : project.titleEn}</h3>
                 <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0"><i class="fas fa-chevron-right text-xs sm:text-sm"></i></div>
             </div>
@@ -568,7 +610,6 @@ function renderHomePage() {
     `).join('');
 
     DOM.content.innerHTML = `
-        <!-- HERO ALANI -->
         <div class="relative w-full h-[100vh] flex overflow-hidden">
             <div class="absolute inset-0 z-0"><img src="${siteConfig.homeHero.backgroundImage}" alt="Hero Background" class="w-full h-full object-cover" loading="eager"></div>
             <div class="absolute top-0 left-0 bottom-0 w-full md:w-[85%] lg:w-[65%] bg-[#1a201c]/40 backdrop-blur-sm z-10"></div>
@@ -585,7 +626,6 @@ function renderHomePage() {
             </div>
         </div>
 
-        <!-- YENİ: KATEGORİLER / YAPI ÇÖZÜMLERİ -->
         <div id="categories-section" class="bg-white relative z-20 w-full py-16 sm:py-24 border-b border-gray-100">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12 sm:mb-16">
@@ -621,7 +661,6 @@ function renderHomePage() {
             </div>
         </div>
 
-        <!-- YENİ PROFESYONEL: NEDEN BİZ? ALANI -->
         <div class="bg-gray-50 relative z-20 w-full py-16 sm:py-24 border-b border-gray-200">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
@@ -638,7 +677,7 @@ function renderHomePage() {
                         </a>
                     </div>
                     <div class="w-full lg:w-1/2">
-                        <div class="space-y-6 sm:space-y-8 bg-white p-8 sm:p-10 rounded-3xl shadow-lg border border-gray-100">
+                        <div class="space-y-6 sm:space-y-8 p-4 sm:p-0">
                             <div class="flex items-start">
                                 <div class="mt-1 w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0 border border-brand-orange/20 mr-4 sm:mr-5">
                                     <i class="fas fa-leaf text-brand-orange text-sm sm:text-base"></i>
@@ -672,7 +711,6 @@ function renderHomePage() {
             </div>
         </div>
 
-        <!-- ÖNE ÇIKAN PROJELER -->
         <div id="featured-projects" class="bg-white relative z-20 w-full py-16 sm:py-24">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-10 sm:mb-12 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
@@ -685,7 +723,6 @@ function renderHomePage() {
             </div>
         </div>
 
-        <!-- YENİ: HAREKETE GEÇİRİCİ MESAJ (CTA) BANDI -->
         <div class="bg-[#1a201c] relative z-20 w-full py-16 sm:py-24 overflow-hidden border-t-4 border-brand-orange">
             <div class="absolute inset-0 bg-brand-orange/5 pattern-dots pointer-events-none"></div>
             <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
@@ -701,60 +738,104 @@ function renderHomePage() {
 
 function renderSipPanelPage() {
     const data = t().sipPanelData;
+    
+    // TEMİZ, EDİTORYAL TASARIM: Avantajlar Listesi
     const advantagesHTML = data.advantages.map(adv => `
-        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-md border-t-4 border-brand-orange hover:shadow-xl transition-shadow group h-full flex flex-col">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 bg-orange-50 rounded-full flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0">
-                <i class="fas ${adv.icon} text-xl sm:text-2xl text-brand-orange group-hover:text-white transition-colors"></i>
+        <div class="flex items-start">
+            <div class="mt-1 w-12 h-12 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0 border border-brand-orange/20 mr-4">
+                <i class="fas ${adv.icon} text-brand-orange text-lg"></i>
             </div>
-            <h4 class="text-lg sm:text-xl font-bold text-gray-900 mb-3">${adv.title}</h4>
-            <p class="text-sm sm:text-base text-gray-600 leading-relaxed flex-grow">${adv.desc}</p>
+            <div>
+                <h4 class="text-lg sm:text-xl font-bold text-gray-900 mb-2">${adv.title}</h4>
+                <p class="text-gray-600 leading-relaxed">${adv.desc}</p>
+            </div>
         </div>
     `).join('');
 
     const specsHTML = data.technicalSpecs.map(spec => `
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-4 border-b border-gray-100 last:border-0 gap-2 sm:gap-6 hover:bg-gray-50 transition-colors px-2 rounded-lg">
-            <span class="font-bold text-gray-700 text-sm sm:text-base w-full sm:w-1/3 flex items-center"><i class="fas fa-check text-brand-green mr-3 text-xs"></i> ${spec.label}</span>
-            <span class="text-gray-600 font-medium text-sm sm:text-base w-full sm:w-2/3 sm:text-right">${spec.value}</span>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-gray-100 last:border-0 gap-2 sm:gap-6">
+            <span class="font-bold text-gray-700 w-full sm:w-1/3">${spec.label}</span>
+            <span class="text-gray-600 w-full sm:w-2/3 sm:text-right">${spec.value}</span>
         </div>
     `).join('');
 
+    const usageHTML = data.usageAreas ? data.usageAreas.map(item => {
+        let parts = item.split(':');
+        let title = parts[0] || '';
+        let desc = parts.slice(1).join(':') || '';
+        return `
+        <li class="flex items-start gap-3 mb-4 last:mb-0">
+            <div class="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                <i class="fas fa-check text-xs text-brand-green"></i>
+            </div>
+            <p class="text-gray-600 leading-relaxed">${desc ? `<strong class="text-gray-900">${title}:</strong> ${desc}` : `<strong class="text-gray-900">${title}</strong>`}</p>
+        </li>`;
+    }).join('') : '';
+
+    const introParagraphs = data.introText.split('<br><br>').map(p => `<p class="text-lg text-gray-600 leading-relaxed mb-6">${p}</p>`).join('');
+
     DOM.content.innerHTML = `
-        <div class="relative w-full h-[50vh] md:h-[60vh] flex overflow-hidden">
+        <div class="relative w-full h-[40vh] md:h-[50vh] flex overflow-hidden">
             <div class="absolute inset-0 z-0">
                 <img src="${data.heroImg}" alt="SIP Panel Background" class="w-full h-full object-cover" loading="eager">
                 <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             </div>
-            <div class="relative z-10 w-full h-full flex flex-col justify-center items-center text-center px-4 sm:px-6 pt-16">
-                <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 tracking-tight drop-shadow-xl">${t().pageTitles['sip-panel']}</h1>
+            <div class="relative z-10 w-full h-full flex flex-col justify-center items-center text-center px-4 pt-16">
+                <h1 class="text-3xl sm:text-5xl md:text-7xl font-black text-white mb-6 drop-shadow-xl tracking-tight">${t().pageTitles['sip-panel']}</h1>
                 <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
             </div>
         </div>
-        <div class="bg-gray-50 py-16 sm:py-24 px-4 sm:px-6">
-            <div class="max-w-[1200px] mx-auto space-y-16 sm:space-y-24">
-                <div class="bg-white p-6 sm:p-10 md:p-16 rounded-3xl shadow-xl flex flex-col lg:flex-row gap-8 lg:gap-16 items-center border border-gray-100">
-                    <div class="w-full lg:w-1/2 order-2 lg:order-1">
-                        <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4 sm:mb-6 tracking-tight">${data.introTitle}</h3>
-                        <p class="text-base sm:text-lg text-gray-600 leading-relaxed font-medium mb-6">${data.introText}</p>
-                        <a href="#iletisim" onclick="navigate('iletisim', event)" class="inline-block bg-gray-900 text-white font-bold px-8 py-3.5 rounded-full shadow-md hover:bg-brand-orange transition-all btn-press">Bilgi Alın</a>
-                    </div>
-                    <div class="w-full lg:w-1/2 rounded-2xl overflow-hidden shadow-2xl border-4 border-white order-1 lg:order-2">
-                        <img src="${data.heroImg}" alt="SIP Panel Structure" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" loading="lazy">
+        
+        <div class="bg-white py-16 sm:py-24 px-4 sm:px-6">
+            <div class="max-w-4xl mx-auto">
+                
+                <div class="mb-16">
+                    <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mb-8">${data.introTitle}</h2>
+                    ${introParagraphs}
+                </div>
+
+                <div class="mb-16 rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+                    <img src="${data.heroImg}" alt="SIP Panel Structure" class="w-full h-auto max-h-[500px] object-cover hover:scale-105 transition-transform duration-700">
+                </div>
+
+                <div class="mb-16">
+                    <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-8 border-b-2 border-gray-100 pb-4">${data.advantagesTitle}</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
+                        ${advantagesHTML}
                     </div>
                 </div>
-                <div>
-                    <div class="text-center mb-10 sm:mb-16">
-                        <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4">${data.advantagesTitle}</h3>
-                        <div class="w-16 sm:w-24 h-1.5 bg-brand-orange mx-auto rounded-full"></div>
+
+                ${data.usageAreas ? `
+                <div class="mb-16 bg-gray-50 p-8 sm:p-10 md:p-12 rounded-3xl border border-gray-100">
+                    <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-8">${data.usageAreasTitle}</h3>
+                    <ul>
+                        ${usageHTML}
+                    </ul>
+                </div>` : ''}
+
+                ${data.futureTitle ? `
+                <div class="mb-16">
+                    <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-6 border-b-2 border-gray-100 pb-4">${data.futureTitle}</h3>
+                    <p class="text-lg text-gray-600 leading-relaxed">${data.futureText}</p>
+                </div>` : ''}
+
+                <div class="mb-16">
+                    <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-4 border-b-2 border-gray-100 pb-4">${data.specsTitle}</h3>
+                    <p class="text-gray-500 mb-8">${data.specsDesc}</p>
+                    <div class="border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+                        ${specsHTML}
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">${advantagesHTML}</div>
                 </div>
-                <div class="bg-white p-6 sm:p-10 md:p-16 rounded-3xl shadow-xl border border-gray-100">
-                    <div class="mb-8 sm:mb-12 border-l-4 border-brand-orange pl-4 sm:pl-6">
-                        <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2">${data.specsTitle}</h3>
-                        <p class="text-sm sm:text-base text-gray-500 font-medium">${data.specsDesc}</p>
-                    </div>
-                    <div class="bg-gray-50 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-100 shadow-inner">${specsHTML}</div>
+
+                <div class="bg-[#1a201c] rounded-3xl p-8 sm:p-12 shadow-2xl text-center relative overflow-hidden mt-8">
+                    <div class="absolute inset-0 bg-brand-orange/5 pattern-dots pointer-events-none"></div>
+                    <h3 class="text-2xl sm:text-3xl font-black text-white mb-4 relative z-10">${state.lang === 'tr' ? 'Projenizde SİP Panel Kullanmaya Hazır mısınız?' : 'Ready to Use SIP Panels in Your Project?'}</h3>
+                    <p class="text-gray-400 text-base sm:text-lg mb-8 relative z-10 max-w-2xl mx-auto">${state.lang === 'tr' ? 'Hemen uzman ekibimizle iletişime geçin, size özel çözümleri ve fiyat avantajlarını konuşalım.' : 'Contact our expert team now to discuss custom solutions and pricing advantages.'}</p>
+                    <a href="#iletisim" onclick="navigate('iletisim', event)" class="cta-pulse inline-flex bg-brand-orange text-white font-bold px-8 py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-lg relative z-10">
+                        ${state.lang === 'tr' ? 'Hemen Bilgi ve Fiyat Alın' : 'Get Info & Quote Now'} <i class="fas fa-arrow-right ml-3"></i>
+                    </a>
                 </div>
+
             </div>
         </div>
     `;
@@ -880,7 +961,7 @@ function renderProjectsPage(pageId) {
 
     const projectsHTML = pageProjects.length > 0 ? pageProjects.map(project => `
         <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group shadow-sm block" onclick="navigate('${project.id}', event)">
-            <div class="relative aspect-[4/3] overflow-hidden">
+            <div class="relative aspect-[16/10] overflow-hidden">
                 <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
                 <div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gray-900/80 backdrop-blur-sm text-white px-3 py-1.5 sm:px-4 sm:py-1.5 font-bold rounded-lg shadow-lg z-10 text-xs sm:text-sm">${project.area} ${t().sqm}</div>
             </div>
@@ -891,7 +972,6 @@ function renderProjectsPage(pageId) {
         </a>
     `).join('') : `<div class="col-span-full text-center py-20 sm:py-32 text-gray-400 font-medium text-lg sm:text-xl bg-white rounded-3xl shadow-sm border border-dashed border-gray-300 mx-2">Proje bulunamadı.</div>`;
 
-    // Logo boşluğu için pt ve mt değerlerini artırdık
     DOM.content.innerHTML = `
         <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-28 sm:mt-36 lg:mt-40">
             <div class="mb-10 sm:mb-16">
@@ -921,15 +1001,19 @@ function renderProjectsPage(pageId) {
     `;
 }
 
+/* YENİDEN TASARLANAN PROJE DETAY SAYFASI */
 function renderProjectDetail(projectId) {
     const projectIndex = siteConfig.projects.findIndex(p => p.id === projectId);
     if (projectIndex === -1) return navigate('home'); 
     
     const project = siteConfig.projects[projectIndex];
-    const prevProject = siteConfig.projects[projectIndex - 1] || siteConfig.projects[siteConfig.projects.length - 1];
-    const nextProject = siteConfig.projects[projectIndex + 1] || siteConfig.projects[0];
-
     const prjTitle = state.lang === 'tr' ? project.title : project.titleEn;
+    
+    let catName = "";
+    const cats = siteConfig.categories[project.pageMenu] || [];
+    const foundCat = cats.find(c => c.id === project.categoryId);
+    if (foundCat) catName = foundCat[state.lang];
+
     const rawGallery = [project.mainImage, ...(project.gallery || []).filter(img => img !== project.mainImage)];
     const mediaItems = rawGallery.map(url => parseMedia(url));
     
@@ -937,11 +1021,7 @@ function renderProjectDetail(projectId) {
     state.activeGalleryIndex = 0; 
     
     if (state.sliderInterval) clearInterval(state.sliderInterval);
-    state.sliderInterval = setInterval(() => {
-        state.activeGalleryIndex = (state.activeGalleryIndex + 1) % state.lightboxImages.length;
-        window.changeMainImage(state.activeGalleryIndex);
-    }, 4500);
-
+    
     const MAX_THUMBNAILS = 5;
     const visibleMedia = mediaItems.slice(0, MAX_THUMBNAILS);
     const hiddenCount = mediaItems.length - MAX_THUMBNAILS;
@@ -950,10 +1030,11 @@ function renderProjectDetail(projectId) {
         const isVideo = media.type !== 'image';
         const isLastVisible = index === MAX_THUMBNAILS - 1 && hiddenCount > 0;
         const clickAction = isLastVisible ? `window.openLightbox(${index})` : `window.setGalleryImage(${index})`;
+        const activeClass = index === 0 ? "border-brand-orange opacity-100" : "border-gray-200 opacity-70";
 
         return `
-        <div class="w-20 sm:w-24 lg:w-32 aspect-video shrink-0 overflow-hidden rounded-xl border-2 border-transparent hover:border-brand-orange shadow-sm cursor-pointer btn-press relative group transition-all" onclick="${clickAction}">
-             <img src="${media.thumb}" alt="Thumbnail ${index + 1}" class="w-full h-full object-cover ${isLastVisible ? 'opacity-40' : 'opacity-70 group-hover:opacity-100'} transition-opacity" loading="lazy">
+        <div class="w-24 sm:w-28 lg:w-32 aspect-video shrink-0 overflow-hidden rounded-xl border-2 ${activeClass} hover:border-brand-orange cursor-pointer btn-press relative group transition-all thumb-wrapper" onclick="${clickAction}">
+             <img src="${media.thumb}" alt="Thumbnail ${index + 1}" class="w-full h-full object-cover ${isLastVisible ? 'opacity-40' : 'group-hover:opacity-100'} transition-opacity" loading="lazy">
              ${isVideo && !isLastVisible ? `<div class="absolute inset-0 flex items-center justify-center bg-black/30"><i class="fas fa-play-circle text-white text-xl drop-shadow-md"></i></div>` : ''}
              ${isLastVisible ? `
              <div class="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-[2px] group-hover:bg-black/50 transition-all">
@@ -965,134 +1046,156 @@ function renderProjectDetail(projectId) {
     const initialMedia = mediaItems[0];
     let initialContainerHTML = '';
     if(initialMedia.type === 'image') {
-        initialContainerHTML = `<img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 hover:scale-105 pointer-events-auto" loading="eager">
-        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
-        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur text-gray-900 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-400 shadow-lg flex items-center pointer-events-none whitespace-nowrap z-10">
-            <i class="fas fa-expand mr-2 text-brand-orange"></i> Tam Ekran
+        initialContainerHTML = `<img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-auto" loading="eager">
+        <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-gray-900 px-4 py-2 rounded-lg font-bold text-sm shadow-md flex items-center cursor-pointer pointer-events-auto hover:bg-brand-orange hover:text-white transition-colors" onclick="window.openLightboxCurrent()">
+            <i class="fas fa-expand mr-2"></i> Büyüt
         </div>`;
     } else {
         initialContainerHTML = `<iframe src="${initialMedia.embed}" class="absolute inset-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
     }
 
-    // pt değerlerini logonun arkasına geçmemesi için büyük tuttuk (pt-32 sm:pt-40 lg:pt-48)
-    // Bağlantıları href ile verdik ancak onclick ile JS navigasyonunu (smooth fade) tetikledik.
+    // pt-36 sm:pt-44 lg:pt-48 eklenerek breadcrumb'ın devasa logoyla çakışması (overlap) engellendi
     DOM.content.innerHTML = `
-        <div class="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 lg:pt-48 pb-12 sm:pb-16">
+        <div class="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-36 sm:pt-44 lg:pt-48 pb-16 relative z-10">
             
-            <div class="mb-6 sm:mb-8 flex flex-col md:flex-row justify-between md:items-end gap-4 md:gap-6">
-                <div>
-                    <div class="flex items-center text-xs sm:text-sm font-semibold text-brand-orange space-x-2 mb-2 sm:mb-3 flex-wrap gap-y-1">
-                        <a href="#${project.pageMenu}" onclick="window.navigate('${project.pageMenu}', event)" class="hover:text-gray-900 transition-colors">${t().menu[project.pageMenu]}</a>
-                        <i class="fas fa-chevron-right text-[10px] text-gray-400 mt-0.5"></i>
-                        <span class="text-gray-900">${prjTitle}</span>
-                    </div>
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight tracking-tight break-words">${prjTitle}</h1>
+            <div class="mb-6 sm:mb-8 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center text-xs sm:text-sm font-semibold text-gray-500 space-x-2">
+                    <a href="#home" onclick="window.navigate('home', event)" class="hover:text-brand-orange transition-colors"><i class="fas fa-home"></i></a>
+                    <i class="fas fa-chevron-right text-[10px] text-gray-300"></i>
+                    <a href="#${project.pageMenu}" onclick="window.navigate('${project.pageMenu}', event)" class="hover:text-brand-orange transition-colors">${t().menu[project.pageMenu]}</a>
+                    <i class="fas fa-chevron-right text-[10px] text-gray-300"></i>
+                    <span class="text-gray-900">${prjTitle}</span>
                 </div>
-                <div class="flex space-x-3 w-full md:w-auto">
-                    <button onclick="window.shareProject(event)" class="flex-1 md:flex-none bg-white border-2 border-gray-200 hover:border-brand-orange text-gray-800 px-4 py-2.5 sm:px-5 rounded-full font-semibold transition-all flex justify-center items-center text-sm shadow-sm btn-press"><i class="fas fa-share-alt md:mr-2"></i> <span class="hidden md:inline">Paylaş</span></button>
-                    <a href="#${project.pageMenu}" onclick="window.navigate('${project.pageMenu}', event)" class="flex-1 md:flex-none bg-gray-900 text-white px-4 py-2.5 sm:px-5 rounded-full font-semibold hover:bg-brand-orange transition-colors flex justify-center items-center text-sm btn-press shadow-lg"><i class="fas fa-arrow-left md:mr-2"></i> <span class="hidden md:inline">${t().backBtn}</span></a>
-                </div>
+                <a href="#${project.pageMenu}" onclick="window.navigate('${project.pageMenu}', event)" class="hidden sm:inline-flex items-center text-gray-500 hover:text-brand-orange font-semibold text-sm transition-colors btn-press">
+                    <i class="fas fa-arrow-left mr-2"></i> ${t().backBtn}
+                </a>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mb-8 sm:mb-12 items-start">
+            <!-- ÜST KISIM: RESİM VE BİLGİLER -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 
-                <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4 w-full">
-                    <div class="w-full rounded-2xl shadow-md overflow-hidden bg-gray-100 border border-gray-200">
-                        <div id="main-image-container" class="w-full aspect-video relative cursor-zoom-in group transition-all duration-300" onclick="window.openLightboxCurrent()">
+                <!-- SOL SÜTUN: GALERİ -->
+                <div class="lg:col-span-7 flex flex-col gap-4">
+                    <div class="w-full rounded-2xl shadow-sm overflow-hidden bg-gray-50 border border-gray-100">
+                        <div id="main-image-container" class="w-full aspect-[4/3] sm:aspect-video relative transition-all duration-300">
                             ${initialContainerHTML}
                         </div>
                     </div>
-                    
-                    <div class="w-full flex flex-row gap-2 sm:gap-3 overflow-x-auto no-scrollbar pb-1 snap-x">
+                    <div class="w-full flex flex-row gap-3 overflow-x-auto no-scrollbar pb-2 snap-x">
                         ${thumbnailsHTML}
                     </div>
-                    
-                    <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-gray-100 mt-2">
-                        <h3 class="text-base sm:text-lg font-bold mb-3 text-gray-900 border-l-4 border-brand-orange pl-3">${t().projectDetailsTitle}</h3>
-                        <p class="text-gray-600 leading-relaxed text-sm sm:text-base font-medium">${project.description[state.lang]}</p>
-                    </div>
                 </div>
 
-                <div class="lg:col-span-5 xl:col-span-4 space-y-4 sm:space-y-6 lg:sticky lg:top-28">
+                <!-- SAĞ SÜTUN: BİLGİLER -->
+                <div class="lg:col-span-5 flex flex-col">
+                    ${catName ? `<span class="inline-block bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full w-max mb-3">${catName}</span>` : ''}
+                    <h1 class="text-3xl sm:text-4xl font-black text-gray-900 leading-tight mb-4">${prjTitle}</h1>
+                    <p class="text-gray-600 text-base leading-relaxed mb-6 font-medium">${project.description[state.lang]}</p>
                     
-                    <div class="grid grid-cols-2 gap-3 sm:gap-4">
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:border-brand-orange transition-colors">
-                            <div class="w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center mb-2"><i class="fas fa-ruler-combined text-brand-orange text-lg"></i></div>
-                            <span class="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-1 block truncate">${t().totalArea}</span>
-                            <span class="font-black text-2xl text-gray-900">${project.area} <span class="text-sm text-brand-orange ml-1">m²</span></span>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:border-green-500 transition-colors">
-                            <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center mb-2"><i class="fas fa-door-open text-green-500 text-lg"></i></div>
-                            <span class="text-gray-400 font-bold text-[10px] uppercase tracking-widest mb-1 block truncate">${t().roomCount}</span>
-                            <span class="font-black text-2xl text-gray-900">${project.rooms}</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-[#1a201c] p-6 sm:p-7 rounded-3xl shadow-xl relative overflow-hidden">
-                        <h3 class="text-xl font-bold text-white mb-2 relative z-10">${t().getQuoteTitle}</h3>
-                        <p class="text-gray-400 text-xs sm:text-sm font-medium mb-5 relative z-10">Mimarımız sizi arayıp bu proje hakkında detaylı bilgi versin.</p>
+                    <!-- ÖZELLİKLER TABLOSU -->
+                    <div class="border border-gray-200 rounded-xl p-6 sm:p-8 bg-white shadow-sm mb-6">
+                        <h4 class="font-bold text-lg text-gray-900 mb-4 border-b border-gray-100 pb-3">Özellikler</h4>
                         
-                        <form id="project-form" class="space-y-3.5 relative z-10" onsubmit="window.submitTestForm(event, 'project-form')">
-                            <div>
-                                <input type="text" id="project-form-name" name="name" placeholder="${t().formName}" oninput="window.clearError(this)" class="w-full px-4 py-2.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm">
-                                <div id="project-form-name-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorName}</div>
-                            </div>
-                            <div>
-                                <input type="tel" id="project-form-phone" name="phone" placeholder="${t().formPhone}" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-2.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all tracking-wider text-sm">
-                                <div id="project-form-phone-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorPhone}</div>
-                            </div>
-                            <div>
-                                <input type="email" id="project-form-email" name="email" placeholder="${t().formEmail || 'E-Posta Adresi'}" oninput="window.clearError(this)" class="w-full px-4 py-2.5 bg-black/40 border border-gray-700 text-white rounded-xl focus:outline-none focus:border-brand-orange transition-all text-sm">
-                                <div id="project-form-email-error" class="text-red-500 text-xs mt-1 hidden pl-1"><i class="fas fa-exclamation-circle mr-1"></i>${t().formErrorEmail || 'Geçerli bir mail giriniz.'}</div>
-                            </div>
-                            
-                            <div class="flex items-start mt-2 bg-black/20 p-2.5 rounded-lg border border-gray-800">
-                                <div class="flex items-center h-4 mt-0.5 shrink-0">
-                                    <input id="project-form-kvkk" name="kvkk" type="checkbox" onchange="window.clearError(this)" class="w-4 h-4 rounded bg-black/40 border-gray-600 text-brand-orange focus:ring-brand-orange focus:ring-2 cursor-pointer accent-brand-orange">
-                                </div>
-                                <div class="ml-2.5 text-[11px] sm:text-xs">
-                                    <label for="project-form-kvkk" class="text-gray-300 cursor-pointer font-medium leading-tight block">${t().kvkkText}</label>
-                                    <div id="project-form-kvkk-error" class="text-red-500 font-bold text-[10px] sm:text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>${t().kvkkError}</div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="cta-pulse w-full bg-brand-orange text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:bg-orange-500 mt-3 flex justify-center items-center text-sm btn-press disabled:opacity-70">
-                                <i class="fas fa-paper-plane mr-2"></i> ${t().submitBtn}
-                            </button>
-                        </form>
+                        <div class="flex justify-between py-3 border-b border-gray-100 last:border-0">
+                            <span class="text-gray-500 font-medium">Kategori:</span>
+                            <span class="font-bold text-gray-900 text-right">${catName || '-'}</span>
+                        </div>
+                        <div class="flex justify-between py-3 border-b border-gray-100 last:border-0">
+                            <span class="text-gray-500 font-medium">Toplam Alan:</span>
+                            <span class="font-bold text-gray-900 text-right">${project.area} m²</span>
+                        </div>
+                        <div class="flex justify-between py-3 border-b border-gray-100 last:border-0">
+                            <span class="text-gray-500 font-medium">Oda Sayısı:</span>
+                            <span class="font-bold text-gray-900 text-right">${project.rooms}</span>
+                        </div>
                     </div>
+
+                    <!-- GÜVEN İKONLARI -->
+                    <ul class="space-y-3 text-sm sm:text-base text-gray-600 font-semibold">
+                        <li class="flex items-center"><i class="fas fa-check text-brand-green mr-3"></i> 24 saat içinde geri dönüş</li>
+                        <li class="flex items-center"><i class="fas fa-check text-brand-green mr-3"></i> Müşteri memnuniyeti tecrübesi</li>
+                        <li class="flex items-center"><i class="fas fa-check text-brand-green mr-3"></i> Detaylı fiyatlandırma ve sunum</li>
+                    </ul>
                 </div>
             </div>
-            
-            <div class="flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 pt-8 gap-4">
-                 <div class="w-full sm:w-1/2 flex justify-start">
-                     <a href="#${prevProject.id}" onclick="window.navigate('${prevProject.id}', event)" class="group flex items-center text-left bg-gray-50 hover:bg-gray-100 border border-gray-200 p-3 sm:p-4 rounded-2xl w-full max-w-sm transition-colors btn-press">
-                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white flex items-center justify-center mr-3 sm:mr-4 shadow-sm group-hover:text-brand-orange transition-colors shrink-0"><i class="fas fa-arrow-left text-sm"></i></div>
-                         <div class="overflow-hidden">
-                             <span class="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider block mb-0.5">${t().prevProject}</span>
-                             <span class="text-sm font-bold text-gray-900 truncate block">${state.lang === 'tr' ? prevProject.title : prevProject.titleEn}</span>
-                         </div>
-                     </a>
-                 </div>
-                 <div class="w-full sm:w-1/2 flex justify-end">
-                     <a href="#${nextProject.id}" onclick="window.navigate('${nextProject.id}', event)" class="group flex items-center text-right bg-gray-50 hover:bg-gray-100 border border-gray-200 p-3 sm:p-4 rounded-2xl w-full max-w-sm transition-colors justify-end btn-press">
-                         <div class="overflow-hidden">
-                             <span class="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider block mb-0.5">${t().nextProject}</span>
-                             <span class="text-sm font-bold text-gray-900 truncate block">${state.lang === 'tr' ? nextProject.title : nextProject.titleEn}</span>
-                         </div>
-                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white flex items-center justify-center ml-3 sm:ml-4 shadow-sm group-hover:text-brand-orange transition-colors shrink-0"><i class="fas fa-arrow-right text-sm"></i></div>
-                     </a>
-                 </div>
+
+            <div class="w-full h-px bg-gray-200 my-12 sm:my-16"></div>
+
+            <!-- ALT KISIM: İLETİŞİM FORMU -->
+            <div class="max-w-4xl mx-auto">
+                
+                <!-- FORM ALANI (ÖNE ÇIKARILDI - Satış Hunisi Stratejisi) -->
+                <div class="bg-white mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2">Bu Modelle İlgileniyorum</h2>
+                    <p class="text-gray-500 font-medium mb-8">Formu doldurun, detaylı bilgi ve fiyat teklifi gönderelim.</p>
+                    
+                    <form id="project-form" onsubmit="window.submitTestForm(event, 'project-form')">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 mb-6">
+                            
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">E-posta <span class="text-red-500">*</span></label>
+                                <input type="email" id="project-form-email" placeholder="ornek@email.com" oninput="window.clearError(this)" class="w-full px-4 py-3 bg-white border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-colors">
+                                <div id="project-form-email-error" class="text-red-500 text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>Geçerli bir mail giriniz.</div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Telefon <span class="text-red-500">*</span></label>
+                                <input type="tel" id="project-form-phone" placeholder="+90 5XX XXX XX XX" oninput="window.formatPhone(this)" maxlength="15" class="w-full px-4 py-3 bg-white border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-colors tracking-wide">
+                                <div id="project-form-phone-error" class="text-red-500 text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>Geçerli bir telefon numarası giriniz.</div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Ad Soyad <span class="text-red-500">*</span></label>
+                                <input type="text" id="project-form-name" placeholder="Adınız ve Soyadınız" oninput="window.clearError(this)" class="w-full px-4 py-3 bg-white border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-colors">
+                                <div id="project-form-name-error" class="text-red-500 text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>Adınızı ve soyadınızı giriniz.</div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Arsa Konumu (İl/İlçe) <span class="text-red-500">*</span></label>
+                                <input type="text" id="project-form-location" placeholder="Örn: Ankara/Gölbaşı" oninput="window.clearError(this)" class="w-full px-4 py-3 bg-white border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-colors">
+                                <div id="project-form-location-error" class="text-red-500 text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>Lütfen arsa konumunu belirtiniz.</div>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Mesajınız</label>
+                                <textarea id="project-form-message" rows="4" placeholder="${prjTitle} ile ilgili sorularınız..." class="w-full px-4 py-3 bg-white border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-colors resize-none"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
+                            <div class="flex items-center h-5 mt-0.5 shrink-0">
+                                <input id="project-form-kvkk" type="checkbox" onchange="window.clearError(this)" class="w-5 h-5 rounded border-gray-300 text-brand-orange focus:ring-brand-orange cursor-pointer accent-brand-orange">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="project-form-kvkk" class="text-gray-700 cursor-pointer font-medium leading-snug block"><a href="#" class="underline text-brand-orange hover:text-orange-500">KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin işlenmesini kabul ediyorum.</label>
+                                <div id="project-form-kvkk-error" class="text-red-500 font-bold text-xs mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>Devam etmek için onaylamalısınız.</div>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-400 italic mb-4">Fiyatlarımız yaklaşık fiyatlardır. Mimarlarımız detaylı inceleme sonrası kesin teklifi tarafınıza iletecektir.</p>
+
+                        <button type="submit" class="w-full bg-[#0a0a0a] text-white font-black py-4 rounded-xl transition-all shadow-md hover:bg-gray-800 flex justify-center items-center text-lg btn-press disabled:opacity-70">
+                            Ücretsiz Teklif Al
+                        </button>
+                    </form>
+                </div>
+
+                <!-- TELEFON BANT (ALTERNATİF OLARAK ALTA ALINDI) -->
+                <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-200 shadow-sm mt-8">
+                    <span class="text-sm sm:text-base text-gray-500 block mb-2 font-medium">Telefonla acil iletişim ve destek için:</span>
+                    <a href="tel:${siteConfig.contact.phone.replace(/\s/g,'')}" class="text-2xl sm:text-3xl font-black text-gray-900 hover:text-brand-orange transition-colors inline-flex items-center">
+                        <i class="fas fa-phone-alt mr-3 text-brand-orange"></i>${siteConfig.contact.phone}
+                    </a>
+                    <div class="flex justify-center items-center gap-4 sm:gap-8 mt-5 text-xs sm:text-sm text-gray-600 font-semibold flex-wrap">
+                        <span class="flex items-center"><i class="far fa-clock mr-2 text-gray-400"></i> 24 saat içinde geri dönüş</span>
+                        <span class="flex items-center"><i class="fas fa-shield-alt mr-2 text-gray-400"></i> Bilgi güvende</span>
+                        <span class="flex items-center"><i class="fas fa-users mr-2 text-gray-400"></i> Mimari destek</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     `;
-    
-    // Akıllı Mesaj Özelliği
-    const waChatBtn = document.getElementById('btn-chat-floating');
-    if (waChatBtn) {
-        let msg = `Merhaba, Kartech Panel web sitesini inceliyordum. ${prjTitle} projeniz (${project.area} m²) hakkında detaylı bilgi alabilir miyim?`;
-        waChatBtn.href = `https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`;
-    }
 }
 
 function renderFooter() {
@@ -1138,7 +1241,6 @@ function initApp() {
     window.addEventListener('scroll', handleScroll);
     let hash = window.location.hash.substring(1);
     
-    // Cookie Onay Barı Mantığı
     if (!localStorage.getItem('cookie-accepted')) {
         const cookieBar = document.createElement('div');
         cookieBar.id = 'cookie-consent-bar';
