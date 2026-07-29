@@ -12,7 +12,7 @@ export const siteConfig = {
     },
 
     contact: {
-        logoSrc: "https://media.discordapp.net/attachments/1531819616484196476/1532123970243920052/Untitled_-_29_Temmuz_2026_23.32.13_1.png?ex=6a6bb523&is=6a6a63a3&hm=27e86950c83f57c387902ac6f4c38f792abd378c134ea294d0cacac06a1d7995&=&format=webp&quality=lossless&width=619&height=254",
+        logoSrc: "https://media.discordapp.net/attachments/1531819616484196476/1532125758787551262/logo-removebg-preview.png?ex=6a6bb6ce&is=6a6a654e&hm=6de0fb398ad1c1a404ed89fc795b16644a260b0e72e66589a3f836ebbbcbffff&=&format=webp&quality=lossless&width=942&height=335",
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@kartechpanel.com",
