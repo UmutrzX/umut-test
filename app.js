@@ -92,12 +92,15 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
             } else if (viewOrId === 'sip-panel') {
                 updateMetaTags(viewOrId); renderSipPanelPage();
                 state.pageCache[cacheKey] = DOM.content.innerHTML;
+            } else if (viewOrId === 'hakkimizda') {
+                updateMetaTags(viewOrId); renderAboutPage();
+                state.pageCache[cacheKey] = DOM.content.innerHTML;
             } else if (viewOrId === 'iletisim') {
                 updateMetaTags(viewOrId); renderContactPage();
                 state.pageCache[cacheKey] = DOM.content.innerHTML;
             } else if (['ev-modelleri', 'bahce-yapilari', 'garaj-sistemleri'].includes(viewOrId)) {
                 updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
-            } else if (['uretim', 'galeri', 'hakkimizda'].includes(viewOrId)) {
+            } else if (['uretim', 'galeri'].includes(viewOrId)) {
                 updateMetaTags(viewOrId); renderGenericPage(viewOrId);
                 state.pageCache[cacheKey] = DOM.content.innerHTML;
             } else {
@@ -661,11 +664,13 @@ function renderHomePage() {
             </div>
         </div>
 
+        <!-- ŞIK VE MODERN: NEDEN BİZ? ALANI (Çerçevesiz, Editoryal Liste) -->
         <div class="bg-gray-50 relative z-20 w-full py-16 sm:py-24 border-b border-gray-200">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
-                    <div class="w-full lg:w-1/2">
+                <div class="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
+                    <div class="w-full lg:w-1/2 lg:sticky lg:top-32">
                         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-6 leading-tight tracking-tight">${state.lang === 'tr' ? 'Neden Kartech SİP Panel Teknolojisi?' : 'Why Kartech SIP Panel Technology?'}</h2>
+                        <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full mb-8"></div>
                         <p class="text-gray-600 text-base sm:text-lg leading-relaxed mb-6 font-medium">
                             ${state.lang === 'tr' ? 'Geleneksel betonarme veya hafif çelik sistemlerin ötesine geçin. SİP (Yapısal Yalıtımlı Panel) teknolojisi, üstün ısı yalıtımı ile enerji maliyetlerinizi düşürürken, fabrikasyon üretim sayesinde inşaat süresini aylardan haftalara indirir.' : 'Go beyond traditional concrete or light steel systems. SIP technology reduces energy costs with superior insulation while cutting construction time from months to weeks.'}
                         </p>
@@ -676,33 +681,34 @@ function renderHomePage() {
                             ${state.lang === 'tr' ? 'SİP Panel Detaylarını İnceleyin' : 'Explore SIP Panel Details'} <i class="fas fa-arrow-right ml-2"></i>
                         </a>
                     </div>
+                    
                     <div class="w-full lg:w-1/2">
-                        <div class="space-y-6 sm:space-y-8 p-4 sm:p-0">
-                            <div class="flex items-start">
-                                <div class="mt-1 w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0 border border-brand-orange/20 mr-4 sm:mr-5">
-                                    <i class="fas fa-leaf text-brand-orange text-sm sm:text-base"></i>
+                        <div class="space-y-12 sm:space-y-16">
+                            <div class="flex flex-col sm:flex-row items-start sm:gap-6 group">
+                                <div class="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0 mb-4 sm:mb-0 group-hover:bg-brand-orange transition-colors">
+                                    <i class="fas fa-leaf text-2xl text-brand-orange group-hover:text-white transition-colors"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-lg sm:text-xl font-bold text-gray-900 mb-1.5">${state.lang === 'tr' ? 'Maksimum Enerji Tasarrufu' : 'Maximum Energy Savings'}</h4>
-                                    <p class="text-gray-500 font-medium leading-relaxed text-sm sm:text-base">${state.lang === 'tr' ? 'Eksiz yalıtım katmanı sayesinde ısıtma ve soğutma giderlerinde %60 net tasarruf elde edin.' : 'Up to 60% savings on heating and cooling costs thanks to the seamless insulation layer.'}</p>
+                                    <h4 class="text-xl sm:text-2xl font-black text-gray-900 mb-2">${state.lang === 'tr' ? 'Maksimum Enerji Tasarrufu' : 'Maximum Energy Savings'}</h4>
+                                    <p class="text-gray-600 font-medium leading-relaxed text-sm sm:text-base">${state.lang === 'tr' ? 'Eksiz yalıtım katmanı sayesinde ısıtma ve soğutma giderlerinde %60 net tasarruf elde edin. Enerji dostu yalıtım, doğayı ve cebinizi korur.' : 'Up to 60% savings on heating and cooling costs thanks to the seamless insulation layer.'}</p>
                                 </div>
                             </div>
-                            <div class="flex items-start">
-                                <div class="mt-1 w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0 border border-brand-orange/20 mr-4 sm:mr-5">
-                                    <i class="fas fa-stopwatch text-brand-orange text-sm sm:text-base"></i>
+                            <div class="flex flex-col sm:flex-row items-start sm:gap-6 group">
+                                <div class="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0 mb-4 sm:mb-0 group-hover:bg-brand-orange transition-colors">
+                                    <i class="fas fa-stopwatch text-2xl text-brand-orange group-hover:text-white transition-colors"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-lg sm:text-xl font-bold text-gray-900 mb-1.5">${state.lang === 'tr' ? 'Ultra Hızlı Kurulum' : 'Ultra-Fast Installation'}</h4>
-                                    <p class="text-gray-500 font-medium leading-relaxed text-sm sm:text-base">${state.lang === 'tr' ? 'Fabrikada milimetrik üretilen panellerle şantiyede hava koşullarına takılmadan haftalar içinde anahtar teslim.' : 'Turnkey delivery in weeks without weather delays, using millimetrically precision-manufactured panels.'}</p>
+                                    <h4 class="text-xl sm:text-2xl font-black text-gray-900 mb-2">${state.lang === 'tr' ? 'Ultra Hızlı Kurulum' : 'Ultra-Fast Installation'}</h4>
+                                    <p class="text-gray-600 font-medium leading-relaxed text-sm sm:text-base">${state.lang === 'tr' ? 'Fabrikada milimetrik üretilen panellerle şantiyede hava koşullarına takılmadan haftalar içinde anahtar teslim yapı imkanı sunuyoruz.' : 'Turnkey delivery in weeks without weather delays, using millimetrically precision-manufactured panels.'}</p>
                                 </div>
                             </div>
-                            <div class="flex items-start">
-                                <div class="mt-1 w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0 border border-brand-orange/20 mr-4 sm:mr-5">
-                                    <i class="fas fa-shield-alt text-brand-orange text-sm sm:text-base"></i>
+                            <div class="flex flex-col sm:flex-row items-start sm:gap-6 group">
+                                <div class="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0 mb-4 sm:mb-0 group-hover:bg-brand-orange transition-colors">
+                                    <i class="fas fa-shield-alt text-2xl text-brand-orange group-hover:text-white transition-colors"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-lg sm:text-xl font-bold text-gray-900 mb-1.5">${state.lang === 'tr' ? 'Üstün Deprem Güvenliği' : 'Superior Earthquake Safety'}</h4>
-                                    <p class="text-gray-500 font-medium leading-relaxed text-sm sm:text-base">${state.lang === 'tr' ? 'Betonarmeye göre çok daha hafif ve esnek yapısı ile deprem enerjisini emer, sarsılmaz bir bütünlük sunar.' : 'Lighter and more flexible than concrete, it absorbs earthquake energy and provides unshakable integrity.'}</p>
+                                    <h4 class="text-xl sm:text-2xl font-black text-gray-900 mb-2">${state.lang === 'tr' ? 'Sarsılmaz Deprem Güvenliği' : 'Superior Earthquake Safety'}</h4>
+                                    <p class="text-gray-600 font-medium leading-relaxed text-sm sm:text-base">${state.lang === 'tr' ? 'Betonarmeye göre çok daha hafif ve esnek yapısı ile deprem enerjisini emer, çatlamaz ve yıkılmaz bir bütünlük sunar.' : 'Lighter and more flexible than concrete, it absorbs earthquake energy and provides unshakable integrity.'}</p>
                                 </div>
                             </div>
                         </div>
@@ -739,100 +745,167 @@ function renderHomePage() {
 function renderSipPanelPage() {
     const data = t().sipPanelData;
     
-    // TEMİZ, EDİTORYAL TASARIM: Avantajlar Listesi
+    // YENİ ŞIK, BEYAZ, EDİTORYAL LİSTE (Kutusuz)
     const advantagesHTML = data.advantages.map(adv => `
-        <div class="flex items-start">
-            <div class="mt-1 w-12 h-12 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0 border border-brand-orange/20 mr-4">
-                <i class="fas ${adv.icon} text-brand-orange text-lg"></i>
+        <div class="flex flex-col gap-3 group">
+            <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-200 group-hover:border-brand-orange transition-colors">
+                <i class="fas ${adv.icon} text-lg text-gray-900 group-hover:text-brand-orange transition-colors"></i>
             </div>
-            <div>
-                <h4 class="text-lg sm:text-xl font-bold text-gray-900 mb-2">${adv.title}</h4>
-                <p class="text-gray-600 leading-relaxed">${adv.desc}</p>
-            </div>
+            <h4 class="text-xl font-bold text-gray-900">${adv.title}</h4>
+            <p class="text-sm sm:text-base text-gray-600 font-medium leading-relaxed">${adv.desc}</p>
         </div>
     `).join('');
 
     const specsHTML = data.technicalSpecs.map(spec => `
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-gray-100 last:border-0 gap-2 sm:gap-6">
-            <span class="font-bold text-gray-700 w-full sm:w-1/3">${spec.label}</span>
-            <span class="text-gray-600 w-full sm:w-2/3 sm:text-right">${spec.value}</span>
+            <span class="font-bold text-gray-700 text-sm sm:text-base w-full sm:w-1/3 flex items-center"><i class="fas fa-check text-brand-green mr-3 text-xs"></i> ${spec.label}</span>
+            <span class="text-gray-600 font-medium text-sm sm:text-base w-full sm:w-2/3 sm:text-right">${spec.value}</span>
         </div>
     `).join('');
 
+    // Şık Grid İçinde Kullanım Alanları
     const usageHTML = data.usageAreas ? data.usageAreas.map(item => {
         let parts = item.split(':');
         let title = parts[0] || '';
         let desc = parts.slice(1).join(':') || '';
         return `
-        <li class="flex items-start gap-3 mb-4 last:mb-0">
+        <div class="flex items-start gap-3 bg-gray-50 p-6 rounded-2xl border border-gray-100">
             <div class="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                 <i class="fas fa-check text-xs text-brand-green"></i>
             </div>
-            <p class="text-gray-600 leading-relaxed">${desc ? `<strong class="text-gray-900">${title}:</strong> ${desc}` : `<strong class="text-gray-900">${title}</strong>`}</p>
-        </li>`;
+            <p class="text-gray-600 text-sm sm:text-base leading-relaxed">${desc ? `<strong class="text-gray-900 block mb-1">${title}</strong>${desc}` : `<strong class="text-gray-900">${title}</strong>`}</p>
+        </div>`;
     }).join('') : '';
 
-    const introParagraphs = data.introText.split('<br><br>').map(p => `<p class="text-lg text-gray-600 leading-relaxed mb-6">${p}</p>`).join('');
-
     DOM.content.innerHTML = `
-        <div class="relative w-full h-[40vh] md:h-[50vh] flex overflow-hidden">
+        <div class="relative w-full h-[50vh] md:h-[60vh] flex overflow-hidden">
             <div class="absolute inset-0 z-0">
                 <img src="${data.heroImg}" alt="SIP Panel Background" class="w-full h-full object-cover" loading="eager">
                 <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             </div>
-            <div class="relative z-10 w-full h-full flex flex-col justify-center items-center text-center px-4 pt-16">
-                <h1 class="text-3xl sm:text-5xl md:text-7xl font-black text-white mb-6 drop-shadow-xl tracking-tight">${t().pageTitles['sip-panel']}</h1>
+            <div class="relative z-10 w-full h-full flex flex-col justify-center items-center text-center px-4 sm:px-6 pt-16">
+                <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 tracking-tight drop-shadow-xl">${t().pageTitles['sip-panel']}</h1>
                 <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
             </div>
         </div>
         
-        <div class="bg-white py-16 sm:py-24 px-4 sm:px-6">
-            <div class="max-w-4xl mx-auto">
+        <div class="bg-white py-20 sm:py-32 px-4 sm:px-6">
+            <div class="max-w-[1000px] mx-auto space-y-20 sm:space-y-32">
                 
-                <div class="mb-16">
-                    <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mb-8">${data.introTitle}</h2>
-                    ${introParagraphs}
+                <!-- GİRİŞ METNİ -->
+                <div>
+                    <h3 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-8 tracking-tight">${data.introTitle}</h3>
+                    <div class="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed font-medium space-y-6">
+                        <p>${data.introText.split('<br><br>')[0] || data.introText}</p>
+                        ${data.introText.split('<br><br>')[1] ? `<p>${data.introText.split('<br><br>')[1]}</p>` : ''}
+                    </div>
                 </div>
+                
+                <div class="w-full h-px bg-gray-100"></div>
 
-                <div class="mb-16 rounded-3xl overflow-hidden shadow-xl border border-gray-100">
-                    <img src="${data.heroImg}" alt="SIP Panel Structure" class="w-full h-auto max-h-[500px] object-cover hover:scale-105 transition-transform duration-700">
-                </div>
-
-                <div class="mb-16">
-                    <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-8 border-b-2 border-gray-100 pb-4">${data.advantagesTitle}</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
+                <!-- AVANTAJLAR LİSTESİ -->
+                <div>
+                    <div class="mb-12 sm:mb-16">
+                        <h3 class="text-3xl sm:text-4xl font-black text-gray-900 mb-4">${data.advantagesTitle}</h3>
+                        <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-12">
                         ${advantagesHTML}
                     </div>
                 </div>
 
+                <div class="w-full h-px bg-gray-100"></div>
+
+                <!-- KULLANIM ALANLARI -->
                 ${data.usageAreas ? `
-                <div class="mb-16 bg-gray-50 p-8 sm:p-10 md:p-12 rounded-3xl border border-gray-100">
-                    <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-8">${data.usageAreasTitle}</h3>
-                    <ul>
-                        ${usageHTML}
-                    </ul>
-                </div>` : ''}
-
-                ${data.futureTitle ? `
-                <div class="mb-16">
-                    <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-6 border-b-2 border-gray-100 pb-4">${data.futureTitle}</h3>
-                    <p class="text-lg text-gray-600 leading-relaxed">${data.futureText}</p>
-                </div>` : ''}
-
-                <div class="mb-16">
-                    <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-4 border-b-2 border-gray-100 pb-4">${data.specsTitle}</h3>
-                    <p class="text-gray-500 mb-8">${data.specsDesc}</p>
-                    <div class="border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm">
-                        ${specsHTML}
+                <div>
+                    <div class="mb-12 sm:mb-16">
+                        <h3 class="text-3xl sm:text-4xl font-black text-gray-900 mb-4">${data.usageAreasTitle}</h3>
+                        <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
                     </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        ${usageHTML}
+                    </div>
+                </div>` : ''}
+
+                <!-- GELECEK VİZYONU -->
+                ${data.futureTitle ? `
+                <div class="bg-[#1a201c] p-8 sm:p-12 md:p-16 rounded-[2rem] shadow-2xl text-center relative overflow-hidden">
+                    <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-brand-orange mb-6 relative z-10">${data.futureTitle}</h3>
+                    <p class="text-gray-300 leading-relaxed text-base sm:text-lg font-medium relative z-10 max-w-4xl mx-auto">${data.futureText}</p>
+                </div>` : ''}
+
+                <!-- TEKNİK ÖZELLİKLER -->
+                <div>
+                    <div class="mb-8 border-l-4 border-brand-orange pl-4 sm:pl-6">
+                        <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2">${data.specsTitle}</h3>
+                        <p class="text-sm sm:text-base text-gray-500 font-medium">${data.specsDesc}</p>
+                    </div>
+                    <div class="border-t border-gray-100 pt-4">${specsHTML}</div>
                 </div>
 
-                <div class="bg-[#1a201c] rounded-3xl p-8 sm:p-12 shadow-2xl text-center relative overflow-hidden mt-8">
-                    <div class="absolute inset-0 bg-brand-orange/5 pattern-dots pointer-events-none"></div>
-                    <h3 class="text-2xl sm:text-3xl font-black text-white mb-4 relative z-10">${state.lang === 'tr' ? 'Projenizde SİP Panel Kullanmaya Hazır mısınız?' : 'Ready to Use SIP Panels in Your Project?'}</h3>
-                    <p class="text-gray-400 text-base sm:text-lg mb-8 relative z-10 max-w-2xl mx-auto">${state.lang === 'tr' ? 'Hemen uzman ekibimizle iletişime geçin, size özel çözümleri ve fiyat avantajlarını konuşalım.' : 'Contact our expert team now to discuss custom solutions and pricing advantages.'}</p>
-                    <a href="#iletisim" onclick="navigate('iletisim', event)" class="cta-pulse inline-flex bg-brand-orange text-white font-bold px-8 py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-lg relative z-10">
-                        ${state.lang === 'tr' ? 'Hemen Bilgi ve Fiyat Alın' : 'Get Info & Quote Now'} <i class="fas fa-arrow-right ml-3"></i>
+                <!-- YENİ BÜYÜK CTA BANDI (EN ALTTA) -->
+                <div class="bg-gray-50 rounded-[2rem] p-8 sm:p-12 md:p-16 border border-gray-200 text-center relative overflow-hidden mt-16 sm:mt-24">
+                     <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-4 relative z-10">${state.lang === 'tr' ? 'Projenizde SİP Panel Kullanmaya Hazır mısınız?' : 'Ready to Use SIP Panels in Your Project?'}</h3>
+                     <p class="text-gray-600 text-lg font-medium mb-8 relative z-10 max-w-2xl mx-auto">${state.lang === 'tr' ? 'Hemen uzman ekibimizle iletişime geçin, size özel çözümleri ve fiyat avantajlarını konuşalım.' : 'Contact our expert team now to discuss custom solutions and pricing advantages.'}</p>
+                     <a href="#iletisim" onclick="navigate('iletisim', event)" class="cta-pulse inline-flex bg-brand-orange text-white font-bold px-10 py-4.5 rounded-full shadow-lg hover:bg-orange-600 transition-all btn-press text-lg relative z-10">
+                         ${state.lang === 'tr' ? 'Hemen Mimarlarımızla Görüşün' : 'Contact Our Architects Now'} <i class="fas fa-arrow-right ml-3"></i>
+                     </a>
+                </div>
+
+            </div>
+        </div>
+    `;
+}
+
+function renderAboutPage() {
+    const data = t().hakkimizdaData;
+
+    const featuresHTML = data.features.map(f => `
+        <div class="flex flex-col">
+            <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mb-6 border border-gray-200">
+                <i class="fas ${f.icon} text-xl text-gray-900"></i>
+            </div>
+            <h4 class="text-xl font-bold text-gray-900 mb-3">${f.title}</h4>
+            <p class="text-gray-600 leading-relaxed text-sm sm:text-base font-medium">${f.desc}</p>
+        </div>
+    `).join('');
+
+    const paragraphsHTML = data.paragraphs.map(p => `
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed font-medium mb-6 last:mb-0">${p}</p>
+    `).join('');
+
+    DOM.content.innerHTML = `
+        <div class="bg-white min-h-screen pt-36 sm:pt-44 lg:pt-48 pb-24">
+            <div class="max-w-[1000px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Başlık -->
+                <div class="mb-16">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tight">${t().pageTitles['hakkimizda']}</h1>
+                    <div class="w-24 h-1.5 bg-brand-orange rounded-full"></div>
+                </div>
+
+                <!-- Metin -->
+                <div class="mb-24">
+                    ${paragraphsHTML}
+                </div>
+
+                <div class="w-full h-px bg-gray-100 mb-20"></div>
+
+                <!-- Teknoloji -->
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-12">${data.techTitle}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
+                        ${featuresHTML}
+                    </div>
+                </div>
+                
+                <!-- İletişim CTA -->
+                <div class="mt-24 bg-gray-50 rounded-[2rem] p-8 sm:p-12 border border-gray-200 text-center">
+                    <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">${state.lang === 'tr' ? 'Projeleriniz için bizimle iletişime geçin' : 'Contact us for your projects'}</h3>
+                    <p class="text-gray-500 font-medium mb-8">${state.lang === 'tr' ? 'Uzman mimarlarımız ve mühendislerimizle hayalinizdeki yapıyı inşa edelim.' : 'Let us build your dream structure with our expert architects and engineers.'}</p>
+                    <a href="#iletisim" onclick="navigate('iletisim', event)" class="inline-flex bg-gray-900 text-white font-bold px-8 py-3.5 rounded-full hover:bg-brand-orange transition-colors btn-press text-lg">
+                        ${t().consultBtn}
                     </a>
                 </div>
 
@@ -1007,6 +1080,9 @@ function renderProjectDetail(projectId) {
     if (projectIndex === -1) return navigate('home'); 
     
     const project = siteConfig.projects[projectIndex];
+    const prevProject = siteConfig.projects[projectIndex - 1] || siteConfig.projects[siteConfig.projects.length - 1];
+    const nextProject = siteConfig.projects[projectIndex + 1] || siteConfig.projects[0];
+
     const prjTitle = state.lang === 'tr' ? project.title : project.titleEn;
     
     let catName = "";
@@ -1054,7 +1130,6 @@ function renderProjectDetail(projectId) {
         initialContainerHTML = `<iframe src="${initialMedia.embed}" class="absolute inset-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
     }
 
-    // pt-36 sm:pt-44 lg:pt-48 eklenerek breadcrumb'ın devasa logoyla çakışması (overlap) engellendi
     DOM.content.innerHTML = `
         <div class="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-36 sm:pt-44 lg:pt-48 pb-16 relative z-10">
             
@@ -1066,9 +1141,9 @@ function renderProjectDetail(projectId) {
                     <i class="fas fa-chevron-right text-[10px] text-gray-300"></i>
                     <span class="text-gray-900">${prjTitle}</span>
                 </div>
-                <a href="#${project.pageMenu}" onclick="window.navigate('${project.pageMenu}', event)" class="hidden sm:inline-flex items-center text-gray-500 hover:text-brand-orange font-semibold text-sm transition-colors btn-press">
-                    <i class="fas fa-arrow-left mr-2"></i> ${t().backBtn}
-                </a>
+                <button onclick="window.shareProject(event)" class="inline-flex items-center text-gray-500 hover:text-brand-orange font-semibold text-sm transition-colors btn-press">
+                    <i class="fas fa-share-alt mr-2"></i> Paylaş
+                </button>
             </div>
 
             <!-- ÜST KISIM: RESİM VE BİLGİLER -->
@@ -1196,6 +1271,13 @@ function renderProjectDetail(projectId) {
             </div>
         </div>
     `;
+    
+    // Akıllı Mesaj Özelliği
+    const waChatBtn = document.getElementById('btn-chat-floating');
+    if (waChatBtn) {
+        let msg = `Merhaba, Kartech Panel web sitesini inceliyordum. ${prjTitle} projeniz (${project.area} m²) hakkında detaylı bilgi alabilir miyim?`;
+        waChatBtn.href = `https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`;
+    }
 }
 
 function renderFooter() {
