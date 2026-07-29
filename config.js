@@ -1,4 +1,21 @@
 export const siteConfig = {
+    // FORM GÖNDERİM AYARLARI (5 YEDEKLİ API SİSTEMİ)
+    formSubmission: {
+        // Maillerin düşeceği ana adres (Buradan tek tıkla değiştirebilirsiniz)
+        targetEmail: "umuttrtgi@gmail.com",
+        
+        // Sistem sırayla bu API'leri dener. Biri çökerse diğerine geçer.
+        // Not: 1. API (FormSubmit) doğrudan targetEmail ile çalışır. 
+        // Diğerleri (Formspree vb.) için sitelerine üye olup ücretsiz ID'nizi buraya yazabilirsiniz.
+        endpoints: [
+            { name: "FormSubmit", url: "https://formsubmit.co/ajax/umuttrtgi@gmail.com", type: "ajax" },
+            { name: "Formspree", url: "https://formspree.io/f/YEDEK_ID_YAZIN", type: "json" },
+            { name: "Web3Forms", url: "https://api.web3forms.com/submit", key: "YEDEK_KEY_YAZIN", type: "json" },
+            { name: "Getform", url: "https://getform.io/f/YEDEK_ID_YAZIN", type: "json" },
+            { name: "Formcarry", url: "https://formcarry.com/s/YEDEK_ID_YAZIN", type: "json" }
+        ]
+    },
+
     contact: {
         logoSrc: "https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small",
         address: "Sakarya, Türkiye",
@@ -100,14 +117,9 @@ export const siteConfig = {
     i18n: {
         tr: {
             menu: {
-                "home": "Ana Sayfa",
-                "sip-panel": "Sip Panel", 
-                "ev-modelleri": "Ev Modelleri", 
-                "bahce-yapilari": "Bahçe Yapıları", 
-                "garaj-sistemleri": "Garaj Sistemleri", 
-                "uretim": "Üretim", 
-                "galeri": "Galeri", 
-                "hakkimizda": "Hakkımızda"
+                "home": "Ana Sayfa", "sip-panel": "Sip Panel", "ev-modelleri": "Ev Modelleri", 
+                "bahce-yapilari": "Bahçe Yapıları", "garaj-sistemleri": "Garaj Sistemleri", 
+                "uretim": "Üretim", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
             },
             
             consultBtn: "Bize Ulaşın",
@@ -117,26 +129,29 @@ export const siteConfig = {
             totalArea: "Toplam alan",
             roomCount: "Oda sayısı",
             getQuoteTitle: "Hemen Fiyat Alın",
-            formName: "İsminiz",
-            formPhone: "Telefon (Örn: 507 880 7607)",
-            submitBtn: "Gönder",
+            contactFormDesc: "Talebinizi bize iletin, uzman ekiplerimiz ve müşteri temsilcilerimiz en kısa sürede size dönüş yapsın.",
+            formName: "Adınız Soyadınız",
+            formPhone: "Telefon Numaranız",
+            formEmail: "E-Posta Adresiniz",
+            submitBtn: "Talebi Gönder",
             backBtn: "Geri Dön",
             projectDetailsTitle: "Detaylar",
             prevProject: "Önceki Proje",
             nextProject: "Sonraki Proje",
-            formErrorName: "Lütfen isminizi giriniz.",
-            formErrorPhone: "Lütfen geçerli bir telefon numarası giriniz (10 hane).",
             
+            formErrorName: "Lütfen adınızı ve soyadınızı tam giriniz.",
+            formErrorPhone: "Lütfen geçerli bir telefon numarası giriniz (10 hane).",
+            formErrorEmail: "Lütfen geçerli bir e-posta adresi giriniz.",
+            kvkkText: "<a href='#' class='underline text-brand-orange hover:text-orange-400'>KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin işlenmesini kabul ediyorum.",
+            kvkkError: "Devam etmek için KVKK metnini onaylamalısınız.",
+            
+            cookieText: "Sitemizde, size daha iyi bir kullanıcı deneyimi sunabilmek ve hizmetlerimizi geliştirmek için çerezler kullanılmaktadır.",
+            cookieAccept: "Kabul Et",
+
             pageTitles: {
-                "home": "Kartech Panel",
-                "iletisim": "Bize Ulaşın",
-                "uretim": "Üretim Tesisimiz",
-                "galeri": "Fotoğraf Galerisi",
-                "hakkimizda": "Hakkımızda",
-                "sip-panel": "Neden SİP Panel?",
-                "ev-modelleri": "Ev Modellerimiz",
-                "bahce-yapilari": "Bahçe Yapılarımız",
-                "garaj-sistemleri": "Garaj Sistemlerimiz"
+                "home": "Kartech Panel", "iletisim": "Bize Ulaşın", "uretim": "Üretim Tesisimiz",
+                "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Neden SİP Panel?",
+                "ev-modelleri": "Ev Modellerimiz", "bahce-yapilari": "Bahçe Yapılarımız", "garaj-sistemleri": "Garaj Sistemlerimiz"
             },
             
             sipPanelData: {
@@ -171,26 +186,33 @@ export const siteConfig = {
         },
         en: {
             menu: {
-                "home": "Home",
-                "sip-panel": "Sip Panel", 
-                "ev-modelleri": "House Models", 
-                "bahce-yapilari": "Garden Structures", 
-                "garaj-sistemleri": "Garage Systems", 
-                "uretim": "Production", 
-                "galeri": "Gallery", 
-                "hakkimizda": "About Us"
+                "home": "Home", "sip-panel": "Sip Panel", "ev-modelleri": "House Models", 
+                "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems", 
+                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us"
             },
             consultBtn: "Contact Us", categoryTitle: "Categories",
             allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
-            getQuoteTitle: "Get a Quote", formName: "Your Name", formPhone: "Phone",
-            submitBtn: "Submit", backBtn: "Go Back", projectDetailsTitle: "Details",
+            getQuoteTitle: "Get a Quote", 
+            contactFormDesc: "Send us your request, and our customer representatives will get back to you as soon as possible.",
+            formName: "Full Name", 
+            formPhone: "Phone Number", 
+            formEmail: "Email Address",
+            submitBtn: "Submit Request", backBtn: "Go Back", projectDetailsTitle: "Details",
             prevProject: "Previous Project", nextProject: "Next Project",
-            formErrorName: "Please enter your name.", formErrorPhone: "Please enter a valid phone number.",
+            
+            formErrorName: "Please enter your full name.", 
+            formErrorPhone: "Please enter a valid phone number.",
+            formErrorEmail: "Please enter a valid email address.",
+            kvkkText: "I have read and accept the <a href='#' class='underline text-brand-orange hover:text-orange-400'>Privacy Policy</a> regarding my personal data.",
+            kvkkError: "You must accept the privacy policy to continue.",
+            
+            cookieText: "We use cookies on our site to improve your user experience and enhance our services.",
+            cookieAccept: "Accept",
+
             pageTitles: {
-                "home": "Kartech Panel", "iletisim": "Contact Us",
-                "uretim": "Production", "galeri": "Gallery", "hakkimizda": "About Us",
-                "sip-panel": "Why SIP Panel?", "ev-modelleri": "House Models", 
-                "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
+                "home": "Kartech Panel", "iletisim": "Contact Us", "uretim": "Production", 
+                "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
+                "ev-modelleri": "House Models", "bahce-yapilari": "Garden Structures", "garaj-sistemleri": "Garage Systems"
             },
             sipPanelData: {
                 heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
