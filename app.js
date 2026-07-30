@@ -24,19 +24,6 @@ const DOM = {
 
 function t() { return siteConfig.i18n[state.lang]; }
 
-window.initScrollAnimations = function() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target); 
-            }
-        });
-    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-    document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
-};
-
 function updateMetaTags(viewOrId, projectData = null) {
     const baseTitle = "ZEMU SIPPAN Structures";
     let title = "";
@@ -125,7 +112,6 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
 
         DOM.content.classList.remove('page-fade-out');
         DOM.content.classList.add('page-fade-in');
-        window.initScrollAnimations();
         window.dispatchEvent(new Event('scroll'));
     }, 300); 
 }
@@ -308,7 +294,7 @@ window.closeLightbox = function() {
 
 window.changeLightboxImage = function(direction) {
     let arr = state.currentLightboxArray;
-    if(arr.length <= 1) return;
+    if(!arr || arr.length <= 1) return;
     
     state.currentLightboxIndex += direction;
     
@@ -612,7 +598,7 @@ function handleScroll() {
 function renderHomePage() {
     const pageProjects = [...siteConfig.projects].sort(() => 0.5 - Math.random()).slice(0, 3);
     const projectsHTML = pageProjects.map((project, index) => `
-        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group block shadow-sm reveal-up delay-${index * 100}" onclick="navigate('${project.id}', event)">
+        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group block shadow-sm" onclick="navigate('${project.id}', event)">
             <div class="relative aspect-[4/3] overflow-hidden">
                 <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
                 <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-400 flex items-center justify-center pointer-events-none">
@@ -627,7 +613,7 @@ function renderHomePage() {
     `).join('');
 
     const processHTML = (t().processSteps || []).map((step, idx) => `
-        <div class="flex flex-col items-center text-center relative z-10 group reveal-up delay-${idx * 100}">
+        <div class="flex flex-col items-center text-center relative z-10 group">
             <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-gray-50 text-brand-orange text-3xl mb-4 group-hover:scale-110 group-hover:border-brand-orange transition-all duration-300">
                 <i class="fas ${step.icon}"></i>
             </div>
@@ -637,7 +623,7 @@ function renderHomePage() {
     `).join('');
 
     const faqHTML = (t().faq || []).map((f, idx) => `
-        <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 mb-4 overflow-hidden reveal-up delay-${(idx % 2) * 100} h-max break-inside-avoid">
+        <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 mb-4 overflow-hidden h-max break-inside-avoid">
             <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-4 sm:p-5 text-gray-900 hover:text-brand-orange transition-colors">
                 <span class="text-sm sm:text-base pr-4">${f.q}</span>
                 <span class="transition group-open:rotate-180 shrink-0"><i class="fas fa-chevron-down text-brand-orange"></i></span>
@@ -653,7 +639,7 @@ function renderHomePage() {
             </div>
             <div class="absolute top-0 left-0 w-full h-full flex flex-col justify-center z-20">
                 <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="max-w-2xl lg:max-w-3xl transform reveal-up">
+                    <div class="max-w-2xl lg:max-w-3xl transform">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
                         <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                         <button onclick="document.getElementById('categories-section').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
@@ -666,12 +652,12 @@ function renderHomePage() {
 
         <div id="categories-section" class="bg-white relative z-30 w-full py-10 sm:py-16 border-b border-gray-100">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-8 sm:mb-10 reveal-up">
+                <div class="text-center mb-8 sm:mb-10">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-3 sm:mb-4 tracking-tight">${state.lang === 'tr' ? 'Tüm Yapı Çözümlerimiz' : 'Our Building Solutions'}</h2>
                     <div class="w-16 md:w-24 h-1.5 bg-brand-orange rounded-full mx-auto"></div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-                    <a href="#konutlar" onclick="navigate('konutlar', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block reveal-up delay-100">
+                    <a href="#konutlar" onclick="navigate('konutlar', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block">
                         <img src="${siteConfig.projects.find(p=>p.pageMenu==='konutlar')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Konutlar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 w-full p-5 sm:p-6">
@@ -679,7 +665,7 @@ function renderHomePage() {
                             <span class="text-brand-orange text-sm font-medium flex items-center group-hover:text-white transition-colors">${state.lang === 'tr' ? 'Modelleri Gör' : 'View Models'} <i class="fas fa-arrow-right ml-2"></i></span>
                         </div>
                     </a>
-                    <a href="#egitim-ticari" onclick="navigate('egitim-ticari', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block reveal-up delay-200">
+                    <a href="#egitim-ticari" onclick="navigate('egitim-ticari', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block">
                         <img src="${siteConfig.projects.find(p=>p.pageMenu==='egitim-ticari')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Eğitim ve Ticari Yapılar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 w-full p-5 sm:p-6">
@@ -687,7 +673,7 @@ function renderHomePage() {
                             <span class="text-brand-orange text-sm font-medium flex items-center group-hover:text-white transition-colors">${state.lang === 'tr' ? 'Modelleri Gör' : 'View Models'} <i class="fas fa-arrow-right ml-2"></i></span>
                         </div>
                     </a>
-                    <a href="#bahce-yapilari" onclick="navigate('bahce-yapilari', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block reveal-up delay-300">
+                    <a href="#bahce-yapilari" onclick="navigate('bahce-yapilari', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block">
                         <img src="${siteConfig.projects.find(p=>p.pageMenu==='bahce-yapilari')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Bahçe Yapıları" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 w-full p-5 sm:p-6">
@@ -695,7 +681,7 @@ function renderHomePage() {
                             <span class="text-brand-orange text-sm font-medium flex items-center group-hover:text-white transition-colors">${state.lang === 'tr' ? 'Modelleri Gör' : 'View Models'} <i class="fas fa-arrow-right ml-2"></i></span>
                         </div>
                     </a>
-                    <a href="#garaj-yapilari" onclick="navigate('garaj-yapilari', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block reveal-up delay-400">
+                    <a href="#garaj-yapilari" onclick="navigate('garaj-yapilari', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block" style="animation-delay: 400ms;">
                         <img src="${siteConfig.projects.find(p=>p.pageMenu==='garaj-yapilari')?.mainImage || siteConfig.homeHero.backgroundImage}" alt="Garaj Yapıları" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 w-full p-5 sm:p-6">
@@ -709,12 +695,12 @@ function renderHomePage() {
 
         <div class="bg-gray-50 relative z-20 w-full py-10 sm:py-16 border-b border-gray-200">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-10 reveal-up">
+                <div class="text-center mb-10">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-3">${t().processTitle || 'Nasıl Çalışıyoruz?'}</h2>
                     <div class="w-16 md:w-24 h-1.5 bg-brand-orange rounded-full mx-auto"></div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 relative">
-                    <div class="hidden lg:block absolute top-10 left-20 right-20 h-1 bg-gray-200 z-0 reveal-up"></div>
+                    <div class="hidden lg:block absolute top-10 left-20 right-20 h-1 bg-gray-200 z-0"></div>
                     ${processHTML}
                 </div>
             </div>
@@ -723,7 +709,7 @@ function renderHomePage() {
         <div class="bg-white relative z-20 w-full py-10 sm:py-16 border-b border-gray-200">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
-                    <div class="w-full lg:w-1/2 lg:sticky lg:top-24 reveal-up">
+                    <div class="w-full lg:w-1/2 lg:sticky lg:top-24">
                         <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mb-5 leading-tight tracking-tight">${state.lang === 'tr' ? 'Neden ZEMU SIPPAN Teknolojisi?' : 'Why ZEMU SIPPAN Technology?'}</h2>
                         <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full mb-6"></div>
                         <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4 font-medium">
@@ -739,7 +725,7 @@ function renderHomePage() {
                     
                     <div class="w-full lg:w-1/2">
                         <div class="space-y-8 sm:space-y-12">
-                            <div class="flex flex-col sm:flex-row items-start sm:gap-5 group reveal-up delay-100">
+                            <div class="flex flex-col sm:flex-row items-start sm:gap-5 group">
                                 <div class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0 mb-3 sm:mb-0 group-hover:bg-brand-orange transition-colors">
                                     <i class="fas fa-leaf text-xl text-brand-orange group-hover:text-white transition-colors"></i>
                                 </div>
@@ -748,7 +734,7 @@ function renderHomePage() {
                                     <p class="text-gray-600 font-medium leading-relaxed text-sm">${state.lang === 'tr' ? 'Eksiz yalıtım katmanı sayesinde ısıtma ve soğutma giderlerinde %60 net tasarruf elde edin. Enerji dostu yalıtım, doğayı ve cebinizi korur.' : 'Up to 60% savings on heating and cooling costs thanks to the seamless insulation layer.'}</p>
                                 </div>
                             </div>
-                            <div class="flex flex-col sm:flex-row items-start sm:gap-5 group reveal-up delay-200">
+                            <div class="flex flex-col sm:flex-row items-start sm:gap-5 group">
                                 <div class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0 mb-3 sm:mb-0 group-hover:bg-brand-orange transition-colors">
                                     <i class="fas fa-stopwatch text-xl text-brand-orange group-hover:text-white transition-colors"></i>
                                 </div>
@@ -757,7 +743,7 @@ function renderHomePage() {
                                     <p class="text-gray-600 font-medium leading-relaxed text-sm">${state.lang === 'tr' ? 'Fabrikada milimetrik üretilen panellerle şantiyede hava koşullarına takılmadan haftalar içinde anahtar teslim yapı imkanı sunuyoruz.' : 'Turnkey delivery in weeks without weather delays, using millimetrically precision-manufactured panels.'}</p>
                                 </div>
                             </div>
-                            <div class="flex flex-col sm:flex-row items-start sm:gap-5 group reveal-up delay-300">
+                            <div class="flex flex-col sm:flex-row items-start sm:gap-5 group">
                                 <div class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center shrink-0 mb-3 sm:mb-0 group-hover:bg-brand-orange transition-colors">
                                     <i class="fas fa-shield-alt text-xl text-brand-orange group-hover:text-white transition-colors"></i>
                                 </div>
@@ -774,7 +760,7 @@ function renderHomePage() {
 
         <div id="featured-projects" class="bg-gray-50 relative z-20 w-full py-10 sm:py-16">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-8 sm:mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 reveal-up">
+                <div class="mb-8 sm:mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
                     <div class="text-left">
                         <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-3 tracking-tight">${state.lang === 'tr' ? 'Öne Çıkan Projeler' : 'Featured Projects'}</h2>
                         <div class="w-16 md:w-24 h-1.5 bg-brand-orange rounded-full"></div>
@@ -786,7 +772,7 @@ function renderHomePage() {
 
         <div class="bg-white relative z-20 w-full py-10 sm:py-16 border-t border-gray-200">
             <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-8 sm:mb-12 reveal-up">
+                <div class="text-center mb-8 sm:mb-12">
                     <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-3">${t().faqTitle || 'Sıkça Sorulan Sorular'}</h2>
                     <div class="w-16 md:w-24 h-1.5 bg-brand-orange mx-auto rounded-full"></div>
                 </div>
@@ -798,7 +784,7 @@ function renderHomePage() {
 
         <div class="bg-[#1a201c] relative z-20 w-full py-12 sm:py-16 overflow-hidden border-t-4 border-brand-orange">
             <div class="absolute inset-0 bg-brand-orange/5 pattern-dots pointer-events-none"></div>
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center reveal-up">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 leading-tight">${state.lang === 'tr' ? 'Hayalinizdeki Yapıya Hemen Kavuşun' : 'Get Your Dream Structure Now'}</h2>
                 <p class="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8 font-medium">${state.lang === 'tr' ? 'Mimarlarımızla projenizi detaylandırmak ve size özel, ücretsiz fiyat teklifi almak için iletişime geçin.' : 'Contact us to detail your project with our architects and get a custom free quote.'}</p>
                 <a href="#iletisim" onclick="navigate('iletisim', event)" class="cta-pulse inline-flex items-center justify-center bg-brand-orange text-white font-bold px-8 py-3 sm:py-4 rounded-full shadow-2xl hover:bg-orange-500 transition-all btn-press text-sm sm:text-base">
@@ -813,7 +799,7 @@ function renderSipPanelPage() {
     const data = t().sipPanelData;
     
     const advantagesHTML = data.advantages.map((adv, idx) => `
-        <div class="flex flex-col gap-3 group reveal-up delay-${(idx % 2) * 100}">
+        <div class="flex flex-col gap-3 group">
             <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-200 group-hover:border-brand-orange transition-colors">
                 <i class="fas ${adv.icon} text-lg text-gray-900 group-hover:text-brand-orange transition-colors"></i>
             </div>
@@ -823,7 +809,7 @@ function renderSipPanelPage() {
     `).join('');
 
     const specsHTML = data.technicalSpecs.map((spec, idx) => `
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-gray-100 last:border-0 gap-2 sm:gap-6 reveal-up delay-${(idx % 3) * 100}">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 border-b border-gray-100 last:border-0 gap-2 sm:gap-6">
             <span class="font-bold text-gray-700 text-sm sm:text-base w-full sm:w-1/3 flex items-center"><i class="fas fa-check text-brand-green mr-3 text-xs"></i> ${spec.label}</span>
             <span class="text-gray-600 font-medium text-sm sm:text-base w-full sm:w-2/3 sm:text-right">${spec.value}</span>
         </div>
@@ -834,7 +820,7 @@ function renderSipPanelPage() {
         let title = parts[0] || '';
         let desc = parts.slice(1).join(':') || '';
         return `
-        <div class="flex items-start gap-3 bg-gray-50 p-5 rounded-2xl border border-gray-100 reveal-up delay-${(idx % 2) * 100}">
+        <div class="flex items-start gap-3 bg-gray-50 p-5 rounded-2xl border border-gray-100">
             <div class="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center shrink-0">
                 <i class="fas fa-check text-xs text-brand-green"></i>
             </div>
@@ -849,15 +835,15 @@ function renderSipPanelPage() {
             </div>
             
             <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4 sm:px-6 z-10 pt-16">
-                <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 tracking-tight drop-shadow-xl reveal-up">${t().pageTitles['sip-panel']}</h1>
-                <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full reveal-up delay-100"></div>
+                <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 tracking-tight drop-shadow-xl">${t().pageTitles['sip-panel']}</h1>
+                <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
             </div>
         </div>
         
         <div class="bg-white py-12 sm:py-16 px-4 sm:px-6 relative z-30">
             <div class="max-w-[1000px] mx-auto space-y-12 sm:space-y-20">
                 
-                <div class="reveal-up">
+                <div>
                     <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 mb-6 tracking-tight">${data.introTitle}</h3>
                     <div class="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed font-medium space-y-4">
                         <p>${data.introText.split('<br><br>')[0] || data.introText}</p>
@@ -868,7 +854,7 @@ function renderSipPanelPage() {
                 <div class="w-full h-px bg-gray-100"></div>
 
                 <div>
-                    <div class="mb-8 sm:mb-12 reveal-up">
+                    <div class="mb-8 sm:mb-12">
                         <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-3">${data.advantagesTitle}</h3>
                         <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
                     </div>
@@ -881,7 +867,7 @@ function renderSipPanelPage() {
 
                 ${data.usageAreas ? `
                 <div>
-                    <div class="mb-8 sm:mb-12 reveal-up">
+                    <div class="mb-8 sm:mb-12">
                         <h3 class="text-2xl sm:text-3xl font-black text-gray-900 mb-3">${data.usageAreasTitle}</h3>
                         <div class="w-16 sm:w-24 h-1.5 bg-brand-orange rounded-full"></div>
                     </div>
@@ -891,20 +877,20 @@ function renderSipPanelPage() {
                 </div>` : ''}
 
                 ${data.futureTitle ? `
-                <div class="bg-[#1a201c] p-6 sm:p-10 md:p-12 rounded-[2rem] shadow-2xl text-center relative overflow-hidden reveal-up">
+                <div class="bg-[#1a201c] p-6 sm:p-10 md:p-12 rounded-[2rem] shadow-2xl text-center relative overflow-hidden">
                     <h3 class="text-xl sm:text-2xl md:text-3xl font-black text-brand-orange mb-4 relative z-10">${data.futureTitle}</h3>
                     <p class="text-gray-300 leading-relaxed text-sm sm:text-base font-medium relative z-10 max-w-4xl mx-auto">${data.futureText}</p>
                 </div>` : ''}
 
                 <div>
-                    <div class="mb-6 border-l-4 border-brand-orange pl-4 sm:pl-5 reveal-up">
+                    <div class="mb-6 border-l-4 border-brand-orange pl-4 sm:pl-5">
                         <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-2">${data.specsTitle}</h3>
                         <p class="text-xs sm:text-sm text-gray-500 font-medium">${data.specsDesc}</p>
                     </div>
                     <div class="border-t border-gray-100 pt-4">${specsHTML}</div>
                 </div>
 
-                <div class="bg-gray-50 rounded-[2rem] p-6 sm:p-10 md:p-12 border border-gray-200 text-center relative overflow-hidden mt-10 sm:mt-16 reveal-up">
+                <div class="bg-gray-50 rounded-[2rem] p-6 sm:p-10 md:p-12 border border-gray-200 text-center relative overflow-hidden mt-10 sm:mt-16">
                      <h3 class="text-xl sm:text-2xl md:text-3xl font-black text-gray-900 mb-3 relative z-10">${state.lang === 'tr' ? 'Projenizde SIP Panel Kullanmaya Hazır mısınız?' : 'Ready to Use SIP Panels in Your Project?'}</h3>
                      <p class="text-gray-600 text-sm sm:text-base font-medium mb-6 relative z-10 max-w-2xl mx-auto">${state.lang === 'tr' ? 'Hemen uzman ekibimizle iletişime geçin, size özel çözümleri ve fiyat avantajlarını konuşalım.' : 'Contact our expert team now to discuss custom solutions and pricing advantages.'}</p>
                      
@@ -922,7 +908,7 @@ function renderAboutPage() {
     const data = t().hakkimizdaData;
 
     const featuresHTML = data.features.map((f, idx) => `
-        <div class="flex flex-col reveal-up delay-${idx * 100}">
+        <div class="flex flex-col">
             <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mb-4 border border-gray-200">
                 <i class="fas ${f.icon} text-xl text-gray-900"></i>
             </div>
@@ -939,25 +925,25 @@ function renderAboutPage() {
         <div class="bg-white min-h-screen pt-28 sm:pt-36 pb-16">
             <div class="max-w-[1000px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <div class="mb-10 reveal-up">
+                <div class="mb-10">
                     <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">${t().pageTitles['hakkimizda']}</h1>
                     <div class="w-20 h-1.5 bg-brand-orange rounded-full"></div>
                 </div>
 
-                <div class="mb-12 reveal-up delay-100">
+                <div class="mb-12">
                     ${paragraphsHTML}
                 </div>
 
-                <div class="w-full h-px bg-gray-100 mb-12 reveal-up"></div>
+                <div class="w-full h-px bg-gray-100 mb-12"></div>
 
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-black text-gray-900 mb-8 reveal-up">${data.techTitle}</h2>
+                    <h2 class="text-xl sm:text-2xl font-black text-gray-900 mb-8">${data.techTitle}</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
                         ${featuresHTML}
                     </div>
                 </div>
                 
-                <div class="mt-16 bg-gray-50 rounded-[2rem] p-6 sm:p-10 border border-gray-200 text-center reveal-up">
+                <div class="mt-16 bg-gray-50 rounded-[2rem] p-6 sm:p-10 border border-gray-200 text-center">
                     <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">${state.lang === 'tr' ? 'Projeleriniz için bizimle iletişime geçin' : 'Contact us for your projects'}</h3>
                     <p class="text-gray-500 font-medium mb-6 text-sm sm:text-base">${state.lang === 'tr' ? 'Uzman mimarlarımız ve mühendislerimizle hayalinizdeki yapıyı inşa edelim.' : 'Let us build your dream structure with our expert architects and engineers.'}</p>
                     <a href="#iletisim" onclick="navigate('iletisim', event)" class="inline-flex items-center justify-center bg-gray-900 text-white font-bold px-8 py-3.5 rounded-full shadow-lg hover:bg-brand-orange transition-colors btn-press text-sm sm:text-base w-full sm:w-auto">
@@ -974,12 +960,12 @@ function renderContactPage() {
     DOM.content.innerHTML = `
         <div class="bg-gray-50 min-h-screen pt-28 pb-12 sm:pb-16 px-4 sm:px-6">
             <div class="max-w-5xl mx-auto">
-                <div class="text-center mb-8 sm:mb-12 reveal-up">
+                <div class="text-center mb-8 sm:mb-12">
                     <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 tracking-tight">${t().pageTitles['iletisim']}</h1>
                     <div class="w-16 sm:w-20 h-1.5 bg-brand-orange mx-auto rounded-full"></div>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100 reveal-up delay-100">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100">
                     
                     <div class="space-y-6 lg:pr-6">
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-900 border-b-2 border-gray-100 pb-3">İletişim Bilgilerimiz</h3>
@@ -1063,11 +1049,11 @@ function renderGenericPage(pageId) {
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
         <div class="max-w-5xl mx-auto py-16 sm:py-24 px-4 sm:px-6 min-h-[60vh]">
-            <div class="mb-8 sm:mb-12 reveal-up">
+            <div class="mb-8 sm:mb-12">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 sm:mb-5 leading-tight tracking-tight">${title}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
             </div>
-            <div class="bg-white p-6 sm:p-8 md:p-12 shadow-xl border border-gray-100 rounded-3xl break-words text-sm sm:text-base reveal-up delay-100">${content}</div>
+            <div class="bg-white p-6 sm:p-8 md:p-12 shadow-xl border border-gray-100 rounded-3xl break-words text-sm sm:text-base">${content}</div>
         </div>
     `;
 }
@@ -1093,7 +1079,7 @@ function renderProjectsPage(pageId) {
     `).join('');
 
     const projectsHTML = pageProjects.length > 0 ? pageProjects.map((project, idx) => `
-        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group shadow-sm block reveal-up delay-${(idx % 2) * 100}" onclick="navigate('${project.id}', event)">
+        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group shadow-sm block" onclick="navigate('${project.id}', event)">
             <div class="relative aspect-[16/10] overflow-hidden">
                 <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
                 <div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gray-900/80 backdrop-blur-sm text-white px-3 py-1.5 font-bold rounded-lg shadow-lg z-10 text-xs">${project.area} ${t().sqm}</div>
@@ -1107,19 +1093,19 @@ function renderProjectsPage(pageId) {
 
     DOM.content.innerHTML = `
         <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-24 sm:mt-28">
-            <div class="mb-8 sm:mb-10 reveal-up">
+            <div class="mb-8 sm:mb-10">
                 <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 sm:mb-4 leading-tight tracking-tight">${t().pageTitles[pageId]}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
             </div>
             <div class="flex flex-col lg:flex-row gap-6 sm:gap-8">
-                <div class="w-full lg:w-1/4 reveal-up">
+                <div class="w-full lg:w-1/4">
                     <div class="bg-white p-3 rounded-2xl border border-gray-100 lg:sticky lg:top-24 shadow-xl">
                         <h2 class="font-bold text-gray-900 mb-3 px-3 text-base sm:text-lg hidden lg:block tracking-tight">${t().categoryTitle}</h2>
                         <div class="flex flex-row overflow-x-auto no-scrollbar lg:flex-col gap-1 pb-2 lg:pb-0 snap-x">${allCategoriesHTML}</div>
                     </div>
                 </div>
                 <div class="w-full lg:w-3/4">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 sm:mb-6 bg-white p-3 rounded-xl shadow-sm border border-gray-100 gap-3 reveal-up delay-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 sm:mb-6 bg-white p-3 rounded-xl shadow-sm border border-gray-100 gap-3">
                         <span class="text-xs sm:text-sm font-bold text-gray-500 tracking-wider px-2">${pageProjects.length} Sonuç</span>
                         <select aria-label="Sıralama" onchange="window.sortProjects(this.value)" class="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-800 font-semibold text-xs sm:text-sm rounded-lg focus:ring-2 focus:ring-brand-orange py-2 px-3 cursor-pointer outline-none transition-colors">
                             <option value="default" ${state.sortBy === 'default' ? 'selected' : ''}>Varsayılan</option>
@@ -1193,11 +1179,11 @@ function renderProjectDetail(projectId) {
     let relatedHTML = '';
     if(relatedProjects.length > 0) {
         relatedHTML = `
-            <div class="mt-12 sm:mt-16 reveal-up">
+            <div class="mt-12 sm:mt-16">
                 <h3 class="text-xl font-black text-gray-900 mb-6 border-l-4 border-brand-orange pl-3">${t().relatedProjectsTitle || 'Bunlar da İlginizi Çekebilir'}</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                     ${relatedProjects.map((p, idx) => `
-                        <a href="#${p.id}" class="group rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden block btn-press reveal-up delay-${idx*100}" onclick="navigate('${p.id}', event)">
+                        <a href="#${p.id}" class="group rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden block btn-press" onclick="navigate('${p.id}', event)">
                             <div class="aspect-video relative overflow-hidden">
                                 <img src="${p.mainImage}" alt="${state.lang === 'tr' ? p.title : p.titleEn}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
                             </div>
@@ -1215,7 +1201,7 @@ function renderProjectDetail(projectId) {
     DOM.content.innerHTML = `
         <div class="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-12 relative z-10">
             
-            <div class="mb-5 sm:mb-6 flex flex-wrap items-center justify-between gap-3 reveal-up">
+            <div class="mb-5 sm:mb-6 flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center text-xs sm:text-sm font-semibold text-gray-500 space-x-2">
                     <a href="#home" onclick="window.navigate('home', event)" class="hover:text-brand-orange transition-colors"><i class="fas fa-home"></i></a>
                     <i class="fas fa-chevron-right text-[10px] text-gray-300"></i>
@@ -1230,7 +1216,7 @@ function renderProjectDetail(projectId) {
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
                 
-                <div class="lg:col-span-7 flex flex-col gap-3 reveal-up delay-100">
+                <div class="lg:col-span-7 flex flex-col gap-3">
                     <div class="w-full rounded-2xl shadow-sm overflow-hidden bg-gray-50 border border-gray-100">
                         <div id="main-image-container" class="w-full aspect-[4/3] sm:aspect-video relative transition-all duration-300">
                             ${initialContainerHTML}
@@ -1241,7 +1227,7 @@ function renderProjectDetail(projectId) {
                     </div>
                 </div>
 
-                <div class="lg:col-span-5 flex flex-col reveal-up delay-200">
+                <div class="lg:col-span-5 flex flex-col">
                     ${catName ? `<span class="inline-block bg-gray-800 text-white text-[10px] font-bold px-2 py-1 rounded-full w-max mb-2">${catName}</span>` : ''}
                     <h1 class="text-2xl sm:text-3xl font-black text-gray-900 leading-tight mb-3">${prjTitle}</h1>
                     <p class="text-gray-600 text-sm leading-relaxed mb-5 font-medium">${project.description[state.lang]}</p>
@@ -1271,10 +1257,10 @@ function renderProjectDetail(projectId) {
                 </div>
             </div>
 
-            <div class="w-full h-px bg-gray-200 my-8 sm:my-12 reveal-up"></div>
+            <div class="w-full h-px bg-gray-200 my-8 sm:my-12"></div>
 
             <div class="max-w-4xl mx-auto">
-                <div class="bg-white mb-8 reveal-up">
+                <div class="bg-white mb-8">
                     <h2 class="text-xl sm:text-2xl font-black text-gray-900 mb-1">Bu Modelle İlgileniyorum</h2>
                     <p class="text-gray-500 font-medium text-sm mb-6">Formu doldurun, detaylı bilgi ve fiyat teklifi gönderelim.</p>
                     
@@ -1329,7 +1315,7 @@ function renderProjectDetail(projectId) {
                     </form>
                 </div>
 
-                <div class="bg-gray-50 rounded-2xl p-5 text-center border border-gray-200 shadow-sm mt-6 reveal-up">
+                <div class="bg-gray-50 rounded-2xl p-5 text-center border border-gray-200 shadow-sm mt-6">
                     <span class="text-xs sm:text-sm text-gray-500 block mb-1.5 font-medium">Telefonla acil iletişim ve destek için:</span>
                     <a href="tel:${siteConfig.contact.phone.replace(/\s/g,'')}" class="text-xl sm:text-2xl font-black text-gray-900 hover:text-brand-orange transition-colors inline-flex items-center">
                         <i class="fas fa-phone-alt mr-2 text-brand-orange"></i>${siteConfig.contact.phone}
@@ -1358,13 +1344,13 @@ function renderFooter() {
     DOM.footer.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 border-b border-gray-800 pb-8">
-                <div class="flex flex-col items-center md:items-start text-center md:text-left reveal-up delay-100">
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
                     <a href="#home" onclick="navigate('home', event)" class="cursor-pointer hover:opacity-80 transition-opacity btn-press block">
                         <img src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="w-40 sm:w-48 mb-4 object-contain">
                     </a>
                     <p class="text-gray-400 text-xs leading-relaxed max-w-xs font-medium">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                 </div>
-                <div class="flex flex-col items-center md:items-start text-center md:text-left reveal-up delay-200">
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
                     <h4 class="text-white font-bold text-base mb-4 tracking-wide uppercase">${t().menu['konutlar'] || 'Projeler'}</h4>
                     <ul class="space-y-2.5 text-gray-400 font-medium text-sm">
                         <li><a href="#konutlar" onclick="navigate('konutlar', event)" class="hover:text-brand-orange transition-colors">${t().menu['konutlar']}</a></li>
@@ -1374,7 +1360,7 @@ function renderFooter() {
                         <li><a href="#sip-panel" onclick="navigate('sip-panel', event)" class="hover:text-brand-orange transition-colors">${t().menu['sip-panel']}</a></li>
                     </ul>
                 </div>
-                <div class="flex flex-col items-center md:items-start text-center md:text-left reveal-up delay-300">
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
                     <h4 class="text-white font-bold text-base mb-4 tracking-wide uppercase">${t().pageTitles['iletisim']}</h4>
                     <ul class="space-y-2.5 text-gray-400 font-medium text-sm">
                         <li class="flex items-center justify-center md:justify-start"><i class="fas fa-phone-alt mr-2.5 text-brand-orange"></i> <a href="tel:${siteConfig.contact.phone.replace(/\s/g,'')}" class="hover:text-white transition-colors">${siteConfig.contact.phone}</a></li>
@@ -1418,6 +1404,29 @@ function initApp() {
         });
     }
 
+    // DOKUNMATİK KAYDIRMA EKLENTİSİ (Swipe Event Listeners)
+    const lightboxOverlay = document.getElementById('lightbox-overlay');
+    if (lightboxOverlay) {
+        let touchstartX = 0;
+        let touchendX = 0;
+        
+        lightboxOverlay.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+        
+        lightboxOverlay.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            if (!lightboxOverlay.classList.contains('active')) return;
+            
+            const swipeThreshold = 50; // Geçerli sayılması için gereken minimum kaydırma mesafesi
+            if (touchendX < touchstartX - swipeThreshold) {
+                window.changeLightboxImage(1); // Sola kaydırıldı -> Sonraki resim
+            } else if (touchendX > touchstartX + swipeThreshold) {
+                window.changeLightboxImage(-1); // Sağa kaydırıldı -> Önceki resim
+            }
+        }, {passive: true});
+    }
+
     if(hash) { 
         hash = decodeURIComponent(hash);
         navigate(hash, null, true, true); 
@@ -1425,8 +1434,6 @@ function initApp() {
     else { state.currentView = 'home'; updateMetaTags('home'); renderHomePage(); }
     DOM.content.classList.remove('page-fade-out');
     DOM.content.classList.add('page-fade-in');
-    
-    setTimeout(() => { window.initScrollAnimations(); }, 100);
 }
 
 window.addEventListener('DOMContentLoaded', initApp);
