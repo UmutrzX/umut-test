@@ -513,16 +513,15 @@ function renderHeader() {
         }
     }).join('');
 
-    // DİKKAT: Ana menü wrapper'ı pointer-events-auto ile başlar.
-    // DİKKAT: Logodaki scale-125 silinmiş ve boyutlar %25 daraltılmıştır. (h-12 sm:h-16 md:h-20 lg:h-24)
+    // DİKKAT: Ana menü wrapper'ı `pointer-events-none` ile başlar, sadece içindeki öğelere tıklanabilir `pointer-events-auto`
     DOM.header.innerHTML = `
-        <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50 pointer-events-auto transition-all duration-300">
-            <a href="#home" class="cursor-pointer h-full flex items-center py-2 w-max shrink-0 select-none" onclick="navigate('home', event)">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-12 sm:h-16 md:h-20 lg:h-24 w-auto max-w-[65vw] sm:max-w-none object-contain object-left transition-all duration-300 mix-blend-multiply origin-left block pointer-events-none">
+        <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50 pointer-events-auto">
+            <a href="#home" class="cursor-pointer h-full flex items-center py-2 shrink min-w-0 select-none" onclick="navigate('home', event)">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[55vw] sm:max-w-none object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
             </a>
             
-            <div class="flex items-center space-x-3 md:space-x-4 ml-auto shrink-0">
-                <div class="flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
+            <div class="flex items-center space-x-2 sm:space-x-3 md:space-x-4 ml-auto shrink-0">
+                <div class="flex space-x-3 text-white social-icons mr-1 sm:mr-2 transition-colors duration-300">
                     <a href="${siteConfig.contact.social.instagram}" target="_blank" aria-label="Instagram" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
                     <a href="${siteConfig.contact.social.facebook}" target="_blank" aria-label="Facebook" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
                 </div>
