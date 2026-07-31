@@ -515,21 +515,22 @@ function renderHeader() {
         }
     }).join('');
 
+    /* DİKKAT: Logo wrapper max-w-[65vw] ile sınırlandırıldı. Menü wrapper'ı shrink-0 yapıldı. */
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50 pointer-events-auto">
-            <a href="#home" class="cursor-pointer h-full flex items-center py-2 w-max shrink-0 select-none" onclick="navigate('home', event)">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-20 sm:h-24 md:h-32 lg:h-40 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
+            <a href="#home" class="cursor-pointer h-full flex items-center py-2 min-w-0 select-none" onclick="navigate('home', event)">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-20 sm:h-24 md:h-32 lg:h-40 w-auto max-w-[65vw] sm:max-w-none object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
             </a>
             
-            <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
+            <div class="flex items-center space-x-3 md:space-x-4 ml-auto shrink-0">
                 <div class="flex space-x-3 text-white social-icons mr-2 transition-colors duration-300">
                     <a href="${siteConfig.contact.social.instagram}" target="_blank" aria-label="Instagram" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-instagram"></i></a>
                     <a href="${siteConfig.contact.social.facebook}" target="_blank" aria-label="Facebook" class="hover:text-brand-orange text-lg sm:text-xl transition-colors header-icon"><i class="fab fa-facebook-f"></i></a>
                 </div>
                 <div class="hidden lg:flex items-center space-x-2 font-bold text-sm mr-2 border-r border-gray-500/30 pr-4">
-                    <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'tr' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'} select-none" onclick="changeLanguage('tr')">TR</span>
+                    <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'tr' ? 'text-brand-orange' : 'text-gray-900 hover:text-brand-orange'} select-none" onclick="changeLanguage('tr')">TR</span>
                     <span class="text-gray-400 select-none">|</span>
-                    <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'en' ? 'text-brand-orange' : 'text-white hover:text-brand-orange'} select-none" onclick="changeLanguage('en')">EN</span>
+                    <span class="cursor-pointer transition-colors duration-300 header-text-lang ${state.lang === 'en' ? 'text-brand-orange' : 'text-gray-900 hover:text-brand-orange'} select-none" onclick="changeLanguage('en')">EN</span>
                 </div>
                 <a href="#iletisim" onclick="navigate('iletisim', event)" class="hidden md:block cta-pulse bg-brand-orange hover:bg-orange-500 text-white font-semibold py-2.5 px-6 sm:px-8 rounded-full shadow-md transition-all btn-press text-xs sm:text-sm whitespace-nowrap select-none">
                     ${t().consultBtn}
@@ -582,6 +583,7 @@ function handleScroll() {
     const langTexts = header.querySelectorAll('.header-text-lang');
     const logo = document.getElementById('header-logo');
 
+    // Menü artık her zaman katı/beyaz (şeffaf değil)
     header.classList.remove('bg-transparent', 'pointer-events-none');
     header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
     
@@ -638,7 +640,6 @@ function renderHomePage() {
         </details>
     `).join('');
 
-    // Dinamik Kategori Kartları (Config.js'den otomatik çekilir)
     const categoryKeys = Object.keys(siteConfig.categories);
     const categoriesHTML = categoryKeys.map((catKey, index) => {
         const firstProject = siteConfig.projects.find(p => p.pageMenu === catKey);
@@ -663,7 +664,7 @@ function renderHomePage() {
                 <img src="${siteConfig.homeHero.backgroundImage}" alt="Hero Background" class="w-full h-full object-cover opacity-80" loading="eager">
             </div>
             <div class="absolute top-0 left-0 w-full h-full flex flex-col justify-center z-20">
-                <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20"> <!-- Üst menü payı eklendi -->
                     <div class="max-w-2xl lg:max-w-3xl transform">
                         <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
                         <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
