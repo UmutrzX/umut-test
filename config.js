@@ -16,7 +16,7 @@ export const siteConfig = {
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@zemusippan.com",
-        mapEmbedUrl: "https://pbs.twimg.com/media/HOgrMOhWYAALMob?format=jpg&name=large",
+        mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193307.7479707908!2d30.222728253198905!3d40.78161725359738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ccb2b73bc5e90d%3A0x63351ec30c4f8d22!2sSakarya!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str",
         social: { 
             facebook: "#", 
             youtube: "#", 
