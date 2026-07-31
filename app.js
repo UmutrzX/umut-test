@@ -223,16 +223,25 @@ window.changeMainImage = function(index) {
         }
     });
     
+    // Sayfa içi kaydırma tuşları (Inline Navigation Arrows)
+    const isMulti = state.lightboxImages.length > 1;
+    const arrows = isMulti && media.type === 'image' ? `
+        <button aria-label="Geri" onclick="event.stopPropagation(); window.navigateInlineGallery(-1)" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-brand-orange text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex justify-center items-center backdrop-blur-md z-20 transition-all border border-white/20 shadow-lg btn-press"><i class="fas fa-chevron-left text-sm"></i></button>
+        <button aria-label="İleri" onclick="event.stopPropagation(); window.navigateInlineGallery(1)" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-brand-orange text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex justify-center items-center backdrop-blur-md z-20 transition-all border border-white/20 shadow-lg btn-press"><i class="fas fa-chevron-right text-sm"></i></button>
+    ` : '';
+
     container.style.opacity = 0; container.style.transform = 'scale(0.98)';
     setTimeout(() => { 
         if(media.type === 'image') {
-            container.innerHTML = `<img id="detail-main-image" src="${media.url}" alt="Project details" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 hover:scale-105 pointer-events-auto" loading="lazy">
+            container.innerHTML = `
+            ${arrows}
+            <img id="detail-main-image" src="${media.url}" alt="Project details" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-auto no-drag" loading="lazy">
             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
-            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur text-gray-900 px-4 py-1.5 rounded-full font-bold text-xs sm:text-sm opacity-0 group-hover:opacity-100 transition-all duration-400 shadow-lg flex items-center pointer-events-none whitespace-nowrap z-10">
-                <i class="fas fa-expand mr-2 text-brand-orange"></i> Tam Ekran
+            <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-900 px-3 py-1.5 rounded-lg font-bold text-xs shadow-md flex items-center cursor-pointer pointer-events-auto hover:bg-brand-orange hover:text-white transition-colors z-30" onclick="window.openLightboxCurrent()">
+                <i class="fas fa-expand mr-1.5"></i> Büyüt
             </div>`;
         } else {
-            container.innerHTML = `<iframe src="${media.embed}" class="absolute inset-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
+            container.innerHTML = `<iframe src="${media.embed}" class="absolute inset-0 w-full h-full z-10" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
         }
         container.style.opacity = 1; container.style.transform = 'scale(1)';
     }, 250); 
@@ -242,6 +251,14 @@ window.setGalleryImage = function(index) {
     if (state.sliderInterval) { clearInterval(state.sliderInterval); state.sliderInterval = null; }
     state.activeGalleryIndex = index;
     window.changeMainImage(index);
+};
+
+window.navigateInlineGallery = function(direction) {
+    if (!state.lightboxImages || state.lightboxImages.length <= 1) return;
+    let newIdx = state.activeGalleryIndex + direction;
+    if (newIdx < 0) newIdx = state.lightboxImages.length - 1;
+    if (newIdx >= state.lightboxImages.length) newIdx = 0;
+    window.setGalleryImage(newIdx);
 };
 
 window.openLightboxCurrent = function() {
@@ -1163,13 +1180,22 @@ function renderProjectDetail(projectId) {
 
     const initialMedia = mediaItems[0];
     let initialContainerHTML = '';
+    
+    const isMulti = mediaItems.length > 1;
+    const arrows = isMulti && initialMedia.type === 'image' ? `
+        <button aria-label="Geri" onclick="event.stopPropagation(); window.navigateInlineGallery(-1)" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-brand-orange text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex justify-center items-center backdrop-blur-md z-20 transition-all border border-white/20 shadow-lg btn-press"><i class="fas fa-chevron-left text-sm"></i></button>
+        <button aria-label="İleri" onclick="event.stopPropagation(); window.navigateInlineGallery(1)" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-brand-orange text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex justify-center items-center backdrop-blur-md z-20 transition-all border border-white/20 shadow-lg btn-press"><i class="fas fa-chevron-right text-sm"></i></button>
+    ` : '';
+
     if(initialMedia.type === 'image') {
-        initialContainerHTML = `<img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-auto" loading="eager">
-        <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-900 px-3 py-1.5 rounded-lg font-bold text-xs shadow-md flex items-center cursor-pointer pointer-events-auto hover:bg-brand-orange hover:text-white transition-colors" onclick="window.openLightboxCurrent()">
+        initialContainerHTML = `
+        ${arrows}
+        <img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-auto no-drag" loading="eager">
+        <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-900 px-3 py-1.5 rounded-lg font-bold text-xs shadow-md flex items-center cursor-pointer pointer-events-auto hover:bg-brand-orange hover:text-white transition-colors z-30" onclick="window.openLightboxCurrent()">
             <i class="fas fa-expand mr-1.5"></i> Büyüt
         </div>`;
     } else {
-        initialContainerHTML = `<iframe src="${initialMedia.embed}" class="absolute inset-0 w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
+        initialContainerHTML = `<iframe src="${initialMedia.embed}" class="absolute inset-0 w-full h-full z-10" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
     }
 
     const relatedProjects = siteConfig.projects
@@ -1333,10 +1359,36 @@ function renderProjectDetail(projectId) {
         </div>
     `;
     
+    // Akıllı Mesaj Özelliği
     const waChatBtn = document.getElementById('btn-chat-floating');
     if (waChatBtn) {
         let msg = `Merhaba, ZEMU SIPPAN web sitesini inceliyordum. ${prjTitle} projeniz (${project.area} m²) hakkında detaylı bilgi alabilir miyim?`;
         waChatBtn.href = `https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`;
+    }
+
+    // İNLİNE (SAYFA İÇİ) DOKUNMATİK KAYDIRMA DESTEĞİ
+    const mainImageContainer = document.getElementById('main-image-container');
+    if (mainImageContainer && state.lightboxImages.length > 1) {
+        let touchstartX = 0;
+        let touchendX = 0;
+        
+        mainImageContainer.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+        
+        mainImageContainer.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            const swipeThreshold = 40; 
+            
+            // Lightbox açıkken buradaki kaydırmanın tetiklenmesini engelle
+            if (document.getElementById('lightbox-overlay').classList.contains('active')) return;
+            
+            if (touchendX < touchstartX - swipeThreshold) {
+                window.navigateInlineGallery(1); // Sola kaydır -> Sonraki fotoğraf
+            } else if (touchendX > touchstartX + swipeThreshold) {
+                window.navigateInlineGallery(-1); // Sağa kaydır -> Önceki fotoğraf
+            }
+        }, {passive: true});
     }
 }
 
@@ -1404,7 +1456,7 @@ function initApp() {
         });
     }
 
-    // DOKUNMATİK KAYDIRMA EKLENTİSİ (Swipe Event Listeners)
+    // LİGHTBOX DOKUNMATİK KAYDIRMA DESTEĞİ
     const lightboxOverlay = document.getElementById('lightbox-overlay');
     if (lightboxOverlay) {
         let touchstartX = 0;
@@ -1418,11 +1470,11 @@ function initApp() {
             touchendX = e.changedTouches[0].screenX;
             if (!lightboxOverlay.classList.contains('active')) return;
             
-            const swipeThreshold = 50; // Geçerli sayılması için gereken minimum kaydırma mesafesi
+            const swipeThreshold = 50; 
             if (touchendX < touchstartX - swipeThreshold) {
-                window.changeLightboxImage(1); // Sola kaydırıldı -> Sonraki resim
+                window.changeLightboxImage(1); // Sola kaydır -> Sonraki resim
             } else if (touchendX > touchstartX + swipeThreshold) {
-                window.changeLightboxImage(-1); // Sağa kaydırıldı -> Önceki resim
+                window.changeLightboxImage(-1); // Sağa kaydır -> Önceki resim
             }
         }, {passive: true});
     }
