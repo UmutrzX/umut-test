@@ -1379,8 +1379,8 @@ function renderProjectDetail(projectId) {
 }
 
 function renderFooter() {
-    // Footer için ilk 4-5 dinamik kategoriyi alalım (Örn: konutlar, bahce-yapilari vs.)
-    const dynamicProjectMenus = Object.keys(siteConfig.categories).slice(0, 4);
+    // Footer için tüm dinamik projeleri alıyoruz
+    const dynamicProjectMenus = Object.keys(siteConfig.categories);
     const footerLinksHTML = dynamicProjectMenus.map(id => {
         const label = t().menu[id] || id;
         return `<li><a href="#${id}" onclick="navigate('${id}', event)" class="hover:text-brand-orange transition-colors">${label}</a></li>`;
@@ -1396,7 +1396,7 @@ function renderFooter() {
                     <p class="text-gray-400 text-xs leading-relaxed max-w-xs font-medium">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                 </div>
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <h4 class="text-white font-bold text-base mb-4 tracking-wide uppercase">Projelerimiz</h4>
+                    <h4 class="text-white font-bold text-base mb-4 tracking-wide uppercase">TÜM PROJELER</h4>
                     <ul class="space-y-2.5 text-gray-400 font-medium text-sm">
                         ${footerLinksHTML}
                         <li><a href="#sip-panel" onclick="navigate('sip-panel', event)" class="hover:text-brand-orange transition-colors">${t().menu['sip-panel'] || 'SIP Panel'}</a></li>
