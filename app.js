@@ -514,11 +514,11 @@ function renderHeader() {
     }).join('');
 
     // DİKKAT: Ana menü wrapper'ı pointer-events-auto ile başlar.
-    // DİKKAT: Logodaki min-w-0 ve shrink-0 container ayarlamaları yapıldı.
+    // DİKKAT: Logodaki scale-125 silinmiş ve boyutlar %25 daraltılmıştır. (h-12 sm:h-16 md:h-20 lg:h-24)
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50 pointer-events-auto transition-all duration-300">
-            <a href="#home" class="cursor-pointer h-full flex items-center py-2 min-w-0 shrink select-none" onclick="navigate('home', event)">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-12 sm:h-16 md:h-20 lg:h-24 w-auto max-w-[50vw] sm:max-w-[200px] md:max-w-[250px] lg:max-w-none object-contain object-left transition-all duration-300 mix-blend-multiply origin-left block pointer-events-none">
+            <a href="#home" class="cursor-pointer h-full flex items-center py-2 w-max shrink-0 select-none" onclick="navigate('home', event)">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-12 sm:h-16 md:h-20 lg:h-24 w-auto max-w-[65vw] sm:max-w-none object-contain object-left transition-all duration-300 mix-blend-multiply origin-left block pointer-events-none">
             </a>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto shrink-0">
@@ -1044,7 +1044,7 @@ function renderGenericPage(pageId) {
     const title = t().pageTitles[pageId] || '';
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
-        <div class="max-w-5xl mx-auto py-16 sm:py-24 px-4 sm:px-6 min-h-[60vh] pt-28 sm:pt-36">
+        <div class="max-w-5xl mx-auto pt-40 pb-16 px-4 sm:px-6 min-h-[60vh]">
             <div class="mb-8 sm:mb-12">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 sm:mb-5 leading-tight tracking-tight">${title}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
@@ -1171,7 +1171,7 @@ function renderProjectDetail(projectId) {
     if(initialMedia.type === 'image') {
         initialContainerHTML = `
         ${arrows}
-        <img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 pointer-events-auto no-drag cursor-pointer hover:scale-105" onclick="window.openLightboxCurrent()" draggable="false" loading="eager">
+        <img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-auto no-drag cursor-pointer hover:scale-105" onclick="window.openLightboxCurrent()" draggable="false" loading="eager">
         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
         `;
     } else {
@@ -1376,7 +1376,6 @@ function renderProjectDetail(projectId) {
 }
 
 function renderFooter() {
-    // Footer için tüm dinamik projeleri alıyoruz
     const dynamicProjectMenus = Object.keys(siteConfig.categories);
     const footerLinksHTML = dynamicProjectMenus.map(id => {
         const label = t().menu[id] || id;
@@ -1393,14 +1392,14 @@ function renderFooter() {
                     <p class="text-gray-400 text-xs leading-relaxed max-w-xs font-medium">${siteConfig.homeHero.subSlogan[state.lang]}</p>
                 </div>
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <h4 class="text-white font-bold text-base mb-4 tracking-wide uppercase">TÜM PROJELER</h4>
+                    <h4 class="text-white font-bold text-base mb-4 tracking-wide uppercase">Projelerimiz</h4>
                     <ul class="space-y-2.5 text-gray-400 font-medium text-sm">
                         ${footerLinksHTML}
                         <li><a href="#sip-panel" onclick="navigate('sip-panel', event)" class="hover:text-brand-orange transition-colors">${t().menu['sip-panel'] || 'SIP Panel'}</a></li>
                     </ul>
                 </div>
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <h4 class="text-white font-bold text-base mb-4 tracking-wide uppercase">${t().pageTitles['iletisim'] || 'İletişim'}</h4>
+                    <h4 class="text-white font-bold text-base mb-4 tracking-wide uppercase">${t().pageTitles['iletisim']}</h4>
                     <ul class="space-y-2.5 text-gray-400 font-medium text-sm">
                         <li class="flex items-center justify-center md:justify-start"><i class="fas fa-phone-alt mr-2.5 text-brand-orange"></i> <a href="tel:${siteConfig.contact.phone.replace(/\s/g,'')}" class="hover:text-white transition-colors">${siteConfig.contact.phone}</a></li>
                         <li class="flex items-center justify-center md:justify-start"><i class="fas fa-envelope mr-2.5 text-brand-orange"></i> <a href="mailto:${siteConfig.contact.email}" class="hover:text-white transition-colors break-all">${siteConfig.contact.email}</a></li>
@@ -1476,351 +1475,3 @@ function initApp() {
 }
 
 window.addEventListener('DOMContentLoaded', initApp);
-
-
-There is a file you can reference named "index_5.html". Refer to this file by its name verbatim.
-<!DOCTYPE html>
-<html lang="tr" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>ZEMU SIPPAN Structures House Systems</title>
-    <meta id="meta-desc" name="description" content="Lüks ve Minimalizmin Birleşimi. SIP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.">
-    
-    <!-- PWA Meta Etiketleri -->
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#0a0a0a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ZEMU SIPPAN">
-    <link rel="apple-touch-icon" href="https://pbs.twimg.com/media/HOgqyQxXAAAy6c5?format=png&name=900x900">
-    <link rel="icon" type="image/png" href="https://pbs.twimg.com/media/HOgqyQxXAAAy6c5?format=png&name=900x900">
-    
-    <!-- Dinamik OG, Twitter ve SEO Etiketleri -->
-    <meta property="og:type" content="website">
-    <meta id="og-url" property="og:url" content="https://zemusippan.com/">
-    <meta id="og-title" property="og:title" content="ZEMU SIPPAN Structures House Systems">
-    <meta id="og-description" property="og:description" content="Lüks ve Minimalizmin Birleşimi. SIP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.">
-    <meta id="og-image" property="og:image" content="https://pbs.twimg.com/media/HOgqyQxXAAAy6c5?format=png&name=900x900">
-    <meta name="twitter:card" content="summary_large_image">
-    
-    <link id="canonical-link" rel="canonical" href="https://zemusippan.com/">
-    <link id="alternate-tr" rel="alternate" hreflang="tr" href="https://zemusippan.com/">
-    <link id="alternate-en" rel="alternate" hreflang="en" href="https://zemusippan.com/">
-    
-    <!-- Yapısal Veri (Schema.org / JSON-LD) -->
-    <script id="schema-ld" type="application/ld+json"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        brand: {
-                            orange: '#f39c12', dark: '#0a0a0a', light: '#f8f9fa', gray: '#e5e7eb', green: '#2ecc71' 
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #333; overflow-x: hidden; }
-        body.menu-open { overflow: hidden; height: 100vh; }
-        
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .break-words { overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; }
-        
-        .project-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .project-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
-        
-        .btn-press { transition: all 0.15s ease; cursor: pointer; }
-        .btn-press:active { transform: scale(0.92); }
-        
-        @keyframes pulse-soft {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.5); transform: scale(1); }
-            50% { box-shadow: 0 0 0 12px rgba(243, 156, 18, 0); transform: scale(1.02); }
-        }
-        .cta-pulse { animation: pulse-soft 3s infinite cubic-bezier(0.66, 0, 0, 1); }
-        
-        .floating-btn {
-            position: fixed; z-index: 50;
-            width: 55px; height: 55px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 24px; box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s;
-        }
-        .floating-btn:hover { transform: scale(1.1) rotate(5deg); }
-        .floating-btn:active { transform: scale(0.9); }
-        
-        .btn-call { left: 20px; bottom: 20px; background-color: #f39c12; }
-        .btn-chat { right: 20px; bottom: 20px; background-color: #25D366; z-index: 51; }
-        
-        @media (min-width: 768px) {
-            .btn-call { bottom: 30px; left: 30px; }
-            .btn-chat { bottom: 30px; right: 30px; }
-        }
-
-        .btn-scroll-top { 
-            right: 20px; bottom: 90px; 
-            background-color: #0a0a0a; opacity: 0; visibility: hidden; 
-            transform: translateY(20px); width: 45px; height: 45px; font-size: 18px; z-index: 50; 
-        }
-        @media (min-width: 768px) { .btn-scroll-top { right: 30px; bottom: 100px; width: 50px; height: 50px;} }
-        .btn-scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
-        .btn-scroll-top:hover { background-color: #2ecc71; }
-
-        #app-content { transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; }
-        .page-fade-out { opacity: 0; transform: translateY(20px); }
-        .page-fade-in { opacity: 1; transform: translateY(0); }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8); display: none;
-            align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px);
-        }
-        .modal-overlay.active { display: flex; }
-
-        #toast-message {
-            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: #0a0a0a; color: white; padding: 16px 32px;
-            border-radius: 50px; font-weight: 600; font-size: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
-            opacity: 0; z-index: 1100; pointer-events: none;
-        }
-        #toast-message.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-        #lightbox-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.95);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999; opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease; backdrop-filter: blur(10px);
-        }
-        #lightbox-overlay.active { opacity: 1; visibility: visible; }
-        #lightbox-content-wrapper {
-            position: relative;
-            max-width: 90vw;
-            max-height: 85vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #lightbox-img {
-            max-width: 100%; 
-            max-height: 85vh; 
-            object-fit: contain;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            border-radius: 8px;
-            transform: scale(0.95); 
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-            opacity: 0;
-            user-select: none; /* Mobilde fotoğrafı kaydırırken yazının seçilmesini engeller */
-            -webkit-user-drag: none; /* Mobilde fotoğrafı tut-sürükle işlemini engeller */
-        }
-        #lightbox-overlay.active #lightbox-img.loaded { transform: scale(1); opacity: 1; }
-        
-        .lightbox-btn {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255,255,255,0.2); 
-            color: white; width: 44px; height: 44px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; transition: all 0.2s ease;
-            z-index: 10005; /* ÖNEMLİ: Sol butonun üstünün HTML katmanıyla örtülmesini engelleyen kilit nokta */
-            backdrop-filter: blur(4px);
-        }
-        @media (min-width: 768px) {
-            .lightbox-btn { width: 54px; height: 54px; font-size: 22px; }
-        }
-        .lightbox-btn:hover { background: #f39c12; border-color: #f39c12; scale: 1.1; }
-        .lightbox-btn:active { scale: 0.9; }
-        #lightbox-prev { left: 15px; }
-        #lightbox-next { right: 15px; }
-        #lightbox-close {
-            position: absolute; top: 20px; right: 20px;
-            background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255,255,255,0.2); 
-            color: white; width: 44px; height: 44px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; transition: all 0.2s ease;
-            z-index: 10005; 
-            backdrop-filter: blur(4px);
-        }
-        #lightbox-close:hover { background: #e74c3c; border-color: #e74c3c; transform: rotate(90deg); }
-        
-        #lightbox-loader {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #f39c12; font-size: 30px; opacity: 0; visibility: hidden; transition: 0.2s;
-            z-index: 9999;
-        }
-        #lightbox-loader.active { opacity: 1; visibility: visible; }
-
-        .lightbox-counter {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            color: white; font-size: 15px; font-weight: 600; letter-spacing: 1px;
-            background: rgba(0,0,0,0.7); padding: 8px 24px; border-radius: 30px;
-        }
-
-        .vg-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #0a0a0a; z-index: 100; opacity: 0; visibility: hidden;
-            transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
-            display: flex; flex-direction: column; overflow-y: auto; 
-        }
-        .vg-overlay.active { opacity: 1; visibility: visible; }
-
-        .accordion-content {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
-            opacity: 0;
-            overflow: hidden; 
-        }
-        .accordion-content.open { grid-template-rows: 1fr; opacity: 1; margin-top: 0.5rem; }
-        .accordion-content > div { overflow: hidden; }
-    </style>
-</head>
-
-<body class="antialiased flex flex-col min-h-screen">
-    <header id="main-header" class="bg-transparent fixed top-0 w-full z-40 transition-all duration-300 pointer-events-none"></header>
-    <main id="app-content" class="flex-grow w-full page-fade-in bg-white"></main>
-    <footer id="main-footer" class="bg-[#0a0a0a] text-white mt-auto"></footer>
-
-    <a id="btn-call-floating" href="tel:+905078807607" class="floating-btn btn-call btn-press" aria-label="Bizi Arayın" title="Bizi Arayın"><i class="fas fa-phone-alt"></i></a>
-    <a id="btn-chat-floating" href="https://wa.me/905078807607" target="_blank" class="floating-btn btn-chat btn-press" aria-label="WhatsApp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-    
-    <button id="btn-scroll-top" class="floating-btn btn-scroll-top btn-press transition-all duration-300" aria-label="Yukarı Çık" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Yukarı Çık">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <div id="alert-modal" class="modal-overlay">
-        <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300">
-            <i class="fas fa-check-circle text-6xl sm:text-7xl text-brand-green mb-4 sm:mb-6"></i>
-            <h3 id="modal-title" class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 tracking-tight">Harika!</h3>
-            <p id="modal-message" class="text-gray-500 mb-6 sm:mb-8 text-base sm:text-lg leading-relaxed">Talebiniz başarıyla alındı. Müşteri temsilcimiz sizinle en kısa sürede iletişime geçecektir.</p>
-            <button onclick="document.getElementById('alert-modal').classList.remove('active')" class="btn-press bg-brand-green text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-bold hover:bg-green-600 w-full text-base sm:text-lg shadow-md transition-colors">Tamam</button>
-        </div>
-    </div>
-
-    <div id="toast-message"><i class="fas fa-info-circle mr-2 text-brand-green"></i>İşlem başarılı</div>
-
-    <div id="lightbox-overlay">
-        <button id="lightbox-close" aria-label="Kapat" class="btn-press" onclick="window.closeLightbox()"><i class="fas fa-times"></i></button>
-        <button id="lightbox-prev" aria-label="Önceki" class="lightbox-btn btn-press" onclick="window.changeLightboxImage(-1)"><i class="fas fa-chevron-left"></i></button>
-        
-        <div id="lightbox-content-wrapper">
-            <i id="lightbox-loader" class="fas fa-circle-notch fa-spin"></i>
-            <img id="lightbox-img" src="" alt="Tam Ekran Görsel">
-        </div>
-        
-        <button id="lightbox-next" aria-label="Sonraki" class="lightbox-btn btn-press" onclick="window.changeLightboxImage(1)"><i class="fas fa-chevron-right"></i></button>
-        <div id="lightbox-counter" class="lightbox-counter">1 / 1</div>
-    </div>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => console.log('ServiceWorker kaydı başarılı:', registration.scope))
-                    .catch(error => console.error('ServiceWorker kaydı başarısız:', error));
-            });
-        }
-    </script>
-
-    <script type="module" src="app.js"></script>
-</body>
-</html>
-
-
-There is a file you can reference named "manifest_5.json". Refer to this file by its name verbatim.
-{
-"name": "ZEMU SIPPAN Structures",
-"short_name": "ZEMU SIPPAN",
-"description": "Lüks ve Minimalizmin Birleşimi. SIP Panel Teknolojisi.",
-"start_url": "./index.html",
-"display": "standalone",
-"background_color": "#0a0a0a",
-"theme_color": "#f39c12",
-"orientation": "portrait-primary",
-"icons": [
-{
-"src": "https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small",
-"sizes": "192x192",
-"type": "image/png",
-"purpose": "any maskable"
-},
-{
-"src": "https://pbs.twimg.com/media/HOVlhqAWcAAObeq?format=png&name=small",
-"sizes": "512x512",
-"type": "image/png",
-"purpose": "any maskable"
-}
-]
-}
-
-
-There is a file you can reference named "sw_5.js". Refer to this file by its name verbatim.
-const CACHE_NAME = 'zemusippan-pwa-v1'; 
-const urlsToCache = [
-  './',
-  './index.html',
-  './app.js',
-  './config.js',
-  './manifest.json'
-];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('ZEMU SIPPAN PWA: Dosyalar önbelleğe alınıyor...');
-        return cache.addAll(urlsToCache);
-      })
-      .then(() => self.skipWaiting())
-  );
-});
-
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('ZEMU SIPPAN PWA: Eski önbellek temizleniyor:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-
-  event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      const fetchPromise = fetch(event.request).then(networkResponse => {
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-            // Chrome eklenti hatalarını loglamamak için clone işlemi
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-         console.log("Offline mode - returning cache if available");
-      });
-
-      return cachedResponse || fetchPromise;
-    })
-  );
-});
