@@ -237,11 +237,9 @@ window.changeMainImage = function(index) {
         if(media.type === 'image') {
             container.innerHTML = `
             ${arrows}
-            <img id="detail-main-image" src="${media.url}" alt="Project details" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-auto no-drag" loading="lazy">
+            <img id="detail-main-image" src="${media.url}" alt="Project details" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 pointer-events-auto no-drag cursor-pointer hover:scale-105" onclick="window.openLightboxCurrent()" draggable="false" loading="lazy">
             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
-            <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-900 px-3 py-1.5 rounded-lg font-bold text-xs shadow-md flex items-center cursor-pointer pointer-events-auto hover:bg-brand-orange hover:text-white transition-colors z-30" onclick="window.openLightboxCurrent()">
-                <i class="fas fa-expand mr-1.5"></i> Büyüt
-            </div>`;
+            `;
         } else {
             container.innerHTML = `<iframe src="${media.embed}" class="absolute inset-0 w-full h-full z-10" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
         }
@@ -1046,7 +1044,7 @@ function renderGenericPage(pageId) {
     const title = t().pageTitles[pageId] || '';
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
-        <div class="max-w-5xl mx-auto py-16 sm:py-24 px-4 sm:px-6 min-h-[60vh]">
+        <div class="max-w-5xl mx-auto pt-28 sm:pt-36 pb-16 px-4 sm:px-6 min-h-[60vh]">
             <div class="mb-8 sm:mb-12">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 sm:mb-5 leading-tight tracking-tight">${title}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
@@ -1173,10 +1171,8 @@ function renderProjectDetail(projectId) {
     if(initialMedia.type === 'image') {
         initialContainerHTML = `
         ${arrows}
-        <img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-auto no-drag" loading="eager">
-        <div class="absolute bottom-3 right-3 bg-white/90 backdrop-blur text-gray-900 px-3 py-1.5 rounded-lg font-bold text-xs shadow-md flex items-center cursor-pointer pointer-events-auto hover:bg-brand-orange hover:text-white transition-colors z-30" onclick="window.openLightboxCurrent()">
-            <i class="fas fa-expand mr-1.5"></i> Büyüt
-        </div>`;
+        <img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 pointer-events-auto no-drag cursor-pointer hover:scale-105" onclick="window.openLightboxCurrent()" draggable="false" loading="eager">
+        `;
     } else {
         initialContainerHTML = `<iframe src="${initialMedia.embed}" class="absolute inset-0 w-full h-full z-10" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
     }
