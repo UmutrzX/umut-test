@@ -12,7 +12,7 @@ export const siteConfig = {
     },
 
     contact: {
-        logoSrc: "https://media.discordapp.net/attachments/1531819616484196476/1532869235104284672/WhatsApp_Image_2026-08-01_at_12.51.12_AM__1_-removebg-preview.png?ex=6a6e6b38&is=6a6d19b8&hm=b9ac8991b6250c5f0021815e7435181f6663226899f7a5b0ef6b62e57ffddbd1&=&format=webp&quality=lossless&width=1173&height=269",
+        logoSrc: "https://media.discordapp.net/attachments/1531819616484196476/1532875905779765248/WhatsApp_Image_2026-08-01_at_1.20.39_AM-removebg-preview.png?ex=6a6e716f&is=6a6d1fef&hm=e83194e0f517f4555a26fd587c4c48093bb002ecc294f8f6bd153043fe854377&=&format=webp&quality=lossless&width=1216&height=260",
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@zemusippan.com",
