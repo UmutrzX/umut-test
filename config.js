@@ -36,39 +36,43 @@ export const siteConfig = {
         }
     },
 
-    // SINIRSIZ KATEGORİ ALANI: Buraya eklediğiniz her anahtar (örn: havuz-yapilari) sisteme otomatik menü ve sayfa olarak eklenir.
+    // TAMAMEN GÜNCELLENEN KATEGORİ VE ALT KATEGORİ AĞACI
     categories: {
         "konutlar": [
-            { id: "ev-standart", tr: "Standart Evler", en: "Standard Houses" },
-            { id: "ev-ahsap", tr: "Ahşap Kaplamalı Evler", en: "Wooden Clad Houses" },
-            { id: "ev-luks", tr: "Lüks Villalar", en: "Luxury Villas" }
+            { id: "k-ozeltasarim", tr: "Özel Tasarım Konutları", en: "Custom Design Residences" },
+            { id: "k-modeller", tr: "Modeller", en: "Models" }
         ],
         "egitim-ticari": [
-            { id: "et-okul", tr: "Eğitim Binaları", en: "Educational Buildings" },
-            { id: "et-ofis", tr: "Ofis ve Ticari Alanlar", en: "Office & Commercial Spaces" }
+            { id: "et-uygulama", tr: "Uygulama Alanları", en: "Application Areas" }
         ],
         "bahce-yapilari": [
-            { id: "by-kamelya", tr: "Kamelya & Çardak", en: "Gazebos & Pergolas" },
-            { id: "by-kisbahcesi", tr: "Kış Bahçeleri", en: "Winter Gardens" },
-            { id: "by-depo", tr: "Bahçe Depoları", en: "Garden Sheds" }
+            { id: "by-ozel", tr: "Özel Tasarım Bahçe Odaları", en: "Custom Design Garden Rooms" },
+            { id: "by-kisbahcesi", tr: "Kış Bahçesi", en: "Winter Gardens" },
+            { id: "by-ofis", tr: "Bahçe Ofisleri", en: "Garden Offices" },
+            { id: "by-oda", tr: "Bahçe Odası", en: "Garden Room" },
+            { id: "by-depolu", tr: "Depolu Bahçe Odası", en: "Garden Room with Shed" },
+            { id: "by-banyolu", tr: "Banyolu Bahçe Odası", en: "Garden Room with Bathroom" },
+            { id: "by-mutfakli", tr: "Mutfak ve Teraslı Bahçe Odası", en: "Garden Room with Kitchen & Terrace" },
+            { id: "by-ilave", tr: "İlave Yapı Uzantıları", en: "Additional Building Extensions" }
         ],
         "garaj-yapilari": [
-            { id: "gs-tekacik", tr: "Tek Araçlık Açık Garaj", en: "Single Car Open Garage" },
-            { id: "gs-ciftkapali", tr: "Çift Araçlık Kapalı Garaj", en: "Double Car Closed Garage" },
-            { id: "gs-atolye", tr: "Atölyeli Garajlar", en: "Garages with Workshop" }
+            { id: "gy-ozel", tr: "Özel Tasarım Garajlar", en: "Custom Design Garages" },
+            { id: "gy-tek", tr: "Tek Araçlık Garajlar", en: "Single Car Garages" },
+            { id: "gy-cift", tr: "Çift Araçlık Garajlar", en: "Double Car Garages" },
+            { id: "gy-sirali", tr: "Sıralı Garajlar", en: "Row Garages" },
+            { id: "gy-terasli", tr: "Teraslı Garajlar", en: "Garages with Terrace" },
+            { id: "gy-port", tr: "Araç Port Sistemleri", en: "Carport Systems" }
         ],
-        "moduler-yapilar": [
-            { id: "ms-yasam", tr: "Yaşam Modülleri", en: "Living Modules" },
-            { id: "ms-ofis", tr: "Ofis Modülleri", en: "Office Modules" },
-            { id: "ms-ozel", tr: "Özel Tasarım Modüller", en: "Custom Modules" }
+        "moduler-mobil": [
+            { id: "mm-modeller", tr: "Modeller", en: "Models" }
         ],
         "sehir-yapilari": [
-            { id: "sy-sehir", tr: "Şehir Evleri", en: "City Houses" },
-            { id: "sy-dar", tr: "Dar Alan Çözümleri", en: "Narrow Space Solutions" }
+            { id: "sy-satis", tr: "Satış Birimleri", en: "Sales Units" },
+            { id: "sy-otobus", tr: "Otobüs Durakları", en: "Bus Stops" }
         ]
     },
 
-    // SINIRSIZ PROJE ALANI: İstediğiniz kadar proje ekleyebilirsiniz. Açıklamalarda HTML tagleri (<br>, <strong> vb.) kullanabilirsiniz.
+    // Yeni alt kategorilere göre eşleştirilmiş örnek projeler
     projects: [
         {
             id: "Test ev -001",
@@ -76,7 +80,7 @@ export const siteConfig = {
             titleEn: "Calanthe Model - 145",
             area: 54, rooms: 4,
             pageMenu: "konutlar", 
-            categoryId: "ev-standart",
+            categoryId: "k-modeller",
             mainImage: "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-8.jpg",
             gallery: [
                 "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-5.jpg",
@@ -94,7 +98,7 @@ export const siteConfig = {
             titleEn: "Test Project",
             area: 61, rooms: 3,  
             pageMenu: "konutlar", 
-            categoryId: "ev-ahsap", 
+            categoryId: "k-ozeltasarim", 
             mainImage: "https://media.discordapp.net/attachments/1531819616484196476/1531819728350347294/WhatsApp_Image_2026-07-29_at_2.22.21_AM.jpeg?ex=6a6a99cb&is=6a69484b&hm=8e3969cd950ae08e0ea6692ed83da464536aad9dd12c3e8cfb2c33996cf0629c&=&format=webp&width=1524&height=671",
             gallery: [
                 "https://media.discordapp.net/attachments/1531819616484196476/1531819727863677068/WhatsApp_Image_2026-07-29_at_2.22.21_AM_11.jpeg?ex=6a6a99ca&is=6a69484a&hm=757ecc4ffc4883efdc91466dd4dbf254316b2420d906ba34e97a35492c5ecd2b&=&format=webp&width=1524&height=671",
@@ -120,7 +124,7 @@ export const siteConfig = {
             titleEn: "Modern School Building",
             area: 450, rooms: 12,
             pageMenu: "egitim-ticari", 
-            categoryId: "et-okul",
+            categoryId: "et-uygulama",
             mainImage: "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-4.jpg",
             gallery: [
                 "https://www.sipeurope.eu/wp-content/uploads/2020/06/19-Rimavska-Sobota-Slovakia-sip-panel-building-3D.jpg",
@@ -149,32 +153,10 @@ export const siteConfig = {
             titleEn: "Double Car Garage",
             area: 40, rooms: 1,
             pageMenu: "garaj-yapilari", 
-            categoryId: "gs-ciftkapali",
+            categoryId: "gy-cift",
             mainImage: "https://i.pinimg.com/1200x/3f/b2/f0/3fb2f0ef390fda1df627ba294679b175.jpg",
             gallery: [],
             description: { tr: "Araçlarınız için güvenli SIP panel garaj.", en: "Secure SIP panel garage for your vehicles." }
-        },
-        {
-            id: "moduler-yasam-1",
-            title: "Modüler Yaşam Alanı",
-            titleEn: "Modular Living Space",
-            area: 35, rooms: 2,
-            pageMenu: "moduler-yapilar", 
-            categoryId: "ms-yasam",
-            mainImage: "https://i.pinimg.com/1200x/29/49/71/294971c2a122e23b7b3b4fecbb9ec4e2.jpg",
-            gallery: [],
-            description: { tr: "Hızlı, taşınabilir ve pratik yaşam alanı.", en: "Fast, portable, and practical living space." }
-        },
-        {
-            id: "sehir-evi-1",
-            title: "Kompakt Şehir Evi",
-            titleEn: "Compact City House",
-            area: 90, rooms: 3,
-            pageMenu: "sehir-yapilari", 
-            categoryId: "sy-sehir",
-            mainImage: "https://i.pinimg.com/1200x/57/b1/d2/57b1d283afad3da10c8c1df80735703f.jpg",
-            gallery: [],
-            description: { tr: "Dar alanlarda maksimum verim.", en: "Maximum efficiency in narrow spaces." }
         }
     ],
 
@@ -183,7 +165,7 @@ export const siteConfig = {
             menu: {
                 "home": "Ana Sayfa", "sip-panel": "SIP Panel", "konutlar": "Konutlar", 
                 "egitim-ticari": "Eğitim ve Ticari Yapılar", "bahce-yapilari": "Bahçe Yapıları", 
-                "garaj-yapilari": "Garaj Yapıları", "moduler-yapilar": "Modüler SIP Yapılar",
+                "garaj-yapilari": "Garaj Yapıları", "moduler-mobil": "Modüler / Mobil Yapı Sistemleri",
                 "sehir-yapilari": "Şehir Yapıları", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
             },
             
@@ -218,7 +200,7 @@ export const siteConfig = {
                 "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SIP Panel",
                 "konutlar": "Konut Modellerimiz", "egitim-ticari": "Eğitim ve Ticari Yapılar", 
                 "bahce-yapilari": "Bahçe Yapılarımız", "garaj-yapilari": "Garaj Yapılarımız",
-                "moduler-yapilar": "Modüler Yapılarımız", "sehir-yapilari": "Şehir Yapılarımız"
+                "moduler-mobil": "Modüler / Mobil Yapı Sistemleri", "sehir-yapilari": "Şehir Yapıları"
             },
 
             relatedProjectsTitle: "Bunlar da İlginizi Çekebilir",
@@ -317,7 +299,7 @@ export const siteConfig = {
             menu: {
                 "home": "Home", "sip-panel": "SIP Panel", "konutlar": "Residences", 
                 "egitim-ticari": "Educational & Commercial", "bahce-yapilari": "Garden Structures", 
-                "garaj-yapilari": "Garage Structures", "moduler-yapilar": "Modular SIP Structures",
+                "garaj-yapilari": "Garage Structures", "moduler-mobil": "Modular / Mobile Systems",
                 "sehir-yapilari": "City Structures", "galeri": "Gallery", "hakkimizda": "About Us"
             },
             consultBtn: "Contact Us", categoryTitle: "Categories",
@@ -344,7 +326,7 @@ export const siteConfig = {
                 "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
                 "konutlar": "Residential Models", "egitim-ticari": "Educational & Commercial", 
                 "bahce-yapilari": "Garden Structures", "garaj-yapilari": "Garage Structures",
-                "moduler-yapilar": "Modular SIP Structures", "sehir-yapilari": "City Structures"
+                "moduler-mobil": "Modular / Mobile Systems", "sehir-yapilari": "City Structures"
             },
 
             relatedProjectsTitle: "You May Also Like",
