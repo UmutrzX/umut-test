@@ -27,15 +27,16 @@ export const siteConfig = {
     homeHero: {
         backgroundImage: "https://pbs.twimg.com/media/HOLXzKvXcAAOx2J?format=jpg&name=large",
         slogan: {
-            tr: "Lüks ve Minimalizmin Birleşimi",
-            en: "Fusion of Luxury and Minimalism"
+            tr: "Mimari sınırları zorluyoruz.",
+            en: "Pushing architectural boundaries."
         },
         subSlogan: {
-            tr: "SIP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.",
-            en: "Reach your dream structure quickly with SIP Panel technology."
+            tr: "Yeni nesil yapısal yalıtımlı SIP panel teknolojisini kullanarak geleneksele uygun yeni nesil yapılar üretiyoruz.",
+            en: "Using next-generation structural insulated SIP panel technology, we produce new generation structures suitable for tradition."
         }
     },
 
+    // SINIRSIZ KATEGORİ ALANI: Buraya eklediğiniz her anahtar (örn: havuz-yapilari) sisteme otomatik menü ve sayfa olarak eklenir.
     categories: {
         "konutlar": [
             { id: "ev-standart", tr: "Standart Evler", en: "Standard Houses" },
@@ -55,9 +56,19 @@ export const siteConfig = {
             { id: "gs-tekacik", tr: "Tek Araçlık Açık Garaj", en: "Single Car Open Garage" },
             { id: "gs-ciftkapali", tr: "Çift Araçlık Kapalı Garaj", en: "Double Car Closed Garage" },
             { id: "gs-atolye", tr: "Atölyeli Garajlar", en: "Garages with Workshop" }
+        ],
+        "moduler-yapilar": [
+            { id: "ms-yasam", tr: "Yaşam Modülleri", en: "Living Modules" },
+            { id: "ms-ofis", tr: "Ofis Modülleri", en: "Office Modules" },
+            { id: "ms-ozel", tr: "Özel Tasarım Modüller", en: "Custom Modules" }
+        ],
+        "sehir-yapilari": [
+            { id: "sy-sehir", tr: "Şehir Evleri", en: "City Houses" },
+            { id: "sy-dar", tr: "Dar Alan Çözümleri", en: "Narrow Space Solutions" }
         ]
     },
 
+    // SINIRSIZ PROJE ALANI: İstediğiniz kadar proje ekleyebilirsiniz. Açıklamalarda HTML tagleri (<br>, <strong> vb.) kullanabilirsiniz.
     projects: [
         {
             id: "Test ev -001",
@@ -73,7 +84,7 @@ export const siteConfig = {
                 "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-1.jpg"
             ],
             description: {
-                tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.",
+                tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.<br><br>Geleneksel dokuya modern yalıtım ile yepyeni bir soluk kazandırıyor.",
                 en: "A stylish and useful house design."
             }
         },
@@ -142,6 +153,28 @@ export const siteConfig = {
             mainImage: "https://i.pinimg.com/1200x/3f/b2/f0/3fb2f0ef390fda1df627ba294679b175.jpg",
             gallery: [],
             description: { tr: "Araçlarınız için güvenli SIP panel garaj.", en: "Secure SIP panel garage for your vehicles." }
+        },
+        {
+            id: "moduler-yasam-1",
+            title: "Modüler Yaşam Alanı",
+            titleEn: "Modular Living Space",
+            area: 35, rooms: 2,
+            pageMenu: "moduler-yapilar", 
+            categoryId: "ms-yasam",
+            mainImage: "https://i.pinimg.com/1200x/29/49/71/294971c2a122e23b7b3b4fecbb9ec4e2.jpg",
+            gallery: [],
+            description: { tr: "Hızlı, taşınabilir ve pratik yaşam alanı.", en: "Fast, portable, and practical living space." }
+        },
+        {
+            id: "sehir-evi-1",
+            title: "Kompakt Şehir Evi",
+            titleEn: "Compact City House",
+            area: 90, rooms: 3,
+            pageMenu: "sehir-yapilari", 
+            categoryId: "sy-sehir",
+            mainImage: "https://i.pinimg.com/1200x/57/b1/d2/57b1d283afad3da10c8c1df80735703f.jpg",
+            gallery: [],
+            description: { tr: "Dar alanlarda maksimum verim.", en: "Maximum efficiency in narrow spaces." }
         }
     ],
 
@@ -150,7 +183,8 @@ export const siteConfig = {
             menu: {
                 "home": "Ana Sayfa", "sip-panel": "SIP Panel", "konutlar": "Konutlar", 
                 "egitim-ticari": "Eğitim ve Ticari Yapılar", "bahce-yapilari": "Bahçe Yapıları", 
-                "garaj-yapilari": "Garaj Yapıları", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
+                "garaj-yapilari": "Garaj Yapıları", "moduler-yapilar": "Modüler SIP Yapılar",
+                "sehir-yapilari": "Şehir Yapıları", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
             },
             
             consultBtn: "Bize Ulaşın",
@@ -183,7 +217,8 @@ export const siteConfig = {
                 "home": "ZEMU SIPPAN", "iletisim": "Bize Ulaşın", 
                 "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SIP Panel",
                 "konutlar": "Konut Modellerimiz", "egitim-ticari": "Eğitim ve Ticari Yapılar", 
-                "bahce-yapilari": "Bahçe Yapılarımız", "garaj-yapilari": "Garaj Yapılarımız"
+                "bahce-yapilari": "Bahçe Yapılarımız", "garaj-yapilari": "Garaj Yapılarımız",
+                "moduler-yapilar": "Modüler Yapılarımız", "sehir-yapilari": "Şehir Yapılarımız"
             },
 
             relatedProjectsTitle: "Bunlar da İlginizi Çekebilir",
@@ -237,7 +272,7 @@ export const siteConfig = {
             },
 
             sipPanelData: {
-                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
+                heroImg: "https://pbs.twimg.com/media/HOlDgLqXEAEGB_Q?format=jpg&name=large",
                 introTitle: "SIP Panel Nedir?",
                 introText: "SIP panel, yapı sektöründe son yıllarda hızla popülerleşen, yapısal yalıtımlı panel anlamına gelir. Dış yüzeylerinde taşıyıcı görevi gören OSB levhalar ve iç kısmında ise yüksek yoğunluklu yalıtım malzemesi (genellikle poliüretan, polistiren veya poliizosiyanurat) bulunan bu paneller, inşaat süreçlerini hızlandırırken aynı zamanda enerji verimli ve dayanıklı yapılar oluşturmayı sağlar.<br><br>Bu panelin en önemli özelliği, standart yapı elemanlarının aksine hem yük taşıyıcı iskelet hem de kusursuz bir yalıtım görevini aynı anda üstlenmesidir.",
                 advantagesTitle: "SIP Panelin Avantajları",
@@ -282,7 +317,8 @@ export const siteConfig = {
             menu: {
                 "home": "Home", "sip-panel": "SIP Panel", "konutlar": "Residences", 
                 "egitim-ticari": "Educational & Commercial", "bahce-yapilari": "Garden Structures", 
-                "garaj-yapilari": "Garage Structures", "galeri": "Gallery", "hakkimizda": "About Us"
+                "garaj-yapilari": "Garage Structures", "moduler-yapilar": "Modular SIP Structures",
+                "sehir-yapilari": "City Structures", "galeri": "Gallery", "hakkimizda": "About Us"
             },
             consultBtn: "Contact Us", categoryTitle: "Categories",
             allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
@@ -307,7 +343,8 @@ export const siteConfig = {
                 "home": "ZEMU SIPPAN", "iletisim": "Contact Us",
                 "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
                 "konutlar": "Residential Models", "egitim-ticari": "Educational & Commercial", 
-                "bahce-yapilari": "Garden Structures", "garaj-yapilari": "Garage Structures"
+                "bahce-yapilari": "Garden Structures", "garaj-yapilari": "Garage Structures",
+                "moduler-yapilar": "Modular SIP Structures", "sehir-yapilari": "City Structures"
             },
 
             relatedProjectsTitle: "You May Also Like",
@@ -361,7 +398,7 @@ export const siteConfig = {
             },
 
             sipPanelData: {
-                heroImg: "https://vividgreen.co.uk/wp-content/uploads/2024/04/IMG_5283-scaled-1280x750-2-1024x600.jpg",
+                heroImg: "https://pbs.twimg.com/media/HOlDgLqXEAEGB_Q?format=jpg&name=large",
                 introTitle: "What is a SIP Panel?",
                 introText: "SIP (Structural Insulated Panel) is a highly popular building material in recent years. It consists of an insulating foam core sandwiched between two structural facings, typically oriented strand board (OSB). This combination provides extremely strong, energy-efficient, and cost-effective building systems.<br><br>The most important feature of this panel is that it acts as both a load-bearing structure and high-performance insulation simultaneously.",
                 advantagesTitle: "Advantages of SIPs",
