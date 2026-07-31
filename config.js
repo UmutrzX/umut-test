@@ -36,35 +36,39 @@ export const siteConfig = {
         }
     },
 
-    // SINIRSIZ KATEGORİ ALANI: Buraya eklediğiniz her anahtar (örn: havuz-yapilari) sisteme otomatik menü ve sayfa olarak eklenir.
+    // SINIRSIZ KATEGORİ ALANI: Buraya eklediğiniz her anahtar sisteme otomatik menü ve sayfa olarak eklenir.
     categories: {
         "konutlar": [
-            { id: "ev-standart", tr: "Standart Evler", en: "Standard Houses" },
-            { id: "ev-ahsap", tr: "Ahşap Kaplamalı Evler", en: "Wooden Clad Houses" },
-            { id: "ev-luks", tr: "Lüks Villalar", en: "Luxury Villas" }
+            { id: "konut-ozel", tr: "Özel Tasarım Konutları", en: "Custom Design Houses" },
+            { id: "konut-modeller", tr: "Modeller", en: "Models" }
         ],
         "egitim-ticari": [
-            { id: "et-okul", tr: "Eğitim Binaları", en: "Educational Buildings" },
-            { id: "et-ofis", tr: "Ofis ve Ticari Alanlar", en: "Office & Commercial Spaces" }
+            { id: "et-uygulama", tr: "Uygulama Alanları", en: "Application Areas" }
         ],
         "bahce-yapilari": [
-            { id: "by-kamelya", tr: "Kamelya & Çardak", en: "Gazebos & Pergolas" },
-            { id: "by-kisbahcesi", tr: "Kış Bahçeleri", en: "Winter Gardens" },
-            { id: "by-depo", tr: "Bahçe Depoları", en: "Garden Sheds" }
+            { id: "by-ozel", tr: "Özel Tasarım Bahçe Odaları", en: "Custom Design Garden Rooms" },
+            { id: "by-kis", tr: "Kış Bahçesi", en: "Winter Garden" },
+            { id: "by-ofis", tr: "Bahçe Ofisleri", en: "Garden Offices" },
+            { id: "by-oda", tr: "Bahçe Odası", en: "Garden Room" },
+            { id: "by-depo", tr: "Depolu Bahçe Odası", en: "Garden Room with Storage" },
+            { id: "by-banyo", tr: "Banyolu Bahçe Odası", en: "Garden Room with Bathroom" },
+            { id: "by-mutfak", tr: "Mutfak ve Teraslı Bahçe Odası", en: "Garden Room with Kitchen & Terrace" },
+            { id: "by-ilave", tr: "İlave Yapı Uzantıları", en: "Additional Structure Extensions" }
         ],
         "garaj-yapilari": [
-            { id: "gs-tekacik", tr: "Tek Araçlık Açık Garaj", en: "Single Car Open Garage" },
-            { id: "gs-ciftkapali", tr: "Çift Araçlık Kapalı Garaj", en: "Double Car Closed Garage" },
-            { id: "gs-atolye", tr: "Atölyeli Garajlar", en: "Garages with Workshop" }
+            { id: "gy-ozel", tr: "Özel Tasarım Garajlar", en: "Custom Design Garages" },
+            { id: "gy-tek", tr: "Tek Araçlık Garajlar", en: "Single Car Garages" },
+            { id: "gy-cift", tr: "Çift Araçlık Garajlar", en: "Double Car Garages" },
+            { id: "gy-sirali", tr: "Sıralı Garajlar", en: "Row Garages" },
+            { id: "gy-terasli", tr: "Teraslı Garajlar", en: "Garages with Terrace" },
+            { id: "gy-port", tr: "Araç Port Sistemleri", en: "Carport Systems" }
         ],
-        "moduler-yapilar": [
-            { id: "ms-yasam", tr: "Yaşam Modülleri", en: "Living Modules" },
-            { id: "ms-ofis", tr: "Ofis Modülleri", en: "Office Modules" },
-            { id: "ms-ozel", tr: "Özel Tasarım Modüller", en: "Custom Modules" }
+        "moduler-mobil": [
+            { id: "mm-modeller", tr: "Modeller", en: "Models" }
         ],
         "sehir-yapilari": [
-            { id: "sy-sehir", tr: "Şehir Evleri", en: "City Houses" },
-            { id: "sy-dar", tr: "Dar Alan Çözümleri", en: "Narrow Space Solutions" }
+            { id: "sy-satis", tr: "Satış Birimleri", en: "Sales Units" },
+            { id: "sy-otobus", tr: "Otobüs Durakları", en: "Bus Stops" }
         ]
     },
 
@@ -76,7 +80,7 @@ export const siteConfig = {
             titleEn: "Calanthe Model - 145",
             area: 54, rooms: 4,
             pageMenu: "konutlar", 
-            categoryId: "ev-standart",
+            categoryId: "konut-modeller",
             mainImage: "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-8.jpg",
             gallery: [
                 "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-5.jpg",
@@ -94,7 +98,7 @@ export const siteConfig = {
             titleEn: "Test Project",
             area: 61, rooms: 3,  
             pageMenu: "konutlar", 
-            categoryId: "ev-ahsap", 
+            categoryId: "konut-ozel", 
             mainImage: "https://media.discordapp.net/attachments/1531819616484196476/1531819728350347294/WhatsApp_Image_2026-07-29_at_2.22.21_AM.jpeg?ex=6a6a99cb&is=6a69484b&hm=8e3969cd950ae08e0ea6692ed83da464536aad9dd12c3e8cfb2c33996cf0629c&=&format=webp&width=1524&height=671",
             gallery: [
                 "https://media.discordapp.net/attachments/1531819616484196476/1531819727863677068/WhatsApp_Image_2026-07-29_at_2.22.21_AM_11.jpeg?ex=6a6a99ca&is=6a69484a&hm=757ecc4ffc4883efdc91466dd4dbf254316b2420d906ba34e97a35492c5ecd2b&=&format=webp&width=1524&height=671",
@@ -120,7 +124,7 @@ export const siteConfig = {
             titleEn: "Modern School Building",
             area: 450, rooms: 12,
             pageMenu: "egitim-ticari", 
-            categoryId: "et-okul",
+            categoryId: "et-uygulama",
             mainImage: "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-4.jpg",
             gallery: [
                 "https://www.sipeurope.eu/wp-content/uploads/2020/06/19-Rimavska-Sobota-Slovakia-sip-panel-building-3D.jpg",
@@ -138,7 +142,7 @@ export const siteConfig = {
             titleEn: "Premium Winter Garden",
             area: 25, rooms: 1,
             pageMenu: "bahce-yapilari", 
-            categoryId: "by-kisbahcesi",
+            categoryId: "by-kis",
             mainImage: "https://i.pinimg.com/736x/fe/1a/64/fe1a6462fc8e84a9d1429b6900044ba8.jpg",
             gallery: [],
             description: { tr: "Dört mevsim bahçe keyfi.", en: "Enjoy your garden in all seasons." }
@@ -149,7 +153,7 @@ export const siteConfig = {
             titleEn: "Double Car Garage",
             area: 40, rooms: 1,
             pageMenu: "garaj-yapilari", 
-            categoryId: "gs-ciftkapali",
+            categoryId: "gy-cift",
             mainImage: "https://i.pinimg.com/1200x/3f/b2/f0/3fb2f0ef390fda1df627ba294679b175.jpg",
             gallery: [],
             description: { tr: "Araçlarınız için güvenli SIP panel garaj.", en: "Secure SIP panel garage for your vehicles." }
@@ -159,8 +163,8 @@ export const siteConfig = {
             title: "Modüler Yaşam Alanı",
             titleEn: "Modular Living Space",
             area: 35, rooms: 2,
-            pageMenu: "moduler-yapilar", 
-            categoryId: "ms-yasam",
+            pageMenu: "moduler-mobil", 
+            categoryId: "mm-modeller",
             mainImage: "https://i.pinimg.com/1200x/29/49/71/294971c2a122e23b7b3b4fecbb9ec4e2.jpg",
             gallery: [],
             description: { tr: "Hızlı, taşınabilir ve pratik yaşam alanı.", en: "Fast, portable, and practical living space." }
@@ -171,7 +175,7 @@ export const siteConfig = {
             titleEn: "Compact City House",
             area: 90, rooms: 3,
             pageMenu: "sehir-yapilari", 
-            categoryId: "sy-sehir",
+            categoryId: "sy-satis",
             mainImage: "https://i.pinimg.com/1200x/57/b1/d2/57b1d283afad3da10c8c1df80735703f.jpg",
             gallery: [],
             description: { tr: "Dar alanlarda maksimum verim.", en: "Maximum efficiency in narrow spaces." }
@@ -183,7 +187,7 @@ export const siteConfig = {
             menu: {
                 "home": "Ana Sayfa", "sip-panel": "SIP Panel", "konutlar": "Konutlar", 
                 "egitim-ticari": "Eğitim ve Ticari Yapılar", "bahce-yapilari": "Bahçe Yapıları", 
-                "garaj-yapilari": "Garaj Yapıları", "moduler-yapilar": "Modüler SIP Yapılar",
+                "garaj-yapilari": "Garaj Yapıları", "moduler-mobil": "Modüler / Mobil Yapı Sistemleri",
                 "sehir-yapilari": "Şehir Yapıları", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
             },
             
@@ -218,7 +222,7 @@ export const siteConfig = {
                 "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SIP Panel",
                 "konutlar": "Konut Modellerimiz", "egitim-ticari": "Eğitim ve Ticari Yapılar", 
                 "bahce-yapilari": "Bahçe Yapılarımız", "garaj-yapilari": "Garaj Yapılarımız",
-                "moduler-yapilar": "Modüler Yapılarımız", "sehir-yapilari": "Şehir Yapılarımız"
+                "moduler-mobil": "Modüler ve Mobil Yapılarımız", "sehir-yapilari": "Şehir Yapılarımız"
             },
 
             relatedProjectsTitle: "Bunlar da İlginizi Çekebilir",
@@ -249,7 +253,7 @@ export const siteConfig = {
                 paragraphs: [
                     "ZEMU SIPPAN, müşteri gereksinimlerine göre SIP (Yapısal Yalıtımlı Panel) panelleri tasarlayan, üreten ve ebatlayan, yenilikçi ve amaca yönelik bir yapı şirketidir.",
                     "Panellerimiz için yalnızca en üst sınıf malzemeleri kullanıyor, panel üretimiyle ilgili tüm süreçleri kontrollü sıcaklık ve iklim koşullarında gerçekleştirerek nihai ürünün kalitesini garanti altına alıyoruz.",
-                    "Hem konsept ev modellerimizi tercih eden bireysel müşterilerimizle hem de kendi mimari projelerini hayata geçirmek isteyenlerle çalışıyoruz. Toplu konut projects geliştiren veya yüksek hacimli panel tedariği arayan kurumsal müşterilerimize, piyasadaki en kaliteli ürünü en rekabetçi fiyatlarla sunuyoruz."
+                    "Hem konsept ev modellerimizi tercih eden bireysel müşterilerimizle hem de kendi mimari projelerini hayata geçirmek isteyenlerle çalışıyoruz. Toplu konut projeleri geliştiren veya yüksek hacimli panel tedariği arayan kurumsal müşterilerimize, piyasadaki en kaliteli ürünü en rekabetçi fiyatlarla sunuyoruz."
                 ],
                 techTitle: "Üretim ve Teknoloji Gücümüz",
                 features: [
@@ -295,8 +299,8 @@ export const siteConfig = {
                     "Zemin Sistemleri: Yüksek taşıyıcı kapasitesi sayesinde zemin döşemelerinde tercih edilir.",
                     "Ticari Yapılar: Ofis binaları, alışveriş merkezleri gibi büyük ölçekli yapılarda da kullanılır."
                 ],
-                futureTitle: "The Future & Conclusion",
-                futureText: "As interest in sustainability and energy efficiency grows in the construction industry, SIP panels are becoming increasingly vital. The challenges of global warming and limited energy resources are expanding the applications of SIPs. In conclusion, SIP panels are modern building materials that create fast, energy-efficient, and durable structures, firmly establishing themselves as the building material of the future.",
+                futureTitle: "SIP Panelin Geleceği",
+                futureText: "SIP paneller, inşaat sektöründe sürdürülebilirlik ve enerji verimliliği konularına olan ilginin artmasıyla birlikte daha da önem kazanmaktadır. Özellikle küresel ısınma ve enerji kaynaklarının daralması, SIP panellerin sağladığı izolasyon devrimini zorunlu kılmaktadır. Sonuç olarak; SIP panel, hızlı, çevreci ve dayanıklı yapılar oluşturmak için geleceğin rakipsiz yapı malzemesi olarak görülmektedir.",
                 specsTitle: "Teknik Özellikler ve Performans",
                 specsDesc: "Projelerimizde kullandığımız SIP paneller uluslararası standartlarda üretilmekte olup zorlu iklim koşullarına karşı test edilmiştir.",
                 technicalSpecs: [
@@ -312,6 +316,132 @@ export const siteConfig = {
                 "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır."
             },
             footerText: "© 2026 ZEMU SIPPAN Structures House Systems. Tüm hakları saklıdır."
+        },
+        en: {
+            menu: {
+                "home": "Home", "sip-panel": "SIP Panel", "konutlar": "Residences", 
+                "egitim-ticari": "Educational & Commercial", "bahce-yapilari": "Garden Structures", 
+                "garaj-yapilari": "Garage Structures", "moduler-mobil": "Modular & Mobile Structures",
+                "sehir-yapilari": "City Structures", "galeri": "Gallery", "hakkimizda": "About Us"
+            },
+            consultBtn: "Contact Us", categoryTitle: "Categories",
+            allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
+            getQuoteTitle: "Get a Quote", 
+            contactFormDesc: "Send us your request, and our customer representatives will get back to you as soon as possible.",
+            formName: "Full Name", 
+            formPhone: "Phone Number", 
+            formEmail: "Email Address",
+            submitBtn: "Submit Request", backBtn: "Go Back", projectDetailsTitle: "Details",
+            prevProject: "Previous Project", nextProject: "Next Project",
+            
+            formErrorName: "Please enter your full name.", 
+            formErrorPhone: "Please enter a valid phone number.",
+            formErrorEmail: "Please enter a valid email address.",
+            kvkkText: "I have read and accept the <a href='#' class='underline text-brand-orange hover:text-orange-400'>Privacy Policy</a> regarding my personal data.",
+            kvkkError: "You must accept the privacy policy to continue.",
+            
+            cookieText: "We use cookies on our site to improve your user experience and enhance our services.",
+            cookieAccept: "Accept",
+
+            pageTitles: {
+                "home": "ZEMU SIPPAN", "iletisim": "Contact Us",
+                "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
+                "konutlar": "Residential Models", "egitim-ticari": "Educational & Commercial", 
+                "bahce-yapilari": "Garden Structures", "garaj-yapilari": "Garage Structures",
+                "moduler-mobil": "Modular & Mobile Structures", "sehir-yapilari": "City Structures"
+            },
+
+            relatedProjectsTitle: "You May Also Like",
+            processTitle: "How We Work?",
+            processSteps: [
+                { icon: "fa-comments", title: "Request & Survey", desc: "We listen to your needs and design the best architectural solution." },
+                { icon: "fa-pencil-ruler", title: "Design", desc: "Our architects draw your project in 3D and offer a precise quote." },
+                { icon: "fa-cogs", title: "Factory Production", desc: "SIP panels are cut and sized with millimetric precision." },
+                { icon: "fa-hammer", title: "Fast Assembly", desc: "Your structure is delivered turnkey in weeks, unaffected by weather." }
+            ],
+            
+            faqTitle: "Frequently Asked Questions",
+            faq: [
+                { q: "What is a SIP Panel?", a: "A SIP panel is a highly insulating, lightweight, and durable building element consisting of high-density polystyrene foam sandwiched between two structural exterior claddings. It is frequently preferred in the construction industry, especially in prefabricated house construction." },
+                { q: "What are the Main Advantages of SIP Panels?", a: "The most important advantages of SIP panels include high insulation properties, fast construction time, durability, lightness, and eco-friendliness. This saves energy, reduces construction costs, and creates more comfortable living spaces." },
+                { q: "Are SIP Panel Houses Earthquake Resistant?", a: "Yes, SIP panel houses are highly resistant to earthquakes. The integrated structure, high strength, and flexibility of the panel minimize potential damage during an earthquake." },
+                { q: "What is the Lifespan of SIP Panel Houses?", a: "When used under proper conditions, the lifespan of SIP panel houses can exceed 100 years. However, this may vary depending on the quality of materials used, maintenance, and climate conditions." },
+                { q: "What is the Cost of SIP Panel Houses?", a: "The cost varies depending on the size of the project, materials used, additional features, and region. However, in general, they are more economical than houses built with traditional methods. Thanks to long-term energy savings, the investment pays off in a short time." },
+                { q: "Is There a Moisture Problem in SIP Panel Houses?", a: "When a proper insulation and ventilation system is used, there are no moisture problems. The structure of the SIP panel does not absorb moisture and expels it." },
+                { q: "Is There a Fire Risk in SIP Panel Houses?", a: "The polystyrene foam inside the SIP panel is flammable. However, thanks to the structural materials on the outer surface and the fire-resistant coating, it is safe against fire. It also slows down the spread of smoke in the event of a fire." },
+                { q: "How is the Sound Insulation in SIP Panel Houses?", a: "The SIP panel provides excellent sound insulation thanks to the high-density polystyrene foam. It significantly reduces sounds coming from outside and offers a quieter, more peaceful living space." },
+                { q: "How Long Does the Construction of SIP Panel Houses Take?", a: "Construction is completed in a much shorter time compared to traditional methods due to the lightness and easy installation of the panel. On average, construction can be completed in a few weeks." },
+                { q: "Do Bugs/Insects Infest SIP Panel Houses?", a: "The structure of the SIP panel is not suitable for insects to harbor. However, as with every structure, regular maintenance is important." }
+            ],
+
+            hakkimizdaData: {
+                title: "Who We Are",
+                paragraphs: [
+                    "ZEMU SIPPAN is an innovative and purpose-driven building company that designs, manufactures, and sizes SIP (Structural Insulated Panels) according to customer requirements.",
+                    "We use only top-tier materials for our panels, conducting all panel production processes in controlled temperature and climate environments to guarantee the highest quality of the final product.",
+                    "We work with both individual clients choosing from our concept home models and those looking to bring their own architectural projects to life. For corporate clients developing large-scale housing projects or seeking high-volume panel supplies, we offer the highest quality product at the most competitive market prices."
+                ],
+                techTitle: "Our Production & Technology Power",
+                features: [
+                    { 
+                        icon: "fa-layer-group", 
+                        title: "Semi-Automatic Press Line", 
+                        desc: "Our panels are produced on modern machines that ensure perfect adhesive distribution and standard-compliant pressing. We can process non-standard, massive panels up to 4 meters in length and 1.5 meters in width as a single piece." 
+                    },
+                    { 
+                        icon: "fa-laptop-code", 
+                        title: "Precision CNC Technology", 
+                        desc: "Panel sizing and finishing are performed on precision CNC cutting and milling machines, accurate to a tenth of a millimeter. This zero-fault tolerance significantly accelerates installation speed on site." 
+                    },
+                    { 
+                        icon: "fa-cogs", 
+                        title: "Mitek Posi-Joist Infrastructure", 
+                        desc: "By utilizing globally recognized Mitek Posi-Joist technology in truss manufacturing, we offer our clients ultra-light, innovative, and robust solutions for upper floors and flat roofs." 
+                    }
+                ]
+            },
+
+            sipPanelData: {
+                heroImg: "https://pbs.twimg.com/media/HOlDgLqXEAEGB_Q?format=jpg&name=large",
+                introTitle: "What is a SIP Panel?",
+                introText: "SIP (Structural Insulated Panel) is a highly popular building material in recent years. It consists of an insulating foam core sandwiched between two structural facings, typically oriented strand board (OSB). This combination provides extremely strong, energy-efficient, and cost-effective building systems.<br><br>The most important feature of this panel is that it acts as both a load-bearing structure and high-performance insulation simultaneously.",
+                advantagesTitle: "Advantages of SIPs",
+                advantages: [
+                    { icon: "fa-stopwatch", title: "Fast Construction", desc: "Built in days rather than weeks due to large and lightweight panels." },
+                    { icon: "fa-temperature-low", title: "High Insulation", desc: "Saves energy and minimizes heat loss thanks to the dense core." },
+                    { icon: "fa-volume-mute", title: "Soundproofing", desc: "Significantly reduces external noise, creating quieter living spaces." },
+                    { icon: "fa-shield-alt", title: "Durability", desc: "Highly resistant to natural disasters like earthquakes due to its structural strength." },
+                    { icon: "fa-tint-slash", title: "Water Resistance", desc: "Protects the building from external elements with its watertight features." },
+                    { icon: "fa-leaf", title: "Eco-Friendly", desc: "Manufactured using sustainable materials and a low carbon footprint." },
+                    { icon: "fa-fire-extinguisher", title: "Fire Resistance", desc: "Offers various levels of fire resistance depending on the insulation core." },
+                    { icon: "fa-sun", title: "Bioclimatic Design", desc: "Allows structures to be designed in harmony with their climate conditions." }
+                ],
+                usageAreasTitle: "Usage Areas",
+                usageAreas: [
+                    "Prefabricated Houses: Quick and economical residential solutions.",
+                    "Bungalows: Ideal for small-scale structures like holiday and garden homes.",
+                    "Roof Systems: Ensures more efficient use of attic spaces with high insulation.",
+                    "Wall Systems: A versatile material for interior and exterior walls.",
+                    "Floor Systems: Preferred for flooring due to its high load-bearing capacity.",
+                    "Commercial Structures: Used in large-scale buildings like offices and malls."
+                ],
+                futureTitle: "The Future & Conclusion",
+                futureText: "As interest in sustainability and energy efficiency grows in the construction industry, SIP panels are becoming increasingly vital. The challenges of global warming and limited energy resources are expanding the applications of SIPs. In conclusion, SIP panels are modern building materials that create fast, energy-efficient, and durable structures, firmly establishing themselves as the building material of the future.",
+                specsTitle: "Technical Specifications",
+                specsDesc: "Tested for extreme weather conditions.",
+                technicalSpecs: [
+                    { label: "Panel Thickness", value: "114 mm / 164 mm / 214 mm" },
+                    { label: "Core Material", value: "16-30 kg/m³ EPS" },
+                    { label: "Surfaces", value: "11 mm - 15 mm OSB-3" },
+                    { label: "U-Value", value: "0.14 - 0.20 W/m²K" },
+                    { label: "Fire Resistance", value: "B-s1, d0" },
+                    { label: "Sound Insulation", value: "40 dB - 45 dB" }
+                ]
+            },
+            pageContents: {
+                "galeri": "Gallery coming soon."
+            },
+            footerText: "© 2026 ZEMU SIPPAN Structures House Systems. All rights reserved."
         }
     }
 };
