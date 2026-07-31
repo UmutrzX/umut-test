@@ -482,13 +482,12 @@ function sendFormWithFallback(data, apiIndex, btn, form) {
 }
 
 function renderHeader() {
-    // Config üzerinden kategori listesini dinamik al
     const dynamicProjectMenus = Object.keys(siteConfig.categories);
     const menuItems = ['sip-panel', ...dynamicProjectMenus, 'galeri', 'hakkimizda'];
     
     const overlayMenuHTML = menuItems.map(id => {
         const isProjectMenu = dynamicProjectMenus.includes(id);
-        const label = t().menu[id] || id; // Dil dosyasında yoksa ID'yi göster
+        const label = t().menu[id] || id; 
         
         if (isProjectMenu) {
             const categories = siteConfig.categories[id] || [];
@@ -516,11 +515,10 @@ function renderHeader() {
         }
     }).join('');
 
-    // DİKKAT: Ana menü wrapper'ı `pointer-events-none` ile başlar, sadece içindeki öğelere tıklanabilir `pointer-events-auto`
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50 pointer-events-auto">
             <a href="#home" class="cursor-pointer h-full flex items-center py-2 w-max shrink-0 select-none" onclick="navigate('home', event)">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-16 sm:h-20 md:h-24 lg:h-28 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-20 sm:h-24 md:h-32 lg:h-40 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
             </a>
             
             <div class="flex items-center space-x-3 md:space-x-4 ml-auto">
@@ -583,34 +581,24 @@ function handleScroll() {
     const icons = header.querySelectorAll('.header-icon');
     const langTexts = header.querySelectorAll('.header-text-lang');
     const logo = document.getElementById('header-logo');
-    const hasHero = ['home', 'sip-panel'].includes(state.currentView);
 
-    // DİKKAT: Yeni görünmez kutu engelleme mantığı
-    const shouldBeSolid = window.scrollY > 50 || !hasHero;
-
-    if (shouldBeSolid) {
-        header.classList.remove('bg-transparent', 'pointer-events-none');
-        header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
-        if(logo) {
-            logo.classList.remove('h-16', 'sm:h-20', 'md:h-24', 'lg:h-28');
-            logo.classList.add('h-14', 'sm:h-16', 'md:h-18', 'lg:h-20');
-        }
-        icons.forEach(icon => { icon.classList.remove('text-white'); icon.classList.add('text-gray-900'); });
-        langTexts.forEach(txt => { 
-            if(!txt.classList.contains('text-brand-orange')) { txt.classList.remove('text-white'); txt.classList.add('text-gray-900'); }
-        });
-    } else {
-        header.classList.add('bg-transparent', 'pointer-events-none'); // Arka plan şeffafken tıklamaları alt katmana geçirir
-        header.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
-        if(logo) {
+    header.classList.remove('bg-transparent', 'pointer-events-none');
+    header.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-gray-100');
+    
+    if(logo) {
+        if (window.scrollY > 50) {
+            logo.classList.remove('h-20', 'sm:h-24', 'md:h-32', 'lg:h-40');
             logo.classList.add('h-16', 'sm:h-20', 'md:h-24', 'lg:h-28');
-            logo.classList.remove('h-14', 'sm:h-16', 'md:h-18', 'lg:h-20');
+        } else {
+            logo.classList.add('h-20', 'sm:h-24', 'md:h-32', 'lg:h-40');
+            logo.classList.remove('h-16', 'sm:h-20', 'md:h-24', 'lg:h-28');
         }
-        icons.forEach(icon => { icon.classList.remove('text-gray-900'); icon.classList.add('text-white'); });
-        langTexts.forEach(txt => { 
-            if(!txt.classList.contains('text-brand-orange')) { txt.classList.remove('text-gray-900'); txt.classList.add('text-white'); }
-        });
     }
+    
+    icons.forEach(icon => { icon.classList.remove('text-white'); icon.classList.add('text-gray-900'); });
+    langTexts.forEach(txt => { 
+        if(!txt.classList.contains('text-brand-orange')) { txt.classList.remove('text-white'); txt.classList.add('text-gray-900'); }
+    });
 }
 
 function renderHomePage() {
@@ -677,9 +665,9 @@ function renderHomePage() {
             <div class="absolute top-0 left-0 w-full h-full flex flex-col justify-center z-20">
                 <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="max-w-2xl lg:max-w-3xl transform">
-                        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
-                        <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
-                        <button onclick="document.getElementById('categories-section').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-8 md:mt-10 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
+                        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
+                        <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
+                        <button onclick="document.getElementById('categories-section').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-6 md:mt-8 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
                             ${state.lang === 'tr' ? 'Çözümlerimizi İncele' : 'View Solutions'} <i class="fas fa-arrow-down ml-3"></i>
                         </button>
                     </div>
