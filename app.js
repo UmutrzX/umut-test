@@ -1043,7 +1043,7 @@ function renderGenericPage(pageId) {
     const title = t().pageTitles[pageId] || '';
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
-        <div class="max-w-5xl mx-auto pt-40 pb-16 px-4 sm:px-6 min-h-[60vh]">
+        <div class="max-w-5xl mx-auto py-16 sm:py-24 px-4 sm:px-6 min-h-[60vh]">
             <div class="mb-8 sm:mb-12">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 sm:mb-5 leading-tight tracking-tight">${title}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
@@ -1063,25 +1063,36 @@ function renderProjectsPage(pageId) {
     const specificCategories = siteConfig.categories[pageId] || [];
     const allCatActive = state.activeCategory === null;
     
+    // YENİ YATAY FİLTRELEME MENÜSÜ
     const allCategoriesHTML = `
-        <button onclick="filterCategory(null, event)" class="w-full text-left px-4 sm:px-5 py-2.5 sm:py-3 border-b border-gray-100/50 transition-all font-semibold btn-press rounded-xl mb-1 text-sm ${allCatActive ? 'bg-brand-orange text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 hover:text-brand-orange'}">
+        <button onclick="window.filterCategory(null, event)" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap ${allCatActive ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
             ${t().allProjectsTitle}
         </button>
     ` + specificCategories.map(cat => `
-        <button onclick="filterCategory('${cat.id}', event)" class="w-full text-left px-4 sm:px-5 py-2.5 sm:py-3 border-b border-gray-100/50 transition-all font-semibold btn-press rounded-xl mb-1 text-sm whitespace-nowrap lg:whitespace-normal ${state.activeCategory === cat.id ? 'bg-brand-orange text-white shadow-md' : 'text-gray-500 hover:bg-gray-50 hover:text-brand-orange'}">
+        <button onclick="window.filterCategory('${cat.id}', event)" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap ${state.activeCategory === cat.id ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
             ${cat[state.lang]}
         </button>
     `).join('');
 
+    // YENİ GÖRSEL ÜZERİNDE TAM EKRAN PROJE KARTLARI
     const projectsHTML = pageProjects.length > 0 ? pageProjects.map((project, idx) => `
-        <a href="#${project.id}" class="project-card bg-white border border-gray-100 cursor-pointer rounded-2xl btn-press overflow-hidden flex flex-col group shadow-sm block" onclick="navigate('${project.id}', event)">
-            <div class="relative aspect-[16/10] overflow-hidden">
-                <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="w-full h-full object-cover" loading="lazy">
-                <div class="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gray-900/80 backdrop-blur-sm text-white px-3 py-1.5 font-bold rounded-lg shadow-lg z-10 text-xs">${project.area} ${t().sqm}</div>
-            </div>
-            <div class="p-4 sm:p-5 bg-white flex-grow flex items-center justify-between">
-                <h3 class="text-gray-900 font-bold text-base sm:text-lg group-hover:text-brand-orange transition-colors truncate pr-2">${state.lang === 'tr' ? project.title : project.titleEn}</h3>
-                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-colors shrink-0"><i class="fas fa-chevron-right text-xs"></i></div>
+        <a href="#${project.id}" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press block shadow-md hover:shadow-xl transition-all duration-400" onclick="window.navigate('${project.id}', event)">
+            <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-400"></div>
+            
+            <div class="absolute bottom-0 left-0 w-full p-5 sm:p-6 flex flex-col gap-3">
+                <h3 class="text-white font-extrabold text-2xl sm:text-3xl drop-shadow-md truncate pr-2 tracking-tight">${state.lang === 'tr' ? project.title : project.titleEn}</h3>
+                
+                <div class="flex items-center gap-3">
+                    ${project.rooms ? `
+                    <div class="flex items-center gap-2 bg-white/20 backdrop-blur-md text-white px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold border border-white/10 shadow-sm">
+                        <i class="fas fa-bed opacity-80"></i> <span>${project.rooms}</span>
+                    </div>` : ''}
+                    
+                    <div class="flex items-center gap-2 bg-white/20 backdrop-blur-md text-white px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold border border-white/10 shadow-sm">
+                        <i class="fas fa-vector-square opacity-80"></i> <span>${project.area} ${t().sqm}</span>
+                    </div>
+                </div>
             </div>
         </a>
     `).join('') : `<div class="col-span-full text-center py-16 sm:py-24 text-gray-400 font-medium text-base sm:text-lg bg-white rounded-3xl shadow-sm border border-dashed border-gray-300 mx-2">Proje bulunamadı.</div>`;
@@ -1089,28 +1100,31 @@ function renderProjectsPage(pageId) {
     const dynamicTitle = t().pageTitles && t().pageTitles[pageId] ? t().pageTitles[pageId] : (t().menu[pageId] || pageId);
 
     DOM.content.innerHTML = `
-        <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-24 sm:mt-28">
+        <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-24 sm:mt-28 min-h-[60vh]">
             <div class="mb-8 sm:mb-10">
-                <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 sm:mb-4 leading-tight tracking-tight">${dynamicTitle}</h1>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 sm:mb-4 leading-tight tracking-tight">${dynamicTitle}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
             </div>
-            <div class="flex flex-col lg:flex-row gap-6 sm:gap-8">
-                <div class="w-full lg:w-1/4">
-                    <div class="bg-white p-3 rounded-2xl border border-gray-100 lg:sticky lg:top-24 shadow-xl">
-                        <h2 class="font-bold text-gray-900 mb-3 px-3 text-base sm:text-lg hidden lg:block tracking-tight">${t().categoryTitle}</h2>
-                        <div class="flex flex-row overflow-x-auto no-scrollbar lg:flex-col gap-1 pb-2 lg:pb-0 snap-x">${allCategoriesHTML}</div>
+            
+            <div class="flex flex-col gap-8">
+                <!-- Yatay Kategori Menüsü ve Sıralama -->
+                <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-5 xl:gap-0">
+                    <div class="flex flex-row overflow-x-auto no-scrollbar gap-3 pb-2 w-full xl:w-auto snap-x">
+                        ${allCategoriesHTML}
                     </div>
-                </div>
-                <div class="w-full lg:w-3/4">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 sm:mb-6 bg-white p-3 rounded-xl shadow-sm border border-gray-100 gap-3">
-                        <span class="text-xs sm:text-sm font-bold text-gray-500 tracking-wider px-2">${pageProjects.length} Sonuç</span>
-                        <select aria-label="Sıralama" onchange="window.sortProjects(this.value)" class="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-800 font-semibold text-xs sm:text-sm rounded-lg focus:ring-2 focus:ring-brand-orange py-2 px-3 cursor-pointer outline-none transition-colors">
-                            <option value="default" ${state.sortBy === 'default' ? 'selected' : ''}>Varsayılan</option>
-                            <option value="areaAsc" ${state.sortBy === 'areaAsc' ? 'selected' : ''}>m² (Artan)</option>
-                            <option value="areaDesc" ${state.sortBy === 'areaDesc' ? 'selected' : ''}>m² (Azalan)</option>
+                    
+                    <div class="shrink-0 w-full sm:w-auto">
+                        <select aria-label="Sıralama" onchange="window.sortProjects(this.value)" class="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-800 font-semibold text-sm rounded-xl focus:ring-2 focus:ring-brand-orange py-3.5 px-4 cursor-pointer outline-none transition-colors shadow-sm">
+                            <option value="default" ${state.sortBy === 'default' ? 'selected' : ''}>Sıralama: Varsayılan</option>
+                            <option value="areaAsc" ${state.sortBy === 'areaAsc' ? 'selected' : ''}>m² (Küçükten Büyüğe)</option>
+                            <option value="areaDesc" ${state.sortBy === 'areaDesc' ? 'selected' : ''}>m² (Büyükten Küçüğe)</option>
                         </select>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">${projectsHTML}</div>
+                </div>
+                
+                <!-- Projeler Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    ${projectsHTML}
                 </div>
             </div>
         </div>
@@ -1170,7 +1184,7 @@ function renderProjectDetail(projectId) {
     if(initialMedia.type === 'image') {
         initialContainerHTML = `
         ${arrows}
-        <img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-all duration-500 pointer-events-auto no-drag cursor-pointer hover:scale-105" onclick="window.openLightboxCurrent()" draggable="false" loading="eager">
+        <img id="detail-main-image" src="${initialMedia.url}" alt="${prjTitle}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 pointer-events-auto no-drag cursor-pointer hover:scale-105" onclick="window.openLightboxCurrent()" draggable="false" loading="eager">
         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-opacity duration-300 pointer-events-none"></div>
         `;
     } else {
