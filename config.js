@@ -27,7 +27,7 @@ export const siteConfig = {
     homeHero: {
         backgroundImage: "https://pbs.twimg.com/media/HOLXzKvXcAAOx2J?format=jpg&name=large",
         slogan: {
-            tr: "Mimari sınırları zorluyoruz.",
+            tr: "Mimari Tasarımlara bağlı Kalıyoruz",
             en: "Pushing architectural boundaries."
         },
         subSlogan: {
