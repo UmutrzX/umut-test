@@ -101,7 +101,7 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
                 state.pageCache[cacheKey] = DOM.content.innerHTML;
             } else if (dynamicCategories.includes(viewOrId)) {
                 updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
-            } else if (['galeri'].includes(viewOrId)) {
+            } else if (['galeri', 'uygulama-secenekleri'].includes(viewOrId)) {
                 updateMetaTags(viewOrId); renderGenericPage(viewOrId);
                 state.pageCache[cacheKey] = DOM.content.innerHTML;
             } else {
@@ -487,7 +487,22 @@ function renderHeader() {
         const isProjectMenu = dynamicProjectMenus.includes(id);
         const label = t().menu[id] || id; 
         
-        if (isProjectMenu) {
+        if (id === 'sip-panel') {
+            const isOpen = state.openAccordion === id;
+            return `
+            <div class="mb-4">
+               <div class="flex items-center justify-between cursor-pointer group w-[220px] sm:w-[280px] select-none" onclick="window.toggleAccordion('${id}', event)">
+                   <span class="text-2xl sm:text-3xl font-semibold text-gray-300 group-hover:text-white transition pointer-events-none">${label}</span>
+                   <i id="icon-${id}" class="accordion-icon fas fa-chevron-down text-lg sm:text-xl text-gray-500 group-hover:text-white transition transform ${isOpen ? 'rotate-180' : ''} pointer-events-none"></i>
+               </div>
+               <div id="accordion-${id}" class="accordion-content ${isOpen ? 'open' : ''}">
+                   <div class="pl-4 border-l-2 border-brand-orange ml-1 flex flex-col">
+                       <a href="#sip-panel" class="text-base sm:text-lg text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-2 select-none" onclick="navigate('sip-panel', event)">${state.lang === 'tr' ? 'SIP Panel Nedir?' : 'What is SIP Panel?'}</a>
+                       <a href="#uygulama-secenekleri" class="text-base sm:text-lg text-gray-400 hover:text-brand-orange cursor-pointer font-medium py-2 select-none" onclick="navigate('uygulama-secenekleri', event)">${state.lang === 'tr' ? 'Uygulama Seçenekleri' : 'Application Options'}</a>
+                   </div>
+               </div>
+            </div>`;
+        } else if (isProjectMenu) {
             const categories = siteConfig.categories[id] || [];
             const isOpen = state.openAccordion === id;
             return `
@@ -516,7 +531,7 @@ function renderHeader() {
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50 pointer-events-auto">
             <a href="#home" class="cursor-pointer h-full flex items-center py-2 shrink min-w-0 select-none max-w-[55vw]" onclick="navigate('home', event)">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[55vw] sm:max-w-none object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-16 sm:h-20 md:h-24 lg:h-32 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
             </a>
             
             <div class="flex items-center space-x-2 sm:space-x-3 md:space-x-4 ml-auto shrink-0">
@@ -585,11 +600,11 @@ function handleScroll() {
     
     if(logo) {
         if (window.scrollY > 50) {
-            logo.classList.remove('h-16', 'sm:h-20', 'md:h-24', 'lg:h-28');
-            logo.classList.add('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
+            logo.classList.remove('h-16', 'sm:h-20', 'md:h-24', 'lg:h-32');
+            logo.classList.add('h-12', 'sm:h-16', 'md:h-18', 'lg:h-20');
         } else {
-            logo.classList.add('h-16', 'sm:h-20', 'md:h-24', 'lg:h-28');
-            logo.classList.remove('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
+            logo.classList.add('h-16', 'sm:h-20', 'md:h-24', 'lg:h-32');
+            logo.classList.remove('h-12', 'sm:h-16', 'md:h-18', 'lg:h-20');
         }
     }
 
@@ -627,7 +642,7 @@ function renderHomePage() {
     `).join('');
 
     const faqHTML = (t().faq || []).map((f, idx) => `
-        <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 mb-4 overflow-hidden h-max break-inside-avoid">
+        <details class="group bg-white rounded-2xl shadow-sm border border-gray-100 mb-4 overflow-hidden h-max break-inside-avoid inline-block w-full">
             <summary class="flex justify-between items-center font-bold cursor-pointer list-none p-4 sm:p-5 text-gray-900 hover:text-brand-orange transition-colors">
                 <span class="text-sm sm:text-base pr-4">${f.q}</span>
                 <span class="transition group-open:rotate-180 shrink-0"><i class="fas fa-chevron-down text-brand-orange"></i></span>
@@ -1039,7 +1054,7 @@ function renderGenericPage(pageId) {
     const title = t().pageTitles[pageId] || '';
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
-        <div class="max-w-5xl mx-auto pt-40 pb-16 px-4 sm:px-6 min-h-[60vh]">
+        <div class="max-w-5xl mx-auto py-16 sm:py-24 px-4 sm:px-6 min-h-[60vh]">
             <div class="mb-8 sm:mb-12">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 sm:mb-5 leading-tight tracking-tight">${title}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
@@ -1102,8 +1117,8 @@ function renderProjectsPage(pageId) {
             
             <div class="flex flex-col gap-8">
                 <!-- Yatay Kategori Menüsü ve Sıralama -->
-                <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-5 xl:gap-0">
-                    <div class="flex flex-row overflow-x-auto no-scrollbar gap-3 pb-2 w-full xl:w-auto snap-x">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                    <div class="flex flex-row overflow-x-auto no-scrollbar gap-3 pb-2 w-full lg:flex-1 lg:min-w-0 snap-x">
                         ${allCategoriesHTML}
                     </div>
                     
