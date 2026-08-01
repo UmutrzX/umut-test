@@ -516,8 +516,8 @@ function renderHeader() {
     // DİKKAT: Ana menü wrapper'ı `pointer-events-none` ile başlar, sadece içindeki öğelere tıklanabilir `pointer-events-auto`
     DOM.header.innerHTML = `
         <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between relative z-50 pointer-events-auto">
-            <a href="#home" class="cursor-pointer h-full flex items-center py-2 shrink min-w-0 select-none" onclick="navigate('home', event)">
-                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-16 sm:h-20 md:h-24 lg:h-28 w-auto max-w-[55vw] sm:max-w-none object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
+            <a href="#home" class="cursor-pointer h-full flex items-center py-2 shrink min-w-0 select-none max-w-[55vw]" onclick="navigate('home', event)">
+                 <img id="header-logo" src="${siteConfig.contact.logoSrc}" alt="ZEMU SIPPAN" class="h-16 sm:h-20 md:h-24 lg:h-32 w-auto object-contain object-left transition-all duration-500 mix-blend-multiply origin-left block pointer-events-none">
             </a>
             
             <div class="flex items-center space-x-2 sm:space-x-3 md:space-x-4 ml-auto shrink-0">
@@ -588,12 +588,12 @@ function handleScroll() {
     if(logo) {
         if (window.scrollY > 50) {
             // Kaydırınca biraz daha küçülür
-            logo.classList.remove('h-12', 'sm:h-16', 'md:h-20', 'lg:h-24');
-            logo.classList.add('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
+            logo.classList.remove('h-16', 'sm:h-20', 'md:h-24', 'lg:h-32');
+            logo.classList.add('h-12', 'sm:h-16', 'md:h-18', 'lg:h-20');
         } else {
             // Sayfa en üstteyken (Daraltılmış boyutlar)
-            logo.classList.add('h-12', 'sm:h-16', 'md:h-20', 'lg:h-24');
-            logo.classList.remove('h-10', 'sm:h-12', 'md:h-14', 'lg:h-16');
+            logo.classList.add('h-16', 'sm:h-20', 'md:h-24', 'lg:h-32');
+            logo.classList.remove('h-12', 'sm:h-16', 'md:h-18', 'lg:h-20');
         }
     }
 
@@ -1043,7 +1043,7 @@ function renderGenericPage(pageId) {
     const title = t().pageTitles[pageId] || '';
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
-        <div class="max-w-5xl mx-auto py-16 sm:py-24 px-4 sm:px-6 min-h-[60vh]">
+        <div class="max-w-5xl mx-auto pt-40 pb-16 px-4 sm:px-6 min-h-[60vh]">
             <div class="mb-8 sm:mb-12">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 sm:mb-5 leading-tight tracking-tight">${title}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
@@ -1063,18 +1063,16 @@ function renderProjectsPage(pageId) {
     const specificCategories = siteConfig.categories[pageId] || [];
     const allCatActive = state.activeCategory === null;
     
-    // YENİ YATAY FİLTRELEME MENÜSÜ
     const allCategoriesHTML = `
-        <button onclick="window.filterCategory(null, event)" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap ${allCatActive ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
+        <button onclick="window.filterCategory(null, event)" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap shrink-0 ${allCatActive ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
             ${t().allProjectsTitle}
         </button>
     ` + specificCategories.map(cat => `
-        <button onclick="window.filterCategory('${cat.id}', event)" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap ${state.activeCategory === cat.id ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
+        <button onclick="window.filterCategory('${cat.id}', event)" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap shrink-0 ${state.activeCategory === cat.id ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
             ${cat[state.lang]}
         </button>
     `).join('');
 
-    // YENİ GÖRSEL ÜZERİNDE TAM EKRAN PROJE KARTLARI
     const projectsHTML = pageProjects.length > 0 ? pageProjects.map((project, idx) => `
         <a href="#${project.id}" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press block shadow-md hover:shadow-xl transition-all duration-400" onclick="window.navigate('${project.id}', event)">
             <img src="${project.mainImage}" alt="${state.lang === 'tr' ? project.title : project.titleEn}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
@@ -1191,6 +1189,52 @@ function renderProjectDetail(projectId) {
         initialContainerHTML = `<iframe src="${initialMedia.embed}" class="absolute inset-0 w-full h-full z-10" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
     }
 
+    const featureIcons = {
+        area: "fa-vector-square",
+        rooms: "fa-bed",
+        bathrooms: "fa-bath",
+        livingRoom: "fa-couch",
+        kitchen: "fa-utensils",
+        terrace: "fa-umbrella-beach"
+    };
+
+    const fallbackLabels = {
+        tr: { area: "Toplam Alan", rooms: "Yatak Odası", bathrooms: "Banyo", livingRoom: "Salon", kitchen: "Mutfak", terrace: "Teras" },
+        en: { area: "Total Area", rooms: "Bedrooms", bathrooms: "Bathrooms", livingRoom: "Living Room", kitchen: "Kitchen", terrace: "Terrace" }
+    };
+
+    const activeFeatures = [];
+    ['area', 'rooms', 'bathrooms', 'livingRoom', 'kitchen', 'terrace'].forEach(key => {
+        if (project[key]) {
+            activeFeatures.push({
+                key: key,
+                value: project[key],
+                icon: featureIcons[key],
+                label: (t().featureLabels && t().featureLabels[key]) ? t().featureLabels[key] : fallbackLabels[state.lang][key]
+            });
+        }
+    });
+
+    // DİKKAT: Burada flex wrap (sarmalama) veya taşmayı engelleyici bir scroll eklendi
+    const featuresHTML = activeFeatures.map(f => {
+        let valDisplay = '';
+        if (typeof f.value === 'boolean') {
+             valDisplay = `<i class="fas fa-check text-brand-orange text-lg sm:text-xl"></i>`;
+        } else if (f.key === 'area') {
+             valDisplay = `<span class="font-black text-gray-900 text-base sm:text-lg">${f.value} m²</span>`;
+        } else {
+             valDisplay = `<span class="font-black text-gray-900 text-base sm:text-lg">${f.value}</span>`;
+        }
+        
+        return `
+        <div class="flex flex-col items-center justify-center text-center px-2 sm:px-4 shrink-0 w-auto first:pl-2 last:pr-2">
+            <i class="fas ${f.icon} text-2xl sm:text-3xl text-brand-orange mb-2 opacity-90"></i>
+            ${valDisplay}
+            <span class="text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-wider mt-1 whitespace-nowrap">${f.label}</span>
+        </div>
+        `;
+    }).join('<div class="w-px h-10 sm:h-12 bg-gray-200 shrink-0 mx-1"></div>');
+
     const relatedProjects = siteConfig.projects
         .filter(p => p.pageMenu === project.pageMenu && p.id !== project.id)
         .slice(0, 3);
@@ -1249,27 +1293,18 @@ function renderProjectDetail(projectId) {
                     </div>
                 </div>
 
-                <div class="lg:col-span-5 flex flex-col">
+                <div class="lg:col-span-5 flex flex-col min-w-0 overflow-hidden">
                     ${catName ? `<span class="inline-block bg-gray-800 text-white text-[10px] font-bold px-2 py-1 rounded-full w-max mb-2">${catName}</span>` : ''}
                     <h1 class="text-2xl sm:text-3xl font-black text-gray-900 leading-tight mb-3">${prjTitle}</h1>
-                    <div class="text-gray-600 text-sm leading-relaxed mb-5 font-medium">${project.description[state.lang]}</div>
+                    <div class="text-gray-600 text-sm leading-relaxed mb-6 font-medium break-words">${project.description[state.lang]}</div>
                     
-                    <div class="border border-gray-200 rounded-xl p-5 sm:p-6 bg-white shadow-sm mb-5">
-                        <h4 class="font-bold text-base text-gray-900 mb-3 border-b border-gray-100 pb-2">Özellikler</h4>
-                        
-                        <div class="flex justify-between py-2 border-b border-gray-100 last:border-0 text-sm">
-                            <span class="text-gray-500 font-medium">Kategori:</span>
-                            <span class="font-bold text-gray-900 text-right">${catName || '-'}</span>
-                        </div>
-                        <div class="flex justify-between py-2 border-b border-gray-100 last:border-0 text-sm">
-                            <span class="text-gray-500 font-medium">Toplam Alan:</span>
-                            <span class="font-bold text-gray-900 text-right">${project.area} m²</span>
-                        </div>
-                        <div class="flex justify-between py-2 border-b border-gray-100 last:border-0 text-sm">
-                            <span class="text-gray-500 font-medium">Oda Sayısı:</span>
-                            <span class="font-bold text-gray-900 text-right">${project.rooms}</span>
+                    ${activeFeatures.length > 0 ? `
+                    <div class="flex flex-row items-center justify-start bg-white border border-gray-100 rounded-2xl p-4 sm:p-5 shadow-sm mb-6 overflow-x-auto no-scrollbar w-full">
+                        <div class="flex flex-row items-center gap-1 sm:gap-2">
+                           ${featuresHTML}
                         </div>
                     </div>
+                    ` : ''}
 
                     <ul class="space-y-2 text-xs sm:text-sm text-gray-600 font-semibold">
                         <li class="flex items-center"><i class="fas fa-check text-brand-green mr-2"></i> 24 saat içinde geri dönüş</li>
