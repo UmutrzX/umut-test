@@ -72,114 +72,9 @@ export const siteConfig = {
         ]
     },
 
-    // SINIRSIZ PROJE ALANI: İstediğiniz kadar proje ekleyebilirsiniz. Açıklamalarda HTML tagleri (<br>, <strong> vb.) kullanabilirsiniz.
+    // TEMİZ PROJE LİSTESİ: Buraya yeni projelerinizi ekleyebilirsiniz.
     projects: [
-        {
-            id: "Test ev -001",
-            title: "Köy evleri",
-            titleEn: "Calanthe Model - 145",
-            area: 54, rooms: 4, bathrooms: 2, livingRoom: true, kitchen: true, terrace: true, garage: true,
-            pageMenu: "konutlar", 
-            categoryId: "konut-modeller",
-            mainImage: "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-8.jpg",
-            gallery: [
-                "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-5.jpg",
-                "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-3.jpg",
-                "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-1.jpg"
-            ],
-            description: {
-                tr: "Doğa ile iç içe yaşam sunan şık ve kullanışlı bir ev tasarımı.<br><br>Geleneksel dokuya modern yalıtım ile yepyeni bir soluk kazandırıyor.",
-                en: "A stylish and useful house design."
-            }
-        },
-        {
-            id: "Test ev -002", 
-            title: "Test Projesi",
-            titleEn: "Test Project",
-            area: 61, rooms: 3, bathrooms: 1, livingRoom: true, kitchen: true, terrace: false, garage: false,
-            pageMenu: "konutlar", 
-            categoryId: "konut-ozel", 
-            mainImage: "https://media.discordapp.net/attachments/1531819616484196476/1531819728350347294/WhatsApp_Image_2026-07-29_at_2.22.21_AM.jpeg?ex=6a6a99cb&is=6a69484b&hm=8e3969cd950ae08e0ea6692ed83da464536aad9dd12c3e8cfb2c33996cf0629c&=&format=webp&width=1524&height=671",
-            gallery: [
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819727863677068/WhatsApp_Image_2026-07-29_at_2.22.21_AM_11.jpeg?ex=6a6a99ca&is=6a69484a&hm=757ecc4ffc4883efdc91466dd4dbf254316b2420d906ba34e97a35492c5ecd2b&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819727368753373/WhatsApp_Image_2026-07-29_at_2.22.21_AM_10.jpeg?ex=6a6a99ca&is=6a69484a&hm=423309aefd18a1c8923c948fdd0e552dcb2538d089dac552eb0bf73fa36a6e6d&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819727016693940/WhatsApp_Image_2026-07-29_at_2.22.21_AM_9.jpeg?ex=6a6a99ca&is=6a69484a&hm=bb3df8735478c64a0b1f67cce8097d4767dce3eee997530809d21040cf28ae5b&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819689649373517/WhatsApp_Image_2026-07-29_at_2.22.21_AM_8.jpeg?ex=6a6a99c1&is=6a694841&hm=4d4b196a9f85df6d724302e3bb4f5b2900aae4ba500686cafcbf98f820625408&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819689251049513/WhatsApp_Image_2026-07-29_at_2.22.21_AM_7.jpeg?ex=6a6a99c1&is=6a694841&hm=0d931dafef5d2bc2578075a74a3a6242438da2f5cd43817cfa832c30a3c17418&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819688848261230/WhatsApp_Image_2026-07-29_at_2.22.21_AM_6.jpeg?ex=6a6a99c1&is=6a694841&hm=6fbfbb110ba9ea55683abcf939b7d51ba342578dfc13611632816d511f12526a&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819687904808960/WhatsApp_Image_2026-07-29_at_2.22.21_AM_4.jpeg?ex=6a6a99c1&is=6a694841&hm=1286b3b8b2650cf03398478643bab9e497accd356d6acff923cd95d46cac030d&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819688336687236/WhatsApp_Image_2026-07-29_at_2.22.21_AM_5.jpeg?ex=6a6a99c1&is=6a694841&hm=cda2bcab4370e5d7fcb9c61f487ae3c48c842928478943056cd9c0e6bcb9cc8e&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819687288115350/WhatsApp_Image_2026-07-29_at_2.22.21_AM_3.jpeg?ex=6a6a99c1&is=6a694841&hm=bfcea051bec108f793bf600058cffe527d3ab08dad086b8fa938041b7ec20255&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819686361174226/WhatsApp_Image_2026-07-29_at_2.22.21_AM_1.jpeg?ex=6a6a99c1&is=6a694841&hm=4f9515060584ad3fd0f1024589d425fe38c817dcf20cc656c3df4188f2cc3b5b&=&format=webp&width=1524&height=671",
-                "https://media.discordapp.net/attachments/1531819616484196476/1531819686763954277/WhatsApp_Image_2026-07-29_at_2.22.21_AM_2.jpeg?ex=6a6a99c1&is=6a694841&hm=e548ee3e40eae512e1c342ef5cfffcf7a483c68eb1a1aa832b420177e2529075&=&format=webp&width=1524&height=671"
-            ],
-            description: {
-                tr: "ZEMU SIPPAN kalitesiyle tasarlanmış modern iki katlı dubleks proje.",
-                en: "Modern two-story duplex SIP panel project."
-            }
-        },
-        {
-            id: "ana okul-projesi-1",
-            title: "Ana Okul",
-            titleEn: "Modern School Building",
-            area: 450, rooms: 12, bathrooms: 6, livingRoom: false, kitchen: true, terrace: false, garage: false,
-            pageMenu: "egitim-ticari", 
-            categoryId: "et-uygulama",
-            mainImage: "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-4.jpg",
-            gallery: [
-                "https://www.sipeurope.eu/wp-content/uploads/2020/06/19-Rimavska-Sobota-Slovakia-sip-panel-building-3D.jpg",
-                "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-1.jpg",
-                "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-2.jpg"
-            ],
-            description: {
-                tr: "Eğitim kurumları için geniş, iyi yalıtımlı ve hızlı kurulan SIP panel yapılar.",
-                en: "Spacious, well-insulated, and fast-built SIP panel structures for educational institutions."
-            }
-        },
-        {
-            id: "kis-bahcesi-1",
-            title: "Premium Kış Bahçesi",
-            titleEn: "Premium Winter Garden",
-            area: 25, rooms: null, terrace: true,
-            pageMenu: "bahce-yapilari", 
-            categoryId: "by-kis",
-            mainImage: "https://i.pinimg.com/736x/fe/1a/64/fe1a6462fc8e84a9d1429b6900044ba8.jpg",
-            gallery: [],
-            description: { tr: "Dört mevsim bahçe keyfi.", en: "Enjoy your garden in all seasons." }
-        },
-        {
-            id: "garaj-1",
-            title: "Çift Araçlık Garaj",
-            titleEn: "Double Car Garage",
-            area: 40, rooms: 1, garage: 2,
-            pageMenu: "garaj-yapilari", 
-            categoryId: "gy-cift",
-            mainImage: "https://i.pinimg.com/1200x/3f/b2/f0/3fb2f0ef390fda1df627ba294679b175.jpg",
-            gallery: [],
-            description: { tr: "Araçlarınız için güvenli SIP panel garaj.", en: "Secure SIP panel garage for your vehicles." }
-        },
-        {
-            id: "moduler-yasam-1",
-            title: "Modüler Yaşam Alanı",
-            titleEn: "Modular Living Space",
-            area: 35, rooms: 2, bathrooms: 1, kitchen: true,
-            pageMenu: "moduler-mobil", 
-            categoryId: "mm-modeller",
-            mainImage: "https://i.pinimg.com/1200x/29/49/71/294971c2a122e23b7b3b4fecbb9ec4e2.jpg",
-            gallery: [],
-            description: { tr: "Hızlı, taşınabilir ve pratik yaşam alanı.", en: "Fast, portable, and practical living space." }
-        },
-        {
-            id: "sehir-evi-1",
-            title: "Kompakt Şehir Evi",
-            titleEn: "Compact City House",
-            area: 90, rooms: 3, bathrooms: 2, livingRoom: true, kitchen: true, terrace: false,
-            pageMenu: "sehir-yapilari", 
-            categoryId: "sy-satis",
-            mainImage: "https://i.pinimg.com/1200x/57/b1/d2/57b1d283afad3da10c8c1df80735703f.jpg",
-            gallery: [],
-            description: { tr: "Dar alanlarda maksimum verim.", en: "Maximum efficiency in narrow spaces." }
-        }
+        
     ],
 
     i18n: {
@@ -232,7 +127,8 @@ export const siteConfig = {
                 "galeri": "Fotoğraf Galerisi", "hakkimizda": "Hakkımızda", "sip-panel": "Geleceğin Yapı Teknolojisi: SIP Panel",
                 "konutlar": "Konut Modellerimiz", "egitim-ticari": "Eğitim ve Ticari Yapılar", 
                 "bahce-yapilari": "Bahçe Yapılarımız", "garaj-yapilari": "Garaj Yapılarımız",
-                "moduler-mobil": "Modüler ve Mobil Yapılarımız", "sehir-yapilari": "Şehir Yapılarımız"
+                "moduler-mobil": "Modüler ve Mobil Yapılarımız", "sehir-yapilari": "Şehir Yapılarımız",
+                "uygulama-secenekleri": "Uygulama Seçenekleri"
             },
 
             relatedProjectsTitle: "Bunlar da İlginizi Çekebilir",
@@ -323,7 +219,8 @@ export const siteConfig = {
                 ]
             },
             pageContents: {
-                "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır."
+                "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.",
+                "uygulama-secenekleri": "Uygulama seçenekleri içeriği yakında eklenecektir."
             },
             footerText: "© 2026 ZEMU SIPPAN Structures House Systems. Tüm hakları saklıdır."
         },
@@ -369,7 +266,8 @@ export const siteConfig = {
                 "galeri": "Gallery", "hakkimizda": "About Us", "sip-panel": "Why SIP Panel?", 
                 "konutlar": "Residential Models", "egitim-ticari": "Educational & Commercial", 
                 "bahce-yapilari": "Garden Structures", "garaj-yapilari": "Garage Structures",
-                "moduler-mobil": "Modular & Mobile Structures", "sehir-yapilari": "City Structures"
+                "moduler-mobil": "Modular & Mobile Structures", "sehir-yapilari": "City Structures",
+                "uygulama-secenekleri": "Application Options"
             },
 
             relatedProjectsTitle: "You May Also Like",
@@ -460,7 +358,8 @@ export const siteConfig = {
                 ]
             },
             pageContents: {
-                "galeri": "Gallery coming soon."
+                "galeri": "Gallery coming soon.",
+                "uygulama-secenekleri": "Application options content will be added soon."
             },
             footerText: "© 2026 ZEMU SIPPAN Structures House Systems. All rights reserved."
         }
