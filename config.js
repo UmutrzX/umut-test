@@ -73,12 +73,13 @@ export const siteConfig = {
     },
 
     // SINIRSIZ PROJE ALANI: İstediğiniz kadar proje ekleyebilirsiniz. Açıklamalarda HTML tagleri (<br>, <strong> vb.) kullanabilirsiniz.
+    // EKLENEN ÖZELLİKLER: bathrooms, livingRoom, kitchen, terrace (Miktar veya True/False verilebilir)
     projects: [
         {
             id: "Test ev -001",
             title: "Köy evleri",
             titleEn: "Calanthe Model - 145",
-            area: 54, rooms: 4,
+            area: 54, rooms: 4, bathrooms: 2, livingRoom: true, kitchen: true, terrace: true,
             pageMenu: "konutlar", 
             categoryId: "konut-modeller",
             mainImage: "https://www.sipeurope.eu/wp-content/uploads/2022/03/se-sip-panel-house-Nova-Lesna-Slovakia-8.jpg",
@@ -96,7 +97,7 @@ export const siteConfig = {
             id: "Test ev -002", 
             title: "Test Projesi",
             titleEn: "Test Project",
-            area: 61, rooms: 3,  
+            area: 61, rooms: 3, bathrooms: 1, livingRoom: true, kitchen: true, terrace: false,
             pageMenu: "konutlar", 
             categoryId: "konut-ozel", 
             mainImage: "https://media.discordapp.net/attachments/1531819616484196476/1531819728350347294/WhatsApp_Image_2026-07-29_at_2.22.21_AM.jpeg?ex=6a6a99cb&is=6a69484b&hm=8e3969cd950ae08e0ea6692ed83da464536aad9dd12c3e8cfb2c33996cf0629c&=&format=webp&width=1524&height=671",
@@ -122,7 +123,7 @@ export const siteConfig = {
             id: "ana okul-projesi-1",
             title: "Ana Okul",
             titleEn: "Modern School Building",
-            area: 450, rooms: 12,
+            area: 450, rooms: 12, bathrooms: 6, livingRoom: false, kitchen: true, terrace: false,
             pageMenu: "egitim-ticari", 
             categoryId: "et-uygulama",
             mainImage: "https://www.sipeurope.eu/wp-content/uploads/2020/03/19-Rimavska-Sobota-Slovakia-sip-panel-building-4.jpg",
@@ -140,7 +141,7 @@ export const siteConfig = {
             id: "kis-bahcesi-1",
             title: "Premium Kış Bahçesi",
             titleEn: "Premium Winter Garden",
-            area: 25, rooms: 1,
+            area: 25, rooms: null, terrace: true,
             pageMenu: "bahce-yapilari", 
             categoryId: "by-kis",
             mainImage: "https://i.pinimg.com/736x/fe/1a/64/fe1a6462fc8e84a9d1429b6900044ba8.jpg",
@@ -162,7 +163,7 @@ export const siteConfig = {
             id: "moduler-yasam-1",
             title: "Modüler Yaşam Alanı",
             titleEn: "Modular Living Space",
-            area: 35, rooms: 2,
+            area: 35, rooms: 2, bathrooms: 1, kitchen: true,
             pageMenu: "moduler-mobil", 
             categoryId: "mm-modeller",
             mainImage: "https://i.pinimg.com/1200x/29/49/71/294971c2a122e23b7b3b4fecbb9ec4e2.jpg",
@@ -173,7 +174,7 @@ export const siteConfig = {
             id: "sehir-evi-1",
             title: "Kompakt Şehir Evi",
             titleEn: "Compact City House",
-            area: 90, rooms: 3,
+            area: 90, rooms: 3, bathrooms: 2, livingRoom: true, kitchen: true, terrace: false,
             pageMenu: "sehir-yapilari", 
             categoryId: "sy-satis",
             mainImage: "https://i.pinimg.com/1200x/57/b1/d2/57b1d283afad3da10c8c1df80735703f.jpg",
@@ -191,6 +192,16 @@ export const siteConfig = {
                 "sehir-yapilari": "Şehir Yapıları", "galeri": "Galeri", "hakkimizda": "Hakkımızda"
             },
             
+            // YENİ: İkonlu özelliklerin Türkçe çevirileri
+            featureLabels: {
+                area: "Toplam Alan",
+                rooms: "Yatak Odası",
+                bathrooms: "Banyo",
+                livingRoom: "Salon",
+                kitchen: "Mutfak",
+                terrace: "Teras"
+            },
+
             consultBtn: "Bize Ulaşın",
             allProjectsTitle: "Tüm Seçenekler",
             categoryTitle: "Kategoriler",
@@ -290,7 +301,7 @@ export const siteConfig = {
                     { icon: "fa-fire-extinguisher", title: "Yangına Dayanıklılık", desc: "Kullanılan yalıtım malzemesinin türüne göre yangına karşı güvenli alev yürütmez seviyelere sahiptir." },
                     { icon: "fa-sun", title: "Biyoklimatik Tasarım", desc: "Yapının bulunduğu bölgedeki sert iklim koşullarına tam uyum sağlayacak şekilde tasarlanmasına olanak tanır." }
                 ],
-                usageAreasTitle: "Kullanım Alanları",
+                usageAreasTitle: "Kullanım Areas",
                 usageAreas: [
                     "Prefabrik Evler: Hızlı ve ekonomik konut çözümleri sunar.",
                     "Bungalov Evler: Tatil evleri, bahçe evleri gibi küçük ölçekli yapıların inşasında kullanılır.",
@@ -324,6 +335,17 @@ export const siteConfig = {
                 "garaj-yapilari": "Garage Structures", "moduler-mobil": "Modular & Mobile Structures",
                 "sehir-yapilari": "City Structures", "galeri": "Gallery", "hakkimizda": "About Us"
             },
+
+            // YENİ: İkonlu özelliklerin İngilizce çevirileri
+            featureLabels: {
+                area: "Total Area",
+                rooms: "Bedrooms",
+                bathrooms: "Bathrooms",
+                livingRoom: "Living Room",
+                kitchen: "Kitchen",
+                terrace: "Terrace"
+            },
+
             consultBtn: "Contact Us", categoryTitle: "Categories",
             allProjectsTitle: "All Options", sqm: "m²", totalArea: "Total area", roomCount: "Rooms",
             getQuoteTitle: "Get a Quote", 
