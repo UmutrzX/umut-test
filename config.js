@@ -12,7 +12,7 @@ export const siteConfig = {
     },
 
     contact: {
-        logoSrc: "https://media.discordapp.net/attachments/1531819616484196476/1532875905779765248/WhatsApp_Image_2026-08-01_at_1.20.39_AM-removebg-preview.png?ex=6a6e716f&is=6a6d1fef&hm=e83194e0f517f4555a26fd587c4c48093bb002ecc294f8f6bd153043fe854377&=&format=webp&quality=lossless&width=1216&height=260",
+        logoSrc: "https://media.discordapp.net/attachments/1531819616484196476/1532875905779765248/WhatsApp_Image_2026-08-01_at_1.20.39_AM-removebg-preview.png?ex=6a730eaf&is=6a71bd2f&hm=aac6a8c4734ef5d26cf6e934cd82b8f7c2636384549d4c8cea1359f42d197f97&=&format=webp&quality=lossless",
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@zemusippan.com",
@@ -25,7 +25,7 @@ export const siteConfig = {
     },
 
     homeHero: {
-        backgroundImage: "https://pbs.twimg.com/media/HOLXzKvXcAAOx2J?format=jpg&name=large",
+        backgroundImage: "https://media.discordapp.net/attachments/1531819616484196476/1534291268174090411/HOgrMOhWYAALMob.png?ex=6a739798&is=6a724618&hm=c35eb2bdb4f643f58a7b453c8bdee3cc42cd67c0ebadf522f7b8f2aaff78888e&=&format=webp&quality=lossless&width=614&height=768",
         slogan: {
             tr: "Mimari tasarımlara bağlı kalıyoruz.",
             en: "Pushing architectural boundaries."
