@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zemusippan-pwa-v1'; 
+const CACHE_NAME = 'zemusippan-pwa-v2'; // Kategori 5.2: Versiyon güncellendi
 const urlsToCache = [
   './',
   './index.html',
@@ -33,25 +33,26 @@ self.addEventListener('activate', event => {
   );
 });
 
+// Kategori 5.2: Stale-While-Revalidate Mimarisi
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      const fetchPromise = fetch(event.request).then(networkResponse => {
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-            // Chrome eklenti hatalarını loglamamak için clone işlemi
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-         console.log("Offline mode - returning cache if available");
-      });
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.match(event.request).then(cachedResponse => {
+        const fetchedResponse = fetch(event.request).then(networkResponse => {
+          if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        }).catch(() => {
+           console.log("Offline mode - network request failed");
+        });
 
-      return cachedResponse || fetchPromise;
+        // Eğer önbellekte varsa hemen onu dön, arka planda network'ten çekip önbelleği güncelle
+        // Eğer önbellekte yoksa, fetch işlemini bekle
+        return cachedResponse || fetchedResponse;
+      });
     })
   );
 });
