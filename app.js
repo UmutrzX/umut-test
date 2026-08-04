@@ -57,6 +57,41 @@ function updateMetaTags(viewOrId, projectData = null) {
     if(ogImg) ogImg.content = img;
     if(ogUrl) ogUrl.content = url;
     if(canonical) canonical.href = url.split('#')[0] + '#' + viewOrId;
+    
+    // SEO: Dinamik JSON-LD Şemaları (Kategori 5.1)
+    const schemaLd = document.getElementById('schema-ld');
+    if (schemaLd) {
+        if (projectData) {
+            schemaLd.text = JSON.stringify({
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": state.lang === 'tr' ? projectData.title : projectData.titleEn,
+                "image": [projectData.mainImage],
+                "description": projectData.description[state.lang],
+                "brand": { "@type": "Brand", "name": "ZEMU SIPPAN" },
+                "offers": { "@type": "AggregateOffer", "priceCurrency": "EUR", "price": "10000", "lowPrice": "5000", "highPrice": "50000" }
+            });
+        } else if (viewOrId === 'home') {
+            schemaLd.text = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": (t().faq || []).map(f => ({
+                    "@type": "Question",
+                    "name": f.q,
+                    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+                }))
+            });
+        } else {
+            schemaLd.text = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "ZEMU SIPPAN Structures",
+                "url": "https://zemusippan.com",
+                "logo": siteConfig.contact.logoSrc,
+                "contactPoint": { "@type": "ContactPoint", "telephone": siteConfig.contact.phone, "contactType": "customer service" }
+            });
+        }
+    }
 }
 
 function initScrollAnimations() {
@@ -105,37 +140,28 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
         const cacheKey = `${viewOrId}-${state.lang}-${state.activeCategory || 'all'}-${state.sortBy}`;
         const dynamicCategories = Object.keys(siteConfig.categories);
         
-        if (state.pageCache[cacheKey] && !['home'].includes(viewOrId) && !siteConfig.projects.find(p => p.id === viewOrId)) {
-            updateMetaTags(viewOrId);
-            DOM.content.innerHTML = state.pageCache[cacheKey];
+        if (viewOrId === 'home') {
+            updateMetaTags(viewOrId); renderHomePage();
+        } else if (viewOrId === 'sip-panel') {
+            updateMetaTags(viewOrId); renderSipPanelPage();
+        } else if (viewOrId === 'hakkimizda') {
+            updateMetaTags(viewOrId); renderAboutPage();
+        } else if (viewOrId === 'iletisim') {
+            updateMetaTags(viewOrId); renderContactPage();
+        } else if (dynamicCategories.includes(viewOrId)) {
+            updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
+        } else if (['galeri', 'uygulama-secenekleri'].includes(viewOrId)) {
+            updateMetaTags(viewOrId); renderGenericPage(viewOrId);
         } else {
-            if (viewOrId === 'home') {
-                updateMetaTags(viewOrId); renderHomePage();
-            } else if (viewOrId === 'sip-panel') {
-                updateMetaTags(viewOrId); renderSipPanelPage();
-                state.pageCache[cacheKey] = DOM.content.innerHTML;
-            } else if (viewOrId === 'hakkimizda') {
-                updateMetaTags(viewOrId); renderAboutPage();
-                state.pageCache[cacheKey] = DOM.content.innerHTML;
-            } else if (viewOrId === 'iletisim') {
-                updateMetaTags(viewOrId); renderContactPage();
-                state.pageCache[cacheKey] = DOM.content.innerHTML;
-            } else if (dynamicCategories.includes(viewOrId)) {
-                updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
-            } else if (['galeri', 'uygulama-secenekleri'].includes(viewOrId)) {
-                updateMetaTags(viewOrId); renderGenericPage(viewOrId);
-                state.pageCache[cacheKey] = DOM.content.innerHTML;
-            } else {
-                const project = siteConfig.projects.find(p => p.id === viewOrId);
-                if (project) { updateMetaTags(viewOrId, project); renderProjectDetail(viewOrId); }
-                else { navigate('home'); }
-            }
+            const project = siteConfig.projects.find(p => p.id === viewOrId);
+            if (project) { updateMetaTags(viewOrId, project); renderProjectDetail(viewOrId); }
+            else { navigate('home'); }
         }
 
         DOM.content.classList.remove('page-fade-out');
         DOM.content.classList.add('page-fade-in');
         
-        initScrollAnimations(); // Trigger animations on new content load
+        initScrollAnimations(); 
         window.dispatchEvent(new Event('scroll'));
     }, 300); 
 }
@@ -184,9 +210,14 @@ window.filterCategory = function(catId, evt) {
         state.currentView = dynamicCategories.length > 0 ? dynamicCategories[0] : 'home';
     }
     renderProjectsPage(state.currentView);
+    setTimeout(() => { initScrollAnimations(); }, 50);
 };
 
-window.sortProjects = function(sortBy) { state.sortBy = sortBy; renderProjectsPage(state.currentView); };
+window.sortProjects = function(sortBy) { 
+    state.sortBy = sortBy; 
+    renderProjectsPage(state.currentView); 
+    setTimeout(() => { initScrollAnimations(); }, 50);
+};
 
 window.toggleMobileMenu = function() {
     state.mobileMenuOpen = !state.mobileMenuOpen;
@@ -805,7 +836,7 @@ function renderHomePage() {
                     <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-3">${t().faqTitle || 'Sıkça Sorulan Sorular'}</h2>
                     <div class="w-16 md:w-24 h-1.5 bg-brand-orange mx-auto rounded-full"></div>
                 </div>
-                <div class="columns-1 lg:columns-2 gap-8 items-start">
+                <div class="faq-grid">
                     ${faqHTML}
                 </div>
             </div>
@@ -869,7 +900,7 @@ function renderSipPanelPage() {
             </div>
         </div>
         
-        <div class="bg-white py-12 sm:py-16 px-4 sm:px-6 relative z-30">
+        <div class="bg-white py-12 sm:py-16 px-4 sm:px-6 relative z-35">
             <div class="max-w-[1000px] mx-auto space-y-12 sm:space-y-20">
                 
                 <div class="reveal-element">
@@ -951,7 +982,7 @@ function renderAboutPage() {
     `).join('');
 
     DOM.content.innerHTML = `
-        <div class="bg-white min-h-screen pt-28 sm:pt-36 pb-16">
+        <div class="bg-white min-h-screen pt-48 sm:pt-52 pb-16">
             <div class="max-w-[1000px] w-full mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="mb-10 reveal-element">
@@ -987,7 +1018,7 @@ function renderAboutPage() {
 
 function renderContactPage() {
     DOM.content.innerHTML = `
-        <div class="bg-gray-50 min-h-screen pt-28 pb-12 sm:pb-16 px-4 sm:px-6">
+        <div class="bg-gray-50 min-h-screen pt-48 sm:pt-52 pb-12 sm:pb-16 px-4 sm:px-6">
             <div class="max-w-5xl mx-auto">
                 <div class="text-center mb-8 sm:mb-12 reveal-element">
                     <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 tracking-tight">${t().pageTitles['iletisim']}</h1>
@@ -1077,7 +1108,7 @@ function renderGenericPage(pageId) {
     const title = t().pageTitles[pageId] || '';
     const content = t().pageContents[pageId] || '';
     DOM.content.innerHTML = `
-        <div class="max-w-5xl mx-auto py-16 sm:py-24 px-4 sm:px-6 min-h-[60vh] mt-16 reveal-element">
+        <div class="max-w-5xl mx-auto py-16 sm:py-24 px-4 sm:px-6 min-h-[60vh] mt-28 sm:mt-36 reveal-element">
             <div class="mb-8 sm:mb-12">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 sm:mb-5 leading-tight tracking-tight">${title}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
@@ -1127,12 +1158,12 @@ function renderProjectsPage(pageId) {
                 </div>
             </div>
         </a>
-    `).join('') : `<div class="col-span-full text-center py-16 sm:py-24 text-gray-400 font-medium text-base sm:text-lg bg-white rounded-3xl shadow-sm border border-dashed border-gray-300 mx-2 reveal-element">Proje bulunamadı.</div>`;
+    `).join('') : `<div class="col-span-full text-center py-16 sm:py-24 text-gray-400 font-medium text-base sm:text-lg bg-white rounded-3xl shadow-sm border border-dashed border-gray-300 mx-2 reveal-element">Bu kategoride henüz proje bulunmuyor.</div>`;
 
     const dynamicTitle = t().pageTitles && t().pageTitles[pageId] ? t().pageTitles[pageId] : (t().menu[pageId] || pageId);
 
     DOM.content.innerHTML = `
-        <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-24 sm:mt-28 min-h-[60vh]">
+        <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-36 sm:pt-44 min-h-[60vh]">
             <div class="mb-8 sm:mb-10 reveal-element">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 sm:mb-4 leading-tight tracking-tight">${dynamicTitle}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
@@ -1146,7 +1177,7 @@ function renderProjectsPage(pageId) {
                     
                     <div class="shrink-0 w-full sm:w-auto">
                         <select aria-label="Sıralama" onchange="window.sortProjects(this.value)" class="w-full sm:w-auto bg-gray-50 border border-gray-200 text-gray-800 font-semibold text-sm rounded-xl focus:ring-2 focus:ring-brand-orange py-3.5 px-4 cursor-pointer outline-none transition-colors shadow-sm">
-                            <option value="default" ${state.sortBy === 'default' ? 'selected' : ''}>Sıralama: Varsayılan</option>
+                            <option value="default" ${state.sortBy === 'default' ? 'selected' : ''}>Sıralama: Önerilen</option>
                             <option value="areaAsc" ${state.sortBy === 'areaAsc' ? 'selected' : ''}>m² (Küçükten Büyüğe)</option>
                             <option value="areaDesc" ${state.sortBy === 'areaDesc' ? 'selected' : ''}>m² (Büyükten Küçüğe)</option>
                         </select>
@@ -1296,7 +1327,7 @@ function renderProjectDetail(projectId) {
     const parentMenuLabel = t().menu[project.pageMenu] || project.pageMenu;
 
     DOM.content.innerHTML = `
-        <div class="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-12 relative z-10">
+        <div class="max-w-[1300px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-36 sm:pt-44 pb-12 relative z-10">
             
             <div class="mb-5 sm:mb-6 flex flex-wrap items-center justify-between gap-3 reveal-element">
                 <div class="flex items-center text-xs sm:text-sm font-semibold text-gray-500 space-x-2">
@@ -1419,14 +1450,12 @@ function renderProjectDetail(projectId) {
         </div>
     `;
     
-    // Akıllı Mesaj Özelliği
     const waChatBtn = document.getElementById('btn-chat-floating');
     if (waChatBtn) {
         let msg = `Merhaba, ZEMU SIPPAN web sitesini inceliyordum. ${prjTitle} projeniz (${project.area} m²) hakkında detaylı bilgi alabilir miyim?`;
         waChatBtn.href = `https://wa.me/${siteConfig.contact.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`;
     }
 
-    // İNLİNE (SAYFA İÇİ) DOKUNMATİK KAYDIRMA DESTEĞİ
     const mainImageContainer = document.getElementById('main-image-container');
     if (mainImageContainer && state.lightboxImages.length > 1) {
         let touchstartX = 0;
@@ -1548,7 +1577,6 @@ function initApp() {
     DOM.content.classList.remove('page-fade-out');
     DOM.content.classList.add('page-fade-in');
     
-    // Initialize animations on first load
     setTimeout(() => initScrollAnimations(), 100);
 }
 
