@@ -183,44 +183,83 @@ export const siteConfig = {
 
             sipPanelData: {
                 heroImg: "https://pbs.twimg.com/media/HOlDgLqXEAEGB_Q?format=jpg&name=large",
-                introTitle: "SIP Panel Nedir?",
-                introText: "SIP panel, yapı sektöründe son yıllarda hızla popülerleşen, yapısal yalıtımlı panel anlamına gelir. Dış yüzeylerinde taşıyıcı görevi gören OSB levhalar ve iç kısmında ise yüksek yoğunluklu yalıtım malzemesi (genellikle poliüretan, polistiren veya poliizosiyanurat) bulunan bu paneller, inşaat süreçlerini hızlandırırken aynı zamanda enerji verimli ve dayanıklı yapılar oluşturmayı sağlar.<br><br>Bu panelin en önemli özelliği, standart yapı elemanlarının aksine hem yük taşıyıcı iskelet hem de kusursuz bir yalıtım görevini aynı anda üstlenmesidir.",
-                advantagesTitle: "SIP Panelin Avantajları",
+                introTitle: "SIP panelleri neden önemlidir?",
+                introText: "<strong>SIP panel nedir ve modern ahşap binalar için neden idealdir?</strong><br><br>SIP panel, SIP panellerden yapılan ahşap binaların temelini oluşturan modern bir yapı elemanıdır.<br><br>SIP kısaltması, İngilizce \" Structural Insulated Panel\" (Yapısal Yalıtımlı Panel) kelimelerinin baş harflerinden oluşmaktadır. Bu teknoloji, 2026 yılında ahşaptan enerji verimli evler inşa etmenin en yaygın ve popüler yöntemlerinden biridir.",
+                advantagesTitle: "SIP panellerinin diğer önemli avantajları şunlardır:",
                 advantages: [
-                    { icon: "fa-stopwatch", title: "Hızlı ve Kolay Montaj", desc: "Büyük boyutlu ve hafif olması sayesinde geleneksel inşaat yöntemlerine göre çok daha kısa sürede yapı inşa etmeye imkan tanır." },
-                    { icon: "fa-temperature-low", title: "Yüksek Isı Yalıtımı", desc: "İçerisindeki yalıtım malzemesi sayesinde enerji tasarrufu sağlar ve ısı kayıplarını minimuma indirir." },
-                    { icon: "fa-volume-mute", title: "Ses Yalıtımı", desc: "Dışarıdan gelen sesleri önemli ölçüde azaltarak daha sessiz ve konforlu yaşam alanları sunar." },
-                    { icon: "fa-shield-alt", title: "Sarsılmaz Dayanıklılık", desc: "Yüksek mukavemeti sayesinde deprem gibi doğal afetlere karşı esnek duruş sergiler ve yıkılmaz." },
-                    { icon: "fa-tint-slash", title: "Su Geçirmezlik", desc: "Özellikle dış cephelerde kullanıldığında su sızdırmazlık özelliği sayesinde binayı dış etkenlere karşı korur." },
-                    { icon: "fa-leaf", title: "Çevre Dostu", desc: "Üretiminde kullanılan malzemeler ve geri dönüştürülebilir olması çevreye duyarlı bir yapı malzemesi olduğunu gösterir." },
-                    { icon: "fa-fire-extinguisher", title: "Yangına Dayanıklılık", desc: "Kullanılan yalıtım malzemesinin türüne göre yangına karşı güvenli alev yürütmez seviyelere sahiptir." },
-                    { icon: "fa-sun", title: "Biyoklimatik Tasarım", desc: "Yapının bulunduğu bölgedeki sert iklim koşullarına tam uyum sağlayacak şekilde tasarlanmasına olanak tanır." }
+                    { icon: "fa-stopwatch", title: "Son derece hızlı inşaat", desc: "Hassas üretim ve kuru montaj sayesinde kurulum süreleri çok kısadır." },
+                    { icon: "fa-ruler-combined", title: "Yüksek Hassasiyet", desc: "Yapının yüksek hassasiyeti ve düzgünlüğü sağlanır." },
+                    { icon: "fa-shield-alt", title: "Uzun Hizmet Ömrü", desc: "Uzun hizmet ömrü ve yapının sarsılmaz istikrarlılığı sunulur." },
+                    { icon: "fa-calendar-check", title: "Yıl Boyunca Uygulama", desc: "Teknolojik kesintiler olmadan yıl boyunca uygulama imkanı mevcuttur." }
                 ],
-                usageAreasTitle: "Kullanım Alanları",
+                usageAreasTitle: "Bir SIP paneli nelerden oluşur?",
                 usageAreas: [
-                    "Prefabrik Evler: Hızlı ve ekonomik konut çözümleri sunar.",
-                    "Bungalov Evler: Tatil evleri, bahçe evleri gibi küçük ölçekli yapıların inşasında kullanılır.",
-                    "Çatı Sistemleri: Yüksek yalıtım özelliği sayesinde çatı katlarının daha verimli kullanılmasını sağlar.",
-                    "Duvar Sistemleri: İç ve dış duvarlarda kullanılabilen, inceliğiyle metrekare kazandıran malzemedir.",
-                    "Zemin Sistemleri: Yüksek taşıyıcı kapasitesi sayesinde zemin döşemelerinde tercih edilir.",
-                    "Ticari Yapılar: Ofis binaları, alışveriş merkezleri gibi büyük ölçekli yapılarda da kullanılır."
+                    "İki dış yapısal levha: Çoğunlukla OSB malzeme kullanılır.",
+                    "İç yalıtım çekirdeği: Genellikle stabilize edilmiş kendiliğinden sönen polistiren EPS.",
+                    "Bütünlük: Tüm katmanlar, yüzeyin tamamı boyunca birbirine yapıştırılarak son derece güçlü, rijit ve hafif bir yapı elemanı oluşturulur.",
+                    "Performans: Bu kompozisyon, yüksek taşıma kapasitesi ve yüksek kaliteli ahşap binalara özgü mükemmel ısı yalıtım özelliklerini sağlar."
                 ],
-                futureTitle: "SIP Panelin Geleceği",
-                futureText: "SIP paneller, inşaat sektöründe sürdürülebilirlik ve enerji verimliliği konularına olan ilginin artmasıyla birlikte daha da önem kazanmaktadır. Özellikle küresel ısınma ve enerji kaynaklarının daralması, SIP panellerin sağladığı izolasyon devrimini zorunlu kılmaktadır. Sonuç olarak; SIP panel, hızlı, çevreci ve dayanıklı yapılar oluşturmak için geleceğin rakipsiz yapı malzemesi olarak görülmektedir.",
-                specsTitle: "Teknik Özellikler ve Performans",
-                specsDesc: "Projelerimizde kullandığımız SIP paneller uluslararası standartlarda üretilmekte olup zorlu iklim koşullarına karşı test edilmiştir.",
+                futureTitle: "SIP panelleri pratikte nasıl çalışır?",
+                futureText: "SIP panellerden yapılan binalarda, paneller hem yük taşıma hem de yalıtım işlevi görür. Sonuç olarak, genellikle düşük enerjili veya pasif ev kriterlerini karşılayan, çok düşük enerji tüketimine sahip ahşap binalar ortaya çıkmaktadır.",
+                specsTitle: "SIP panelleri, anahtar teslim ahşap yapıların temelini oluşturmaktadır.",
+                specsDesc: "Çok yönlülükleri sayesinde SIP panelleri, anahtar teslim ahşap binalar ve karkas yapılar için ideal bir seçimdir. Aile evlerinin, rekreasyon tesislerinin ve modern bireysel projelerin verimli bir şekilde inşa edilmesini sağlarlar.",
                 technicalSpecs: [
-                    { label: "Panel Kalınlıkları (Dış Duvar)", value: "114 mm / 164 mm / 214 mm" },
-                    { label: "İzolasyon Özü (Core)", value: "16-30 kg/m³ Yoğunluklu EPS (Genleştirilmiş Polistiren)" },
-                    { label: "Dış ve İç Yüzey (Kaplama)", value: "11 mm - 15 mm OSB-3 (Neme Dayanıklı)" },
-                    { label: "Isı İletim Katsayısı (U-Değeri)", value: "0.14 - 0.20 W/m²K (Mükemmel Yalıtım)" },
-                    { label: "Yangın Dayanımı", value: "B-s1, d0 (Alev Yürütmez Sınıfı)" },
-                    { label: "Ses Yalıtımı (Akustik)", value: "40 dB - 45 dB Ses İndirgeme İndeksi" }
+                    { label: "Kalite Özeti", value: "Hız, ekonomiklik ve uzun vadeli kaliteyi bir arada sunan bir teknoloji." },
+                    { label: "İdeal Seçim", value: "SIP panellerden yapılmış ahşap yapılar doğru seçimdir." },
+                    { label: "Danışmanlık", value: "Anahtar teslim bir çözüm önermekten memnuniyet duyarız." }
                 ]
             },
+            
             pageContents: {
                 "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.",
-                "uygulama-secenekleri": "Uygulama seçenekleri içeriği yakında eklenecektir."
+                "uygulama-secenekleri": `
+                <div class="space-y-12">
+                    <div class="reveal-element">
+                        <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 mb-6 tracking-tight">Ülkemizde SIP panellerden ahşap bina yapımı için ne gibi olanaklar mevcuttur?</h3>
+                        <div class="text-base sm:text-lg text-gray-600 leading-relaxed font-medium space-y-4">
+                            <p>Her yatırımcının farklı ihtiyaçları, bütçeleri ve inşaat sürecine nasıl dahil olacağına dair fikirleri vardır. Bu nedenle, SIP panellerden ahşap bir bina inşa etmek için çeşitli seçenekler sunuyoruz; bunlar arasından size en uygun olanı seçebilirsiniz.</p>
+                            <p>İster eksiksiz ve sorunsuz bir ahşap yapı çözümü arıyor olun, ister yapının bir kısmını kendi kontrolünüz altında tutmak isteyin, zengin deneyimimize ve profesyonel yaklaşımımıza her zaman güvenebilirsiniz.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full h-px bg-gray-100 reveal-element delay-100"></div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200 reveal-element delay-100">
+                            <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-gray-200 mb-6 shadow-sm">
+                                <i class="fas fa-home text-2xl text-brand-orange"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 mb-4">Anahtar teslim ahşap binalar</h4>
+                            <p class="text-sm sm:text-base text-gray-600 font-medium leading-relaxed">En yaygın ve en uygun seçenek. Anahtar teslim ahşap binalar, proje dokümantasyonundan temel döşemesine, kaba inşaattan son rötuşlara kadar eksiksiz bir uygulama sürecini içerir. El işi veya teknik detayları koordine etme konusunda endişelenmenize gerek yok; ortaklardan biri her şeyle ilgilenecek. Sonuç olarak, gereksiz karmaşıklıklar olmadan, kısa sürede taşınmaya hazır, bitmiş bir ahşap ev elde ediliyor.</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200 reveal-element delay-200">
+                            <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-gray-200 mb-6 shadow-sm">
+                                <i class="fas fa-hammer text-2xl text-brand-orange"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 mb-4">SIP panellerden kaba yapı</h4>
+                            <p class="text-sm sm:text-base text-gray-600 font-medium leading-relaxed">İşin bir kısmını kendileri veya kendi tedarikçileriyle yapmak isteyen müşteriler için ideal bir seçim. Bu varyantta, evin tüm taşıyıcı yapısını - duvarları, tavanları ve çatıyı - SIP panellerden inşa edeceğiz. İleriki çalışmalarınız için sağlam, hassas ve enerji verimli bir temel elde edeceksiniz. Bu aşamadaki SIP panel yapılar, montaj hızı ve yüksek işçilik kalitesiyle öne çıkmaktadır.</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200 reveal-element delay-300">
+                            <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-gray-200 mb-6 shadow-sm">
+                                <i class="fas fa-tools text-2xl text-brand-orange"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 mb-4">İhtiyaçlarınıza uygun bireysel çözümler</h4>
+                            <p class="text-sm sm:text-base text-gray-600 font-medium leading-relaxed">Müşterinin özel gereksinimlerine uyum sağlamaya alışkınız. İnşaatın sadece seçilmiş kısımlarını, teknik desteği, ahşap yapı danışmanlığını veya takip çalışmalarını sağlayabiliriz. Zengin mesleki deneyimimiz sayesinde, hem teknik hem de ekonomik açıdan mantıklı, yüksek kaliteli ahşap binalar tasarlıyoruz.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-[#1a201c] p-8 sm:p-12 md:p-16 rounded-[2rem] shadow-2xl text-center relative overflow-hidden mt-10 reveal-element">
+                        <div class="absolute inset-0 bg-brand-orange/5 pattern-dots pointer-events-none"></div>
+                        <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-brand-orange mb-6 relative z-10">Hangi seçeneğin sizin için en uygun olduğundan emin değil misiniz?</h3>
+                        <p class="text-gray-300 leading-relaxed text-base sm:text-lg font-medium relative z-10 max-w-3xl mx-auto mb-10">Bizimle iletişime geçin ve birlikte ahşap yapınız için SIP panellerden en uygun çözümü seçelim. Size memnuniyetle danışmanlık yapacak ve fikirlerinize tam olarak uygun bir teklif hazırlayacağız.</p>
+                        <a href="#iletisim" onclick="navigate('iletisim', event)" class="cta-pulse inline-flex items-center justify-center bg-brand-orange text-white font-bold px-10 py-4 sm:py-5 rounded-full shadow-lg hover:bg-orange-600 transition-all btn-press text-base sm:text-lg relative z-10 mx-auto w-full sm:w-auto text-center">
+                            <i class="fas fa-headset mr-3"></i> Hemen İletişime Geçin
+                        </a>
+                    </div>
+                </div>
+                `
             },
             footerText: "© 2026 ZEMU SIPPAN Structures House Systems. Tüm hakları saklıdır."
         },
