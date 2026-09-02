@@ -5,9 +5,9 @@ export const siteConfig = {
         endpoints: [
             { name: "FormSubmit", url: "https://formsubmit.co/ajax/info@zemusippan.com", type: "ajax" },
             { name: "Formspree", url: "https://formspree.io/f/xwpknvqy", type: "json" },
-            { name: "Web3Forms", url: "https://api.web3forms.com/submit", key: "e5a3e5c1-5c1e-4c1e-8c1e-5c1e5c1e5c1e", type: "json" },
-            { name: "Getform", url: "https://getform.io/f/5c1e5c1e-5c1e-4c1e-8c1e-5c1e5c1e5c1e", type: "json" },
-            { name: "Formcarry", url: "https://formcarry.com/s/5c1e5c1e5c1e4c1e8c1e5c1e5c1e5c1e", type: "json" }
+            { name: "Web3Forms", url: "", key: "", type: "json" }, // Gerçek API anahtarı girilince etkinleşir
+            { name: "Getform", url: "", type: "json" }, // Gerçek ID girilince etkinleşir
+            { name: "Formcarry", url: "", type: "json" } // Gerçek ID girilince etkinleşir
         ]
     },
 
@@ -116,7 +116,7 @@ export const siteConfig = {
             formErrorName: "Lütfen adınızı ve soyadınızı tam giriniz.",
             formErrorPhone: "Lütfen geçerli bir telefon numarası giriniz (10 hane).",
             formErrorEmail: "Lütfen geçerli bir e-posta adresi giriniz.",
-            kvkkText: "<a href='#' class='underline text-brand-orange hover:text-orange-400'>KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin işlenmesini kabul ediyorum.",
+            kvkkText: "<a href='#gizlilik' onclick='navigate(&quot;gizlilik&quot;, event)' class='underline text-brand-orange hover:text-orange-400'>KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin işlenmesini kabul ediyorum.",
             kvkkError: "Devam etmek için KVKK metnini onaylamalısınız.",
             
             cookieText: "Sitemizde, size daha iyi bir kullanıcı deneyimi sunabilmek ve hizmetlerimizi geliştirmek için çerezler kullanılmaktadır.",
@@ -128,7 +128,8 @@ export const siteConfig = {
                 "konutlar": "Konut Modellerimiz", "egitim-ticari": "Eğitim ve Ticari Yapılar", 
                 "bahce-yapilari": "Bahçe Yapılarımız", "garaj-yapilari": "Garaj Yapılarımız",
                 "moduler-mobil": "Modüler ve Mobil Yapılarımız", "sehir-yapilari": "Şehir Yapılarımız",
-                "uygulama-secenekleri": "Uygulama Seçenekleri"
+                "uygulama-secenekleri": "Uygulama Seçenekleri",
+                "gizlilik": "Gizlilik Politikası ve KVKK Aydınlatma Metni"
             },
 
             relatedProjectsTitle: "Bunlar da İlginizi Çekebilir",
@@ -212,6 +213,54 @@ export const siteConfig = {
             
             pageContents: {
                 "galeri": "Şantiye ve tamamlanan projelerimizin detaylı fotoğrafları yakında burada yer alacaktır.",
+                "gizlilik": `<div class="space-y-8">
+    <p class="text-sm text-gray-400">Son güncelleme: Şubat 2026</p>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">1. Veri Sorumlusu</h2>
+        <p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca kişisel verileriniz, veri sorumlusu sıfatıyla <strong>ZEMU SIPPAN Structures House Systems</strong> ("Şirket") tarafından aşağıda açıklanan kapsamda işlenmektedir.<br>İletişim: <a href="mailto:info@zemusippan.com" class="text-brand-orange hover:underline">info@zemusippan.com</a> · Sakarya, Türkiye</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">2. İşlenen Kişisel Veriler</h2>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>İletişim verileri:</strong> Ad-soyad, e-posta adresi, telefon numarası ve mesaj içeriği (iletişim ve teklif formları aracılığıyla).</li>
+            <li><strong>İşlem güvenliği verileri:</strong> Çerez kayıtları ve site kullanım tercihleri (dil seçimi, çerez onay durumu).</li>
+            <li><strong>Pazarlama verileri:</strong> Yalnızca açık rıza vermeniz halinde anonimleştirilmiş Google Analytics kullanım istatistikleri.</li>
+        </ul>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">3. Kişisel Verilerin İşlenme Amaçları</h2>
+        <p>Toplanan veriler; talep ve teklif süreçlerinin yürütülmesi, sizinle iletişim kurulması, sözleşme süreçlerinin yönetilmesi, yasal yükümlülüklerin yerine getirilmesi ve hizmet kalitemizin iyileştirilmesi amaçlarıyla, ölçülülük ilkesine uygun olarak işlenir.</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">4. İşlemenin Hukuki Sebepleri</h2>
+        <p>Kişisel verileriniz KVKK'nın 5. maddesinde belirtilen; bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması, veri sorumlusunun hukuki yükümlülüğünü yerine getirebilmesi, temel hak ve özgürlüklerinize zarar vermemek kaydıyla meşru menfaatlerimiz ve açık rızanız hukuki sebeplerine dayanılarak işlenmektedir.</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">5. Kişisel Verilerin Aktarılması</h2>
+        <p>Form verileriniz yalnızca talebinizin alınması amacıyla form altyapı sağlayıcılarına (FormSubmit, Formspree vb.) aktarılabilir. Analitik veriler, onay vermeniz halinde Google Analytics üzerinden işlenir. Yasal zorunluluk durumunda yetkili kamu kurumlarıyla paylaşılabilir. Verileriniz başka hiçbir üçüncü tarafla paylaşılmaz ve ticari amaçla satılmaz.</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">6. KVKK Kapsamındaki Haklarınız (Madde 11)</h2>
+        <ul class="list-disc pl-5 space-y-1">
+            <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme,</li>
+            <li>İşlenmişse buna ilişkin bilgi talep etme,</li>
+            <li>İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
+            <li>Yurt içinde veya yurt dışında aktarıldığı üçüncü kişileri bilme,</li>
+            <li>Eksik veya yanlış işlenmişse düzeltilmesini isteme,</li>
+            <li>Silinmesini veya yok edilmesini isteme,</li>
+            <li>Otomatik sistemlerle analiz sonucu aleyhinize çıkan sonuçlara itiraz etme,</li>
+            <li>Zarara uğramanız halinde tazminat talep etme.</li>
+        </ul>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">7. Çerezler ve Analitik</h2>
+        <p>Sitemizde deneyiminizi iyileştirmek için çerezler kullanılmaktadır. Analitik çerezler <strong>yalnızca açık onayınız</strong> ile etkinleşir; "Reddet" seçeneğini kullanmanız halinde hiçbir izleme yapılmaz. Çerez tercihlerinizi tarayıcı ayarlarınızdan her zaman değiştirebilirsiniz.</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">8. Başvuru</h2>
+        <p>KVKK kapsamındaki haklarınıza ilişkin taleplerinizi <a href="mailto:info@zemusippan.com" class="text-brand-orange hover:underline">info@zemusippan.com</a> adresine iletebilirsiniz. Başvurular en geç 30 gün içinde ücretsiz olarak sonuçlandırılır.</p>
+    </div>
+</div>`,
                 "uygulama-secenekleri": `
                 <div class="space-y-12">
                     <div class="reveal-element">
@@ -294,7 +343,7 @@ export const siteConfig = {
             formErrorName: "Please enter your full name.", 
             formErrorPhone: "Please enter a valid phone number.",
             formErrorEmail: "Please enter a valid email address.",
-            kvkkText: "I have read and accept the <a href='#' class='underline text-brand-orange hover:text-orange-400'>Privacy Policy</a> regarding my personal data.",
+            kvkkText: "I have read and accept the <a href='#gizlilik' onclick='navigate(&quot;gizlilik&quot;, event)' class='underline text-brand-orange hover:text-orange-400'>Privacy Policy</a> regarding my personal data.",
             kvkkError: "You must accept the privacy policy to continue.",
             
             cookieText: "We use cookies on our site to improve your user experience and enhance our services.",
@@ -306,7 +355,8 @@ export const siteConfig = {
                 "konutlar": "Residential Models", "egitim-ticari": "Educational & Commercial", 
                 "bahce-yapilari": "Garden Structures", "garaj-yapilari": "Garage Structures",
                 "moduler-mobil": "Modular & Mobile Structures", "sehir-yapilari": "City Structures",
-                "uygulama-secenekleri": "Application Options"
+                "uygulama-secenekleri": "Application Options",
+                "gizlilik": "Privacy Policy"
             },
 
             relatedProjectsTitle: "You May Also Like",
@@ -398,6 +448,54 @@ export const siteConfig = {
             },
             pageContents: {
                 "galeri": "Gallery coming soon.",
+                "gizlilik": `<div class="space-y-8">
+    <p class="text-sm text-gray-400">Last updated: February 2026</p>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">1. Data Controller</h2>
+        <p>In accordance with the Turkish Personal Data Protection Law No. 6698 ("KVKK") and applicable privacy regulations, your personal data is processed by <strong>ZEMU SIPPAN Structures House Systems</strong> (the "Company") as the data controller.<br>Contact: <a href="mailto:info@zemusippan.com" class="text-brand-orange hover:underline">info@zemusippan.com</a> · Sakarya, Türkiye</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">2. Data We Collect</h2>
+        <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Contact data:</strong> Name, e-mail address, phone number and message content submitted through our contact and quote forms.</li>
+            <li><strong>Preference data:</strong> Cookie records and site preferences (language selection, cookie consent status).</li>
+            <li><strong>Analytics data:</strong> Anonymized Google Analytics statistics, only with your explicit consent.</li>
+        </ul>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">3. Purposes of Processing</h2>
+        <p>Your data is processed to handle quote and contact requests, communicate with you, manage contract processes, fulfil legal obligations and improve our services, always in line with the principle of proportionality.</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">4. Legal Basis</h2>
+        <p>Processing is based on the legal grounds set out in Article 5 of the KVKK: performance of a contract, compliance with legal obligations, legitimate interests of the Company (provided they do not harm your fundamental rights) and your explicit consent.</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">5. Data Sharing</h2>
+        <p>Form data may be shared with form infrastructure providers (FormSubmit, Formspree etc.) solely to receive your request. Analytics data is processed via Google Analytics only upon your consent. Data may be disclosed to public authorities when legally required. We never sell your data or share it with any other third party.</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">6. Your Rights (KVKK Article 11)</h2>
+        <ul class="list-disc pl-5 space-y-1">
+            <li>To learn whether your personal data is being processed,</li>
+            <li>To request information about such processing,</li>
+            <li>To learn the purpose of processing and whether it is used accordingly,</li>
+            <li>To know the third parties to whom data is transferred,</li>
+            <li>To request rectification of incomplete or inaccurate data,</li>
+            <li>To request erasure or destruction of your data,</li>
+            <li>To object to adverse results from automated analysis,</li>
+            <li>To claim compensation for damages.</li>
+        </ul>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">7. Cookies & Analytics</h2>
+        <p>We use cookies to enhance your experience. Analytics cookies are activated <strong>only with your explicit consent</strong>; if you choose "Reject", no tracking takes place. You can change cookie preferences at any time via your browser settings.</p>
+    </div>
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3">8. Contact</h2>
+        <p>Please send your privacy-related requests to <a href="mailto:info@zemusippan.com" class="text-brand-orange hover:underline">info@zemusippan.com</a>. All requests are answered free of charge within 30 days.</p>
+    </div>
+</div>`,
                 "uygulama-secenekleri": "Application options content will be added soon."
             },
             footerText: "© 2026 ZEMU SIPPAN Structures House Systems. All rights reserved."

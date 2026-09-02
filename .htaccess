@@ -67,10 +67,16 @@ AddDefaultCharset UTF-8
 </IfModule>
 
 # Hassas Dosyaları Koru
-<FilesMatch "\.(env|json|lock|md|log|sql)$">
+<FilesMatch "\.(env|lock|md|log|sql)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
+
+# manifest.json PWA kurulumu için erişilebilir olmalıdır
+<Files "manifest.json">
+    Order allow,deny
+    Allow from all
+</Files>
 
 # robots.txt'e İzin Ver
 <Files "robots.txt">

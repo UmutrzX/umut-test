@@ -94,22 +94,12 @@ function updateMetaTags(viewOrId, projectData = null) {
     }
 }
 
+let revealObserver = null;
+let navObserver = null;
+let parallaxBound = false;
+
 function initScrollAnimations() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -40px 0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('reveal-visible');
-                obs.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
 
     const elements = document.querySelectorAll('.reveal-element');
     if (reduceMotion || !('IntersectionObserver' in window)) {
@@ -117,16 +107,30 @@ function initScrollAnimations() {
         return;
     }
 
-    elements.forEach(el => observer.observe(el));
+    // Memory leak önlemi: tek bir reveal observer tekrar tekrar kullanılır
+    if (!revealObserver) {
+        revealObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+    }
+    revealObserver.disconnect();
+    elements.forEach(el => revealObserver.observe(el));
 
     // Parallax efekti — hero arka plan görseli için
-    const heroBg = document.querySelector('.hero-parallax');
-    if (heroBg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!parallaxBound) {
         let ticking = false;
         const updateParallax = () => {
-            const scrolled = window.scrollY;
-            if (scrolled < window.innerHeight) {
-                heroBg.style.transform = 'translateY(' + (scrolled * 0.4) + 'px) scale(' + (1 + scrolled * 0.0003) + ')';
+            const heroEl = document.querySelector('.hero-parallax');
+            if (heroEl) {
+                const scrolled = window.scrollY;
+                if (scrolled < window.innerHeight) {
+                    heroEl.style.transform = 'translateY(' + (scrolled * 0.4) + 'px) scale(' + (1 + scrolled * 0.0003) + ')';
+                }
             }
             ticking = false;
         };
@@ -136,12 +140,14 @@ function initScrollAnimations() {
                 ticking = true;
             }
         }, { passive: true });
+        parallaxBound = true;
     }
 
     // Aktif menü öğesi vurgusu — scroll konumuna göre
+    if (navObserver) navObserver.disconnect();
     const sections = document.querySelectorAll('section[id], div[id]');
-    if (sections.length > 0 && 'IntersectionObserver' in window) {
-        const navObserver = new IntersectionObserver((entries) => {
+    if (sections.length > 0) {
+        navObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const id = entry.target.getAttribute('id');
@@ -192,8 +198,9 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
                 updateMetaTags(viewOrId); renderContactPage();
             } else if (dynamicCategories.includes(viewOrId)) {
                 updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
-            } else if (['galeri', 'uygulama-secenekleri'].includes(viewOrId)) {
-                updateMetaTags(viewOrId); renderGenericPage(viewOrId);
+            } else if (['galeri', 'uygulama-secenekleri', 'gizlilik', 'privacy'].includes(viewOrId)) {
+                const genericId = viewOrId === 'privacy' ? 'gizlilik' : viewOrId;
+                updateMetaTags(genericId); renderGenericPage(genericId);
             } else {
                 const project = siteConfig.projects.find(p => p.id === viewOrId);
                 if (project) { updateMetaTags(viewOrId, project); renderProjectDetail(viewOrId); }
@@ -217,7 +224,7 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
 
         initScrollAnimations();
         window.dispatchEvent(new Event('scroll'));
-    }, 200);
+    }, 300);
 }
 
 export function changeLanguage(lang) {
@@ -340,6 +347,7 @@ window.changeMainImage = function(index) {
         <button aria-label="İleri" onclick="event.stopPropagation(); window.navigateInlineGallery(1)" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-brand-orange text-white w-8 h-8 sm:w-10 sm:h-10 rounded-full flex justify-center items-center backdrop-blur-md z-20 transition-all border border-white/20 shadow-lg btn-press"><i class="fas fa-chevron-right text-sm"></i></button>
     ` : '';
 
+    if (!container.style.transition) container.style.transition = 'opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)';
     container.style.opacity = 0; container.style.transform = 'scale(0.98)';
     setTimeout(() => { 
         if(media.type === 'image') {
@@ -352,7 +360,7 @@ window.changeMainImage = function(index) {
             container.innerHTML = `<iframe src="${media.embed}" class="absolute inset-0 w-full h-full z-10" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
         }
         container.style.opacity = 1; container.style.transform = 'scale(1)';
-    }, 250); 
+    }, 330); 
 };
 
 window.setGalleryImage = function(index) {
@@ -562,7 +570,13 @@ function sendFormWithFallback(data, apiIndex, btn, form) {
     }
 
     const api = siteConfig.formSubmission.endpoints[apiIndex];
-    
+
+    // Boş/geçersiz endpoint'i atla (config'de gerçek anahtar girilmemiş servisler)
+    if (!api || !api.url) {
+        sendFormWithFallback(data, apiIndex + 1, btn, form);
+        return;
+    }
+
     fetch(api.url, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
@@ -1194,11 +1208,11 @@ function renderProjectsPage(pageId) {
     const allCatActive = state.activeCategory === null;
     
     const allCategoriesHTML = `
-        <button onclick="window.filterCategory(null, event)" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap ${allCatActive ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
+        <button onclick="window.filterCategory(null, event)" class="shrink-0 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap ${allCatActive ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
             ${t().allProjectsTitle}
         </button>
     ` + specificCategories.map(cat => `
-        <button onclick="window.filterCategory('${cat.id}', event)" class="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap ${state.activeCategory === cat.id ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
+        <button onclick="window.filterCategory('${cat.id}', event)" class="shrink-0 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 btn-press whitespace-nowrap ${state.activeCategory === cat.id ? 'bg-brand-orange text-white shadow-[0_8px_20px_-6px_rgba(243,156,18,0.6)]' : 'bg-white text-gray-500 border border-gray-200 hover:border-brand-orange hover:text-brand-orange'}">
             ${cat[state.lang]}
         </button>
     `).join('');
@@ -1236,7 +1250,7 @@ function renderProjectsPage(pageId) {
             
             <div class="flex flex-col gap-8 reveal-element">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                    <div class="flex flex-row overflow-x-auto no-scrollbar gap-3 pb-2 w-full lg:flex-1 lg:min-w-0 snap-x">
+                    <div class="chip-scroll flex flex-row overflow-x-auto no-scrollbar gap-3 pb-2 w-full lg:flex-1 lg:min-w-0 snap-x">
                         ${allCategoriesHTML}
                     </div>
                     
@@ -1484,7 +1498,7 @@ function renderProjectDetail(projectId) {
                                 <input id="project-form-kvkk" type="checkbox" onchange="window.clearError(this)" class="w-4 h-4 rounded border-gray-300 text-brand-orange focus:ring-brand-orange cursor-pointer accent-brand-orange">
                             </div>
                             <div class="ml-2 text-xs">
-                                <label for="project-form-kvkk" class="text-gray-700 cursor-pointer font-medium leading-snug block"><a href="#" class="underline text-brand-orange hover:text-orange-500">KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin işlenmesini kabul ediyorum.</label>
+                                <label for="project-form-kvkk" class="text-gray-700 cursor-pointer font-medium leading-snug block"><a href="#gizlilik" onclick="navigate('gizlilik', event)" class="underline text-brand-orange hover:text-orange-500">KVKK Aydınlatma Metni</a>'ni okudum, kişisel verilerimin işlenmesini kabul ediyorum.</label>
                                 <div id="project-form-kvkk-error" class="text-red-500 font-bold text-[10px] mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i>Devam etmek için onaylamalısınız.</div>
                             </div>
                         </div>
@@ -1591,6 +1605,15 @@ function initApp() {
     renderFooter();
     window.addEventListener('scroll', handleScroll);
 
+    // Kategori çipleri: masaüstünde dikey fare tekerleği ile yatay kaydırma desteği
+    document.addEventListener('wheel', (e) => {
+        const scroller = e.target && e.target.closest ? e.target.closest('.chip-scroll') : null;
+        if (scroller && scroller.scrollWidth > scroller.clientWidth && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            e.preventDefault();
+            scroller.scrollLeft += e.deltaY;
+        }
+    }, { passive: false });
+
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.addEventListener('click', (e) => {
             const ripple = document.createElement('div');
@@ -1614,6 +1637,17 @@ function initApp() {
     showCookieConsent();
     
     let hash = window.location.hash.substring(1);
+
+    // SEO/sitemap path URL desteği: /hakkimizda gibi adresler ilgili görünüme yönlendirilir
+    if (!hash) {
+        const pathRoute = decodeURIComponent(window.location.pathname).replace(/^\/+|\/+$/g, '').split('/')[0];
+        const knownRoutes = ['home', 'sip-panel', 'hakkimizda', 'iletisim', 'galeri', 'uygulama-secenekleri', 'gizlilik', 'privacy',
+            ...Object.keys(siteConfig.categories), ...siteConfig.projects.map(p => p.id)];
+        if (pathRoute && knownRoutes.includes(pathRoute)) {
+            hash = pathRoute;
+            window.history.replaceState(null, '', '/#' + pathRoute);
+        }
+    }
     
     // Lightbox touch desteği
     const lightboxOverlay = document.getElementById('lightbox-overlay');

@@ -46,19 +46,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA_ID"></script>
+    <!-- Google Analytics — Gerçek GA ID (G-XXXXXXXXXX) alındığında bu blok yorumdan çıkarılacak.
+         KVKK uyumluluğu: consent varsayılan kapalı, çerez onayı ile açılır.
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        // KVKK uyumluluğu: Varsayılan olarak analytics kapalı
         gtag('consent', 'default', {
             'analytics_storage': 'denied',
             'ad_storage': 'denied'
         });
-        gtag('config', 'G-YOUR_GA_ID', { 'anonymize_ip': true });
+        gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
     </script>
+    -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="tailwind-fallback.js"></script>
     <script>
@@ -106,8 +107,8 @@
         /* Kategori 4.2: Gelişmiş Zincirleme Animasyonlar */
         .reveal-element {
             opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1), transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(20px);
+            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: opacity, transform;
         }
         .reveal-visible {
@@ -115,10 +116,10 @@
             transform: translateY(0);
         }
         
-        .delay-100 { transition-delay: 30ms; }
-        .delay-200 { transition-delay: 60ms; }
-        .delay-300 { transition-delay: 90ms; }
-        .delay-400 { transition-delay: 120ms; }
+        .delay-100 { transition-delay: 40ms; }
+        .delay-200 { transition-delay: 80ms; }
+        .delay-300 { transition-delay: 120ms; }
+        .delay-400 { transition-delay: 160ms; }
         
         .floating-btn {
             position: fixed; z-index: 50;
@@ -147,9 +148,10 @@
         .btn-scroll-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
         .btn-scroll-top:hover { background-color: #2ecc71; }
 
-        #app-content { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
-        .page-fade-out { opacity: 0; transform: translateY(10px); }
-        .page-fade-in { opacity: 1; transform: translateY(0); }
+        /* Rahatlatıcı sayfa geçişi: nazik çıkış, yumuşak ve ferah giriş */
+        #app-content { will-change: opacity, transform; }
+        .page-fade-out { opacity: 0; transform: translateY(8px); transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .page-fade-in { opacity: 1; transform: translateY(0); transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1); }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -267,7 +269,7 @@
         }
         
         /* Kategori 3.1: Sekmeli (Tab) Görünüm İçin Stiller */
-        .tab-content { display: none; animation: fadeIn 0.4s ease-out forwards; }
+        .tab-content { display: none; animation: fadeIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -345,7 +347,7 @@
         .floating-btn:hover { animation: none; transform: scale(1.12) rotate(5deg); }
 
         /* Header geçişinde smooth blur (glassmorphism) */
-        #main-header { transition: background-color 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease; }
+        #main-header { transition: background-color 0.5s ease, backdrop-filter 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease; }
 
         /* Görsel hover'da zoom container */
         .img-zoom-container { overflow: hidden; }
@@ -353,8 +355,8 @@
         .img-zoom-container:hover img { transform: scale(1.06); }
 
         /* Modal / Lightbox gelişmiş geçişler */
-        .modal-overlay { transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.35s; }
-        .modal-overlay > div { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; }
+        .modal-overlay { transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.45s; }
+        .modal-overlay > div { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease; }
 
         /* Toast mesajı gelişmiş */
         #toast-message {
@@ -374,10 +376,10 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Mobil menü overlay gelişmiş blur */
-        .vg-overlay { transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.45s; }
+        .vg-overlay { transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.55s; }
 
         /* Accordion smooth geçiş */
-        .accordion-content { transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease-out, margin-top 0.3s ease; }
+        .accordion-content { transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease-out, margin-top 0.4s ease; }
 
         /* Prefers-reduced-motion desteği (erişilebilirlik) */
         @media (prefers-reduced-motion: reduce) {

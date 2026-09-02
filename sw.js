@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zemusippan-pwa-v4'; // Profesyonel iyileştirmeler v4
+const CACHE_NAME = 'zemusippan-pwa-v5'; // v5: var olmayan görsel listeden çıkarıldı, offline fallback güçlendirildi
 const urlsToCache = [
   './',
   './index.html',
@@ -7,17 +7,16 @@ const urlsToCache = [
   './manifest.json',
   './tailwind-fallback.js',
   './images/logo.png',
-  './images/Anamenüarkaplan.png',
-  './images/hero-sip.jpg'
+  './images/Anamenüarkaplan.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('ZEMU SIPPAN PWA: Dosyalar önbelleğe alınıyor...');
-        return cache.addAll(urlsToCache);
-      })
+      .then(cache => Promise.all(
+        // Tek bir dosya başarısız olsa bile kurulum devam eder (addAll gibi tamamen çökmez)
+        urlsToCache.map(url => cache.add(url).catch(() => console.warn('ZEMU SIPPAN PWA: Önbelleğe alınamadı:', url)))
+      ))
       .then(() => self.skipWaiting())
   );
 });
@@ -37,7 +36,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Kategori 5.2: Stale-While-Revalidate Mimarisi
+// Stale-While-Revalidate + güvenli offline fallback
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
@@ -50,11 +49,12 @@ self.addEventListener('fetch', event => {
           }
           return networkResponse;
         }).catch(() => {
-           console.log("Offline mode - network request failed");
+          // Offline: sayfa gezinmelerinde ana sayfayı döndür, diğer isteklerde 503
+          if (event.request.mode === 'navigate') return caches.match('./index.html');
+          return new Response('', { status: 503, statusText: 'Offline' });
         });
 
-        // Eğer önbellekte varsa hemen onu dön, arka planda network'ten çekip önbelleği güncelle
-        // Eğer önbellekte yoksa, fetch işlemini bekle
+        // Önbellekte varsa hemen dön, arka planda güncelle; yoksa ağı bekler
         return cachedResponse || fetchedResponse;
       });
     })
