@@ -1,10 +1,14 @@
-const CACHE_NAME = 'zemusippan-pwa-v2'; // Kategori 5.2: Versiyon güncellendi
+const CACHE_NAME = 'zemusippan-pwa-v4'; // Profesyonel iyileştirmeler v4
 const urlsToCache = [
   './',
   './index.html',
   './app.js',
   './config.js',
-  './manifest.json'
+  './manifest.json',
+  './tailwind-fallback.js',
+  './images/logo.png',
+  './images/Anamenüarkaplan.png',
+  './images/hero-sip.jpg'
 ];
 
 self.addEventListener('install', event => {

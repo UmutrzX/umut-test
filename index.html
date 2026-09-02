@@ -9,19 +9,30 @@
     <!-- PWA Meta Etiketleri -->
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0a0a0a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ZEMU SIPPAN">
-    <link rel="apple-touch-icon" href="https://pbs.twimg.com/media/HOgqyQxXAAAy6c5?format=png&name=900x900">
-    <link rel="icon" type="image/png" href="https://pbs.twimg.com/media/HOgqyQxXAAAy6c5?format=png&name=900x900">
+    <link rel="apple-touch-icon" href="./images/logo.png">
+    <link rel="icon" type="image/png" href="./images/logo.png">
     
     <!-- Dinamik OG, Twitter ve SEO Etiketleri -->
     <meta property="og:type" content="website">
     <meta id="og-url" property="og:url" content="https://zemusippan.com/">
     <meta id="og-title" property="og:title" content="ZEMU SIPPAN Structures House Systems">
     <meta id="og-description" property="og:description" content="Lüks ve Minimalizmin Birleşimi. SIP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.">
-    <meta id="og-image" property="og:image" content="https://pbs.twimg.com/media/HOgqyQxXAAAy6c5?format=png&name=900x900">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta id="og-image" property="og:image" content="https://zemusippan.com/images/logo.png">
+    <meta name="twitter:title" content="ZEMU SIPPAN Structures House Systems">
+    <meta name="twitter:description" content="Lüks ve Minimalizmin Birleşimi. SIP Panel teknolojisiyle hayalinizdeki yapıya hızla kavuşun.">
+    <meta name="twitter:image" content="https://zemusippan.com/images/logo.png">
+    
+    <!-- Ek SEO Meta Etiketleri -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="revisit-after" content="7 days">
+    <meta name="author" content="ZEMU SIPPAN Structures">
+    <meta name="publisher" content="ZEMU SIPPAN Structures">
+    <meta name="copyright" content="© 2026 ZEMU SIPPAN Structures">
+    <meta name="keywords" content="SIP panel, prefabrik ev, yapısal yalıtımlı panel, lüks ev, minimalist ev, enerji verimli ev, depreme dayanıklı ev, ZEMU SIPPAN, Türkiye">
     
     <link id="canonical-link" rel="canonical" href="https://zemusippan.com/">
     <link id="alternate-tr" rel="alternate" hreflang="tr" href="https://zemusippan.com/">
@@ -35,7 +46,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YOUR_GA_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        // KVKK uyumluluğu: Varsayılan olarak analytics kapalı
+        gtag('consent', 'default', {
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied'
+        });
+        gtag('config', 'G-YOUR_GA_ID', { 'anonymize_ip': true });
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-fallback.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -81,8 +106,8 @@
         /* Kategori 4.2: Gelişmiş Zincirleme Animasyonlar */
         .reveal-element {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(24px);
+            transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1), transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
             will-change: opacity, transform;
         }
         .reveal-visible {
@@ -90,10 +115,10 @@
             transform: translateY(0);
         }
         
-        .delay-100 { transition-delay: 50ms; }
-        .delay-200 { transition-delay: 100ms; }
-        .delay-300 { transition-delay: 150ms; }
-        .delay-400 { transition-delay: 200ms; }
+        .delay-100 { transition-delay: 30ms; }
+        .delay-200 { transition-delay: 60ms; }
+        .delay-300 { transition-delay: 90ms; }
+        .delay-400 { transition-delay: 120ms; }
         
         .floating-btn {
             position: fixed; z-index: 50;
@@ -245,10 +270,154 @@
         .tab-content { display: none; animation: fadeIn 0.4s ease-out forwards; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* PROFESYONEL İYİLEŞTİRMELER — Mevcut yapıyı koruyarak */
+        * { -webkit-tap-highlight-color: transparent; }
+        html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f39c12; }
+        ::selection { background: rgba(243, 156, 18, 0.25); color: #111827; }
+
+        /* Gelişmiş sayfa geçiş animasyonu */
+        #app-content { transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+        .page-fade-out { opacity: 0; transform: translateY(12px) scale(0.998); }
+        .page-fade-in { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* Gelişmiş reveal-element animasyonları (stagger/zincirleme) */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(45px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-visible { opacity: 1; transform: translateY(0); }
+        .reveal-left { transform: translateX(-45px); }
+        .reveal-right { transform: translateX(45px); }
+        .reveal-left.reveal-visible, .reveal-right.reveal-visible { transform: translateX(0); }
+        .reveal-scale { transform: scale(0.92); }
+        .reveal-scale.reveal-visible { transform: scale(1); }
+
+        .delay-100 { transition-delay: 80ms; }
+        .delay-200 { transition-delay: 160ms; }
+        .delay-300 { transition-delay: 240ms; }
+        .delay-400 { transition-delay: 320ms; }
+        .delay-500 { transition-delay: 400ms; }
+
+        /* Gelişmiş proje kartı efektleri */
+        .project-card { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, box-shadow; }
+        .project-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.18); }
+        .project-card img { transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .project-card:hover img { transform: scale(1.08); }
+
+        /* Gelişmiş buton efektleri — ripple benzeri */
+        .btn-press { transition: transform 0.18s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease; cursor: pointer; position: relative; overflow: hidden; }
+        .btn-press:active { transform: scale(0.94); }
+        .btn-press::after {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            width: 0; height: 0; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+            opacity: 1; pointer-events: none;
+        }
+        .btn-press:active::after { width: 300px; height: 300px; opacity: 0; }
+
+        /* Floating butonlar her zaman sabit pozisyonda kalır (btn-press position:relative override) */
+        .floating-btn, .floating-btn.btn-press { position: fixed; }
+
+        /* Gelişmiş CTA pulse */
+        @keyframes pulse-soft {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.45); transform: scale(1); }
+            50% { box-shadow: 0 0 0 14px rgba(243, 156, 18, 0); transform: scale(1.015); }
+        }
+        .cta-pulse { animation: pulse-soft 3.5s infinite cubic-bezier(0.66, 0, 0, 1); }
+
+        /* Floating butonlar — sürekli hafif nefes alma */
+        @keyframes float-breathe {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        /* Telefon ve WhatsApp hafif nefes alır; scroll-top sabit kalır */
+        .btn-call, .btn-chat { animation: float-breathe 4s ease-in-out infinite; }
+        .btn-scroll-top { animation: none; }
+        .floating-btn:hover { animation: none; transform: scale(1.12) rotate(5deg); }
+
+        /* Header geçişinde smooth blur (glassmorphism) */
+        #main-header { transition: background-color 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease; }
+
+        /* Görsel hover'da zoom container */
+        .img-zoom-container { overflow: hidden; }
+        .img-zoom-container img { transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .img-zoom-container:hover img { transform: scale(1.06); }
+
+        /* Modal / Lightbox gelişmiş geçişler */
+        .modal-overlay { transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.35s; }
+        .modal-overlay > div { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; }
+
+        /* Toast mesajı gelişmiş */
+        #toast-message {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Başlık altı çizgi animasyonu (hover'da büyüyen çizgi) */
+        .title-underline { position: relative; }
+        .title-underline::after {
+            content: ''; position: absolute; bottom: -8px; left: 50%;
+            width: 0; height: 3px; background: #f39c12; border-radius: 2px;
+            transform: translateX(-50%); transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-visible.title-underline::after { width: 60px; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobil menü overlay gelişmiş blur */
+        .vg-overlay { transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.45s; }
+
+        /* Accordion smooth geçiş */
+        .accordion-content { transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease-out, margin-top 0.3s ease; }
+
+        /* Prefers-reduced-motion desteği (erişilebilirlik) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal-element { opacity: 1; transform: none; }
+        }
+
+        /* SCROLL PROGRESS BAR — üstte ince ilerleme çubuğu */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+            z-index: 10002; width: 0%;
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+            pointer-events: none;
+            transition: width 0.1s linear;
+        }
+
+        /* MOUSE CLICK RIPPLE — tıklamada dalga efekti */
+        .click-ripple {
+            position: fixed; border-radius: 50%;
+            background: radial-gradient(circle, rgba(243,156,18,0.4) 0%, rgba(243,156,18,0) 70%);
+            transform: translate(-50%, -50%) scale(0);
+            animation: clickRipple 0.6s ease-out forwards;
+            pointer-events: none; z-index: 99999;
+            width: 40px; height: 40px;
+        }
+        @keyframes clickRipple {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(5); opacity: 0; }
+        }
     </style>
 </head>
 
 <body class="antialiased flex flex-col min-h-screen">
+    <div id="scroll-progress"></div>
     <header id="main-header" class="bg-transparent fixed top-0 w-full z-[100] transition-all duration-300 pointer-events-none"></header>
     <main id="app-content" class="flex-grow w-full page-fade-in bg-white"></main>
     <footer id="main-footer" class="bg-[#0a0a0a] text-white mt-auto z-10 relative"></footer>

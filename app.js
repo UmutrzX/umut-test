@@ -95,9 +95,10 @@ function updateMetaTags(viewOrId, projectData = null) {
 }
 
 function initScrollAnimations() {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const observerOptions = {
         root: null,
-        rootMargin: '0px 0px -50px 0px',
+        rootMargin: '0px 0px -40px 0px',
         threshold: 0.1
     };
 
@@ -105,65 +106,118 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('reveal-visible');
-                obs.unobserve(entry.target); 
+                obs.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    document.querySelectorAll('.reveal-element').forEach(el => {
-        observer.observe(el);
-    });
+    const elements = document.querySelectorAll('.reveal-element');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+        elements.forEach(el => el.classList.add('reveal-visible'));
+        return;
+    }
+
+    elements.forEach(el => observer.observe(el));
+
+    // Parallax efekti — hero arka plan görseli için
+    const heroBg = document.querySelector('.hero-parallax');
+    if (heroBg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        let ticking = false;
+        const updateParallax = () => {
+            const scrolled = window.scrollY;
+            if (scrolled < window.innerHeight) {
+                heroBg.style.transform = 'translateY(' + (scrolled * 0.4) + 'px) scale(' + (1 + scrolled * 0.0003) + ')';
+            }
+            ticking = false;
+        };
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    // Aktif menü öğesi vurgusu — scroll konumuna göre
+    const sections = document.querySelectorAll('section[id], div[id]');
+    if (sections.length > 0 && 'IntersectionObserver' in window) {
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    const navLink = document.querySelector('a[href="#' + id + '"]');
+                    if (navLink) {
+                        document.querySelectorAll('.nav-active').forEach(el => el.classList.remove('nav-active'));
+                        navLink.classList.add('nav-active');
+                    }
+                }
+            });
+        }, { rootMargin: '-40% 0px -55% 0px' });
+        sections.forEach(s => navObserver.observe(s));
+    }
 }
 
 export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = false) {
-    if (evt) evt.preventDefault(); 
-    
+    if (evt) evt.preventDefault();
+
     viewOrId = decodeURIComponent(viewOrId);
-    
+
     if (state.mobileMenuOpen) window.toggleMobileMenu();
-    if (state.currentView === viewOrId && !keepCategory && !state.activeCategory) return; 
-    if (!keepCategory) state.activeCategory = null; 
+    if (state.currentView === viewOrId && !keepCategory && !state.activeCategory) return;
+    if (!keepCategory) state.activeCategory = null;
     if (state.sliderInterval) { clearInterval(state.sliderInterval); state.sliderInterval = null; }
 
     state.currentView = viewOrId;
-    
+
     if (!fromHash) window.history.pushState(null, '', '#' + viewOrId);
-    
+
     DOM.content.classList.remove('page-fade-in');
     DOM.content.classList.add('page-fade-out');
-    
+
     renderHeader();
 
     setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         const cacheKey = `${viewOrId}-${state.lang}-${state.activeCategory || 'all'}-${state.sortBy}`;
         const dynamicCategories = Object.keys(siteConfig.categories);
-        
-        if (viewOrId === 'home') {
-            updateMetaTags(viewOrId); renderHomePage();
-        } else if (viewOrId === 'sip-panel') {
-            updateMetaTags(viewOrId); renderSipPanelPage();
-        } else if (viewOrId === 'hakkimizda') {
-            updateMetaTags(viewOrId); renderAboutPage();
-        } else if (viewOrId === 'iletisim') {
-            updateMetaTags(viewOrId); renderContactPage();
-        } else if (dynamicCategories.includes(viewOrId)) {
-            updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
-        } else if (['galeri', 'uygulama-secenekleri'].includes(viewOrId)) {
-            updateMetaTags(viewOrId); renderGenericPage(viewOrId);
-        } else {
-            const project = siteConfig.projects.find(p => p.id === viewOrId);
-            if (project) { updateMetaTags(viewOrId, project); renderProjectDetail(viewOrId); }
-            else { navigate('home'); }
+
+        try {
+            if (viewOrId === 'home') {
+                updateMetaTags(viewOrId); renderHomePage();
+            } else if (viewOrId === 'sip-panel') {
+                updateMetaTags(viewOrId); renderSipPanelPage();
+            } else if (viewOrId === 'hakkimizda') {
+                updateMetaTags(viewOrId); renderAboutPage();
+            } else if (viewOrId === 'iletisim') {
+                updateMetaTags(viewOrId); renderContactPage();
+            } else if (dynamicCategories.includes(viewOrId)) {
+                updateMetaTags(viewOrId); renderProjectsPage(viewOrId);
+            } else if (['galeri', 'uygulama-secenekleri'].includes(viewOrId)) {
+                updateMetaTags(viewOrId); renderGenericPage(viewOrId);
+            } else {
+                const project = siteConfig.projects.find(p => p.id === viewOrId);
+                if (project) { updateMetaTags(viewOrId, project); renderProjectDetail(viewOrId); }
+                else { render404(); }
+            }
+
+            // Analytics event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_view', {
+                    'page_title': document.title,
+                    'page_location': window.location.href
+                });
+            }
+        } catch (error) {
+            console.error('Navigasyon hatası:', error);
+            renderError(error.message);
         }
 
         DOM.content.classList.remove('page-fade-out');
         DOM.content.classList.add('page-fade-in');
-        
-        initScrollAnimations(); 
+
+        initScrollAnimations();
         window.dispatchEvent(new Event('scroll'));
-    }, 300); 
+    }, 200);
 }
 
 export function changeLanguage(lang) {
@@ -642,6 +696,13 @@ function handleScroll() {
     if (window.scrollY > 400) btn?.classList.add('visible');
     else btn?.classList.remove('visible');
 
+    const progress = document.getElementById('scroll-progress');
+    if (progress) {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = docHeight > 0 ? (scrollTop / docHeight) * 100 + '%' : '0%';
+    }
+
     const header = document.getElementById('main-header');
     if(!header) return;
     
@@ -712,9 +773,9 @@ function renderHomePage() {
         const catLabel = t().menu[catKey] || catKey;
         
         return `
-            <a href="#${catKey}" onclick="navigate('${catKey}', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block reveal-element delay-${(index%3+1)*100}">
-                <img src="${bgImage}" alt="${catLabel}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+            <a href="#${catKey}" onclick="navigate('${catKey}', event)" class="group relative aspect-[4/3] rounded-3xl overflow-hidden cursor-pointer btn-press shadow-md block reveal-element delay-${(index%3+1)*100} img-zoom-container">
+                <img src="${bgImage}" alt="${catLabel}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-500 group-hover:from-black/95"></div>
                 <div class="absolute bottom-0 left-0 w-full p-5 sm:p-6">
                     <h3 class="text-xl sm:text-2xl font-bold text-white mb-1">${catLabel}</h3>
                     <span class="text-brand-orange text-sm font-medium flex items-center group-hover:text-white transition-colors">${state.lang === 'tr' ? 'Modelleri Gör' : 'View Models'} <i class="fas fa-arrow-right ml-2"></i></span>
@@ -726,14 +787,18 @@ function renderHomePage() {
     DOM.content.innerHTML = `
         <div class="relative w-full h-[100vh] flex flex-col justify-start overflow-hidden bg-black">
             <div class="absolute inset-0 z-0">
-                <img src="${siteConfig.homeHero.backgroundImage}" alt="Hero Background" class="w-full h-full object-cover opacity-80" loading="eager">
+                <img src="${siteConfig.homeHero.backgroundImage}" alt="Hero Background" class="hero-parallax w-full h-full object-cover opacity-80 transition-opacity duration-700" loading="eager">
             </div>
+            <div class="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-black/20 to-black/70 pointer-events-none"></div>
             <div class="absolute top-0 left-0 w-full h-full flex flex-col justify-center z-20">
                 <div class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="max-w-2xl lg:max-w-3xl transform reveal-element">
-                        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4 leading-tight drop-shadow-lg tracking-tight">${siteConfig.homeHero.slogan[state.lang]}</h1>
-                        <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-medium drop-shadow-md leading-relaxed">${siteConfig.homeHero.subSlogan[state.lang]}</p>
-                        <button onclick="document.getElementById('categories-section').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-6 md:mt-8 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center">
+                    <div class="max-w-2xl lg:max-w-3xl transform reveal-element" style="transition-delay: 200ms;">
+                        <div class="inline-block mb-4 px-4 py-1.5 bg-brand-orange/20 backdrop-blur-sm rounded-full border border-brand-orange/30">
+                            <span class="text-brand-orange text-xs sm:text-sm font-semibold tracking-wide uppercase">ZEMU SIPPAN</span>
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4 leading-tight drop-shadow-2xl tracking-tight" style="animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;">${siteConfig.homeHero.slogan[state.lang]}</h1>
+                        <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 font-medium drop-shadow-lg leading-relaxed max-w-xl" style="animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;">${siteConfig.homeHero.subSlogan[state.lang]}</p>
+                        <button onclick="document.getElementById('categories-section').scrollIntoView({behavior: 'smooth'})" class="cta-pulse mt-6 md:mt-8 bg-brand-orange text-white font-bold px-6 py-3.5 sm:px-8 sm:py-4 rounded-full shadow-2xl hover:bg-orange-500 transition-all btn-press text-sm sm:text-base md:text-lg w-max flex items-center" style="animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;">
                             ${state.lang === 'tr' ? 'Çözümlerimizi İncele' : 'View Solutions'} <i class="fas fa-arrow-down ml-3"></i>
                         </button>
                     </div>
@@ -1525,59 +1590,173 @@ function initApp() {
     renderHeader();
     renderFooter();
     window.addEventListener('scroll', handleScroll);
-    let hash = window.location.hash.substring(1);
-    
-    if (!localStorage.getItem('cookie-accepted')) {
-        const cookieBar = document.createElement('div');
-        cookieBar.id = 'cookie-consent-bar';
-        cookieBar.className = 'fixed bottom-0 left-0 w-full bg-gray-900 border-t border-brand-orange text-white p-4 sm:p-6 z-[1000] transform transition-transform duration-500 flex flex-col sm:flex-row items-center justify-between shadow-2xl';
-        cookieBar.innerHTML = `
-            <div class="text-sm font-medium mb-4 sm:mb-0 max-w-4xl pr-0 sm:pr-8 text-center sm:text-left text-gray-300">
-                <i class="fas fa-cookie-bite text-brand-orange mr-2 text-lg"></i> ${t().cookieText}
-            </div>
-            <button id="accept-cookie-btn" class="bg-brand-orange hover:bg-orange-500 text-white font-bold py-2.5 px-8 rounded-full transition-colors whitespace-nowrap shadow-lg btn-press">
-                ${t().cookieAccept}
-            </button>
-        `;
-        document.body.appendChild(cookieBar);
-        document.getElementById('accept-cookie-btn').addEventListener('click', () => {
-            localStorage.setItem('cookie-accepted', 'true');
-            cookieBar.style.transform = 'translateY(100%)';
-            setTimeout(() => cookieBar.remove(), 500);
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.addEventListener('click', (e) => {
+            const ripple = document.createElement('div');
+            ripple.className = 'click-ripple';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 650);
         });
     }
-
+    
+    // Google Analytics Event Tracking
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'page_view', {
+            'page_title': document.title,
+            'page_location': window.location.href
+        });
+    }
+    
+    // KVKK Çerez Banner
+    showCookieConsent();
+    
+    let hash = window.location.hash.substring(1);
+    
+    // Lightbox touch desteği
     const lightboxOverlay = document.getElementById('lightbox-overlay');
     if (lightboxOverlay) {
         let touchstartX = 0;
         let touchendX = 0;
-        
+
         lightboxOverlay.addEventListener('touchstart', e => {
             touchstartX = e.changedTouches[0].screenX;
         }, {passive: true});
-        
+
         lightboxOverlay.addEventListener('touchend', e => {
             touchendX = e.changedTouches[0].screenX;
             if (!lightboxOverlay.classList.contains('active')) return;
-            
-            const swipeThreshold = 50; 
+
+            const swipeThreshold = 50;
             if (touchendX < touchstartX - swipeThreshold) {
-                window.changeLightboxImage(1); 
+                window.changeLightboxImage(1);
             } else if (touchendX > touchstartX + swipeThreshold) {
-                window.changeLightboxImage(-1); 
+                window.changeLightboxImage(-1);
             }
         }, {passive: true});
     }
 
-    if(hash) { 
+    if(hash) {
         hash = decodeURIComponent(hash);
-        navigate(hash, null, true, true); 
-    } 
+        navigate(hash, null, true, true);
+    }
     else { state.currentView = 'home'; updateMetaTags('home'); renderHomePage(); }
     DOM.content.classList.remove('page-fade-out');
     DOM.content.classList.add('page-fade-in');
-    
+
     setTimeout(() => initScrollAnimations(), 100);
 }
 
+// Google Analytics Event Tracking
+window.trackEvent = function(category, action, label = '') {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', action, {
+            'event_category': category,
+            'event_label': label
+        });
+    }
+};
+
+// 404 Sayfası
+function render404() {
+    DOM.content.innerHTML = `
+        <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 pt-36 sm:pt-44">
+            <div class="text-8xl sm:text-9xl font-black text-gray-200 mb-4">404</div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">${state.lang === 'tr' ? 'Sayfa Bulunamadı' : 'Page Not Found'}</h1>
+            <p class="text-gray-500 mb-8 max-w-md">${state.lang === 'tr' ? 'Aradığınız sayfa taşınmış veya silinmiş olabilir.' : 'The page you are looking for might have been removed or moved.'}</p>
+            <a href="#home" onclick="navigate('home', event)" class="bg-brand-orange text-white font-bold py-3 px-8 rounded-full hover:bg-orange-500 transition-colors">
+                ${state.lang === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
+            </a>
+        </div>
+    `;
+}
+
+// Loading Spinner
+function showLoading() {
+    DOM.content.innerHTML = `
+        <div class="min-h-[60vh] flex items-center justify-center pt-36">
+            <div class="flex flex-col items-center">
+                <i class="fas fa-circle-notch fa-spin text-4xl text-brand-orange mb-4"></i>
+                <p class="text-gray-500 font-medium">${state.lang === 'tr' ? 'Yükleniyor...' : 'Loading...'}</p>
+            </div>
+        </div>
+    `;
+}
+
+// Hata Sayfası
+function renderError(errorMessage) {
+    DOM.content.innerHTML = `
+        <div class="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 pt-36 sm:pt-44">
+            <i class="fas fa-exclamation-triangle text-6xl text-red-500 mb-4"></i>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">${state.lang === 'tr' ? 'Bir Hata Oluştu' : 'An Error Occurred'}</h1>
+            <p class="text-gray-500 mb-8 max-w-md">${errorMessage || (state.lang === 'tr' ? 'Bir sorun oluştu. Lütfen tekrar deneyin.' : 'Something went wrong. Please try again.')}</p>
+            <button onclick="location.reload()" class="bg-brand-orange text-white font-bold py-3 px-8 rounded-full hover:bg-orange-500 transition-colors">
+                ${state.lang === 'tr' ? 'Tekrar Dene' : 'Try Again'}
+            </button>
+        </div>
+    `;
+}
+
+// KVKK Çerez Banner - Gelişmiş
+function showCookieConsent() {
+    if (localStorage.getItem('cookie-accepted')) return;
+    
+    const cookieBar = document.createElement('div');
+    cookieBar.id = 'cookie-consent-bar';
+    cookieBar.innerHTML = `
+        <div class="fixed bottom-0 left-0 w-full bg-gray-900 border-t border-brand-orange text-white p-4 sm:p-6 z-[1000] transform transition-transform duration-500 translate-y-full">
+            <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-sm font-medium text-center sm:text-left text-gray-300">
+                    <i class="fas fa-cookie-bite text-brand-orange mr-2 text-lg"></i>
+                    ${state.lang === 'tr' 
+                        ? 'Sitemizde deneyiminizi iyileştirmek için çerezler kullanılmaktadır. Detaylı bilgi için <a href="#gizlilik" class="text-brand-orange hover:underline">Gizlilik Politikası</a> sayfamızı ziyaret edebilirsiniz.' 
+                        : 'We use cookies to enhance your experience. For more details, visit our <a href="#privacy" class="text-brand-orange hover:underline">Privacy Policy</a> page.'}
+                </div>
+                <div class="flex gap-3">
+                    <button id="cookie-reject" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full transition-colors text-sm">
+                        ${state.lang === 'tr' ? 'Reddet' : 'Reject'}
+                    </button>
+                    <button id="cookie-accept" class="bg-brand-orange hover:bg-orange-500 text-white font-bold py-2 px-6 rounded-full transition-colors text-sm">
+                        ${state.lang === 'tr' ? 'Kabul Et' : 'Accept'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(cookieBar);
+    
+    // Animasyonlu gösterim
+    setTimeout(() => {
+        cookieBar.querySelector('div').classList.remove('translate-y-full');
+    }, 1000);
+    
+    document.getElementById('cookie-accept').addEventListener('click', () => {
+        localStorage.setItem('cookie-accepted', 'true');
+        cookieBar.querySelector('div').classList.add('translate-y-full');
+        setTimeout(() => cookieBar.remove(), 500);
+        // Analytics'i etkinleştir
+        if (typeof gtag !== 'undefined') {
+            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+        }
+    });
+    
+    document.getElementById('cookie-reject').addEventListener('click', () => {
+        localStorage.setItem('cookie-accepted', 'rejected');
+        cookieBar.querySelector('div').classList.add('translate-y-full');
+        setTimeout(() => cookieBar.remove(), 500);
+    });
+}
+
+// Sayfa geçiş fonksiyonu - Loading ile
+window.navigateWithLoading = function(view, event) {
+    if (event) event.preventDefault();
+    showLoading();
+    setTimeout(() => {
+        navigate(view, null, true, true);
+    }, 300);
+};
+
+// Uygulamayı başlat
 window.addEventListener('DOMContentLoaded', initApp);

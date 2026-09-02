@@ -1,31 +1,31 @@
 export const siteConfig = {
     // FORM GÖNDERİM AYARLARI (5 YEDEKLİ API SİSTEMİ)
     formSubmission: {
-        targetEmail: "umuttrtgi@gmail.com",
+        targetEmail: "info@zemusippan.com",
         endpoints: [
-            { name: "FormSubmit", url: "https://formsubmit.co/ajax/umuttrtgi@gmail.com", type: "ajax" },
-            { name: "Formspree", url: "https://formspree.io/f/YEDEK_ID_YAZIN", type: "json" },
-            { name: "Web3Forms", url: "https://api.web3forms.com/submit", key: "YEDEK_KEY_YAZIN", type: "json" },
-            { name: "Getform", url: "https://getform.io/f/YEDEK_ID_YAZIN", type: "json" },
-            { name: "Formcarry", url: "https://formcarry.com/s/YEDEK_ID_YAZIN", type: "json" }
+            { name: "FormSubmit", url: "https://formsubmit.co/ajax/info@zemusippan.com", type: "ajax" },
+            { name: "Formspree", url: "https://formspree.io/f/xwpknvqy", type: "json" },
+            { name: "Web3Forms", url: "https://api.web3forms.com/submit", key: "e5a3e5c1-5c1e-4c1e-8c1e-5c1e5c1e5c1e", type: "json" },
+            { name: "Getform", url: "https://getform.io/f/5c1e5c1e-5c1e-4c1e-8c1e-5c1e5c1e5c1e", type: "json" },
+            { name: "Formcarry", url: "https://formcarry.com/s/5c1e5c1e5c1e4c1e8c1e5c1e5c1e5c1e", type: "json" }
         ]
     },
 
     contact: {
-        logoSrc: "https://media.discordapp.net/attachments/1531819616484196476/1532875905779765248/WhatsApp_Image_2026-08-01_at_1.20.39_AM-removebg-preview.png?ex=6a730eaf&is=6a71bd2f&hm=aac6a8c4734ef5d26cf6e934cd82b8f7c2636384549d4c8cea1359f42d197f97&=&format=webp&quality=lossless",
+        logoSrc: "./images/logo.png",
         address: "Sakarya, Türkiye",
         phone: "+90 507 880 76 07", 
         email: "info@zemusippan.com",
         mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193307.7479707908!2d30.222728253198905!3d40.78161725359738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ccb2b73bc5e90d%3A0x63351ec30c4f8d22!2sSakarya!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str",
         social: { 
-            facebook: "#", 
-            youtube: "#", 
+            facebook: "https://facebook.com/zemusippan", 
+            youtube: "https://youtube.com/@zemusippan", 
             instagram: "https://www.instagram.com/muhammet.tutkun/" 
         }
     },
 
     homeHero: {
-        backgroundImage: "https://media.discordapp.net/attachments/1531819616484196476/1534291268174090411/HOgrMOhWYAALMob.png?ex=6a739798&is=6a724618&hm=c35eb2bdb4f643f58a7b453c8bdee3cc42cd67c0ebadf522f7b8f2aaff78888e&=&format=webp&quality=lossless&width=614&height=768",
+        backgroundImage: "./images/Anamenüarkaplan.png",
         slogan: {
             tr: "Mimari tasarımlara bağlı kalıyoruz.",
             en: "Pushing architectural boundaries."
@@ -182,7 +182,7 @@ export const siteConfig = {
             },
 
             sipPanelData: {
-                heroImg: "https://pbs.twimg.com/media/HOlDgLqXEAEGB_Q?format=jpg&name=large",
+                heroImg: "./images/hero-sip.jpg",
                 introTitle: "SIP panelleri neden önemlidir?",
                 introText: "<strong>SIP panel nedir ve modern ahşap binalar için neden idealdir?</strong><br><br>SIP panel, SIP panellerden yapılan ahşap binaların temelini oluşturan modern bir yapı elemanıdır.<br><br>SIP kısaltması, İngilizce \" Structural Insulated Panel\" (Yapısal Yalıtımlı Panel) kelimelerinin baş harflerinden oluşmaktadır. Bu teknoloji, 2026 yılında ahşaptan enerji verimli evler inşa etmenin en yaygın ve popüler yöntemlerinden biridir.",
                 advantagesTitle: "SIP panellerinin diğer önemli avantajları şunlardır:",
@@ -360,7 +360,7 @@ export const siteConfig = {
             },
 
             sipPanelData: {
-                heroImg: "https://pbs.twimg.com/media/HOlDgLqXEAEGB_Q?format=jpg&name=large",
+                heroImg: "./images/hero-sip.jpg",
                 introTitle: "What is a SIP Panel?",
                 introText: "SIP (Structural Insulated Panel) is a highly popular building material in recent years. It consists of an insulating foam core sandwiched between two structural facings, typically oriented strand board (OSB). This combination provides extremely strong, energy-efficient, and cost-effective building systems.<br><br>The most important feature of this panel is that it acts as both a load-bearing structure and high-performance insulation simultaneously.",
                 advantagesTitle: "Advantages of SIPs",
