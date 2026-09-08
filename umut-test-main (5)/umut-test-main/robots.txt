@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.env$
+Disallow: /*.json$
+
+# Sitemap
+Sitemap: https://zemusippan.com/sitemap.xml
+
+# Tarayıcılar için hız limiti
+Crawl-delay: 1

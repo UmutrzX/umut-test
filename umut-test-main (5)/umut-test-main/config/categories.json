@@ -1,0 +1,140 @@
+{
+  "categories": [
+    {
+      "id": "konutlar",
+      "order": 1,
+      "items": [
+        {
+          "id": "konut-ozel",
+          "tr": "Özel Tasarım Konutları",
+          "en": "Custom Design Houses"
+        },
+        {
+          "id": "konut-modeller",
+          "tr": "Modeller",
+          "en": "Models"
+        }
+      ]
+    },
+    {
+      "id": "egitim-ticari",
+      "order": 2,
+      "items": [
+        {
+          "id": "et-uygulama",
+          "tr": "Uygulama Alanları",
+          "en": "Application Areas"
+        }
+      ]
+    },
+    {
+      "id": "bahce-yapilari",
+      "order": 3,
+      "items": [
+        {
+          "id": "by-ozel",
+          "tr": "Özel Tasarım Bahçe Odaları",
+          "en": "Custom Design Garden Rooms"
+        },
+        {
+          "id": "by-kis",
+          "tr": "Kış Bahçesi",
+          "en": "Winter Garden"
+        },
+        {
+          "id": "by-ofis",
+          "tr": "Bahçe Ofisleri",
+          "en": "Garden Offices"
+        },
+        {
+          "id": "by-oda",
+          "tr": "Bahçe Odası",
+          "en": "Garden Room"
+        },
+        {
+          "id": "by-depo",
+          "tr": "Depolu Bahçe Odası",
+          "en": "Garden Room with Storage"
+        },
+        {
+          "id": "by-banyo",
+          "tr": "Banyolu Bahçe Odası",
+          "en": "Garden Room with Bathroom"
+        },
+        {
+          "id": "by-mutfak",
+          "tr": "Mutfak ve Teraslı Bahçe Odası",
+          "en": "Garden Room with Kitchen & Terrace"
+        },
+        {
+          "id": "by-ilave",
+          "tr": "İlave Yapı Uzantıları",
+          "en": "Additional Structure Extensions"
+        }
+      ]
+    },
+    {
+      "id": "garaj-yapilari",
+      "order": 4,
+      "items": [
+        {
+          "id": "gy-ozel",
+          "tr": "Özel Tasarım Garajlar",
+          "en": "Custom Design Garages"
+        },
+        {
+          "id": "gy-tek",
+          "tr": "Tek Araçlık Garajlar",
+          "en": "Single Car Garages"
+        },
+        {
+          "id": "gy-cift",
+          "tr": "Çift Araçlık Garajlar",
+          "en": "Double Car Garages"
+        },
+        {
+          "id": "gy-sirali",
+          "tr": "Sıralı Garajlar",
+          "en": "Row Garages"
+        },
+        {
+          "id": "gy-terasli",
+          "tr": "Teraslı Garajlar",
+          "en": "Garages with Terrace"
+        },
+        {
+          "id": "gy-port",
+          "tr": "Araç Port Sistemleri",
+          "en": "Carport Systems"
+        }
+      ]
+    },
+    {
+      "id": "moduler-mobil",
+      "order": 5,
+      "items": [
+        {
+          "id": "mm-modeller",
+          "tr": "Modeller",
+          "en": "Models"
+        }
+      ]
+    },
+    {
+      "id": "sehir-yapilari",
+      "order": 6,
+      "items": [
+        {
+          "id": "sy-satis",
+          "tr": "Satış Birimleri",
+          "en": "Sales Units"
+        },
+        {
+          "id": "sy-otobus",
+          "tr": "Otobüs Durakları",
+          "en": "Bus Stops"
+        }
+      ]
+    }
+  ]
+}
