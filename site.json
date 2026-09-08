@@ -1,0 +1,56 @@
+{
+  "formSubmission": {
+    "targetEmail": "info@zemusippan.com",
+    "endpoints": [
+      {
+        "name": "FormSubmit",
+        "url": "https://formsubmit.co/ajax/info@zemusippan.com",
+        "type": "ajax"
+      },
+      {
+        "name": "Formspree",
+        "url": "https://formspree.io/f/xwpknvqy",
+        "type": "json"
+      },
+      {
+        "name": "Web3Forms",
+        "url": "",
+        "key": "",
+        "type": "json"
+      },
+      {
+        "name": "Getform",
+        "url": "",
+        "type": "json"
+      },
+      {
+        "name": "Formcarry",
+        "url": "",
+        "type": "json"
+      }
+    ]
+  },
+  "contact": {
+    "logoSrc": "./images/logo.png",
+    "address": "Sakarya, Türkiye",
+    "phone": "+90 507 880 76 07",
+    "email": "info@zemusippan.com",
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193307.7479707908!2d30.222728253198905!3d40.78161725359738!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14ccb2b73bc5e90d%3A0x63351ec30c4f8d22!2sSakarya!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str",
+    "social": {
+      "facebook": "https://facebook.com/zemusippan",
+      "youtube": "https://youtube.com/@zemusippan",
+      "instagram": "https://www.instagram.com/muhammet.tutkun/"
+    }
+  },
+  "homeHero": {
+    "backgroundImage": "./images/Anamenüarkaplan.png",
+    "slogan": {
+      "tr": "Mimari tasarımlara bağlı kalıyoruz.",
+      "en": "Pushing architectural boundaries."
+    },
+    "subSlogan": {
+      "tr": "Yapısal yalıtımlı SIP panel teknolojisini kullanarak geleneksele uygun yeni nesil yapılar üretiyoruz.",
+      "en": "Using structural insulated SIP panel technology, we produce new generation structures suitable for tradition."
+    }
+  }
+}
