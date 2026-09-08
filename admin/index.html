@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Panel - ZEMU SIPPAN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- ══════════ KİLİT EKRANI (giriş yapılmadan panel görünmez) ══════════ -->
+    <div class="auth-overlay" id="auth-overlay">
+        <div class="auth-card">
+            <div class="auth-logo"><i class="fas fa-building"></i> ZEMU SIPPAN <span>Yönetim Paneli v2.0</span></div>
+            <div id="login-form">
+                <h2><i class="fas fa-lock"></i> Giriş Yap</h2>
+                <div class="form-group">
+                    <label>Kullanıcı Adı</label>
+                    <input type="text" id="auth-username" autocomplete="username" placeholder="kullanıcı adınız">
+                </div>
+                <div class="form-group">
+                    <label>Şifre</label>
+                    <div class="password-wrap">
+                        <input type="password" id="auth-password" autocomplete="current-password" placeholder="şifreniz">
+                        <button type="button" class="eye-btn" onclick="togglePassword('auth-password', this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+                <label class="remember-row"><input type="checkbox" id="auth-remember"> 7 gün boyunca beni hatırla</label>
+                <button class="btn btn-primary btn-block" onclick="attemptLogin()"><i class="fas fa-right-to-bracket"></i> Giriş Yap</button>
+                <div class="auth-error" id="auth-lock" style="display:none"></div>
+                <div class="auth-error" id="auth-error"></div>
+            </div>
+            <div id="register-form" style="display:none">
+                <h2><i class="fas fa-user-shield"></i> İlk Yönetici Hesabı</h2>
+                <p class="auth-sub">Admin paneline girecek ilk kullanıcı adını ve şifreyi belirleyin. Bu ekran yalnızca kayıtlı kullanıcı yokken görünür; sonraki kullanıcılar paneldeki Kullanıcılar sekmesinden eklenir.</p>
+                <div class="form-group">
+                    <label>Kullanıcı Adı</label>
+                    <input type="text" id="reg-username" autocomplete="username" placeholder="örn. umut">
+                </div>
+                <div class="form-group">
+                    <label>Şifre (min 6 karakter)</label>
+                    <div class="password-wrap">
+                        <input type="password" id="reg-password" autocomplete="new-password">
+                        <button type="button" class="eye-btn" onclick="togglePassword('reg-password', this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Şifre (Tekrar)</label>
+                    <input type="password" id="reg-password2" autocomplete="new-password">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="registerFirstUser()"><i class="fas fa-check"></i> Hesabı Oluştur</button>
+                <div class="auth-error" id="reg-error"></div>
+            </div>
+            <p class="auth-hint"><i class="fas fa-shield-halved"></i> Şifreler PBKDF2-SHA256 (100.000 iterasyon) ile korunur, düz metin saklanmaz.</p>
+        </div>
+    </div>
+
+    <div class="admin-container" id="admin-container" style="visibility:hidden">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="fas fa-building"></i> ZEMU SIPPAN</h1>
+                <p>Admin Panel v2.0</p>
+            </div>
+            <nav>
+                <div class="nav-item active" data-section="dashboard"><i class="fas fa-home"></i><span>Dashboard</span></div>
+                <div class="nav-item" data-section="categories"><i class="fas fa-folder"></i><span>Kategoriler</span></div>
+                <div class="nav-item" data-section="projects"><i class="fas fa-project-diagram"></i><span>Projeler</span></div>
+                <div class="nav-item" data-section="site-settings"><i class="fas fa-cog"></i><span>Site Ayarları</span></div>
+                <div class="nav-item" data-section="users"><i class="fas fa-users"></i><span>Kullanıcılar</span></div>
+                <div class="nav-item" data-section="export"><i class="fas fa-download"></i><span>Kod Dışa Aktar</span></div>
+            </nav>
+            <div class="sidebar-user">
+                <span id="sidebar-username"><i class="fas fa-user-circle"></i> -</span>
+                <button class="btn-logout" onclick="logout()" title="Çıkış Yap"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <section id="dashboard" class="section active">
+                <div class="page-header"><h2>Dashboard</h2><p>Site istatistikleri ve hızlı işlemler</p></div>
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="icon orange"><i class="fas fa-folder"></i></div><h4 id="stat-categories">0</h4><p>Kategori</p></div>
+                    <div class="stat-card"><div class="icon blue"><i class="fas fa-project-diagram"></i></div><h4 id="stat-projects">0</h4><p>Proje</p></div>
+                    <div class="stat-card"><div class="icon green"><i class="fas fa-language"></i></div><h4>2</h4><p>Dil (TR/EN)</p></div>
+                    <div class="stat-card"><div class="icon purple"><i class="fas fa-clock"></i></div><h4 id="stat-last-update">-</h4><p>Son Güncelleme</p></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-bolt"></i> Hızlı İşlemler</h3></div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="showSection('categories'); openCategoryModal();"><i class="fas fa-plus"></i> Yeni Kategori</button>
+                        <button class="btn btn-primary" onclick="showSection('projects'); openProjectModal();"><i class="fas fa-plus"></i> Yeni Proje</button>
+                        <button class="btn btn-secondary" onclick="showSection('export'); generateExport();"><i class="fas fa-download"></i> Kodu İndir</button>
+                        <button class="btn btn-secondary" onclick="resetData()"><i class="fas fa-undo"></i> Sıfırla</button>
+                    </div>
+                </div>
+            </section>
+            <section id="categories" class="section">
+                <div class="page-header"><h2>Kategori Yönetimi</h2><p>Kategorileri ekleyin, düzenleyin ve silin</p></div>
+                <div class="card">
+                    <div class="card-header"><h3>Tüm Kategoriler</h3><button class="btn btn-primary btn-sm" onclick="openCategoryModal()"><i class="fas fa-plus"></i> Yeni Ekle</button></div>
+                    <div class="table-container"><table><thead><tr><th>Sıra</th><th>ID</th><th>Türkçe</th><th>İngilizce</th><th>Proje</th><th>İşlemler</th></tr></thead><tbody id="categories-table"></tbody></table></div>
+                </div>
+            </section>
+            <section id="projects" class="section">
+                <div class="page-header"><h2>Proje Yönetimi</h2><p>Projeleri ekleyin, düzenleyin ve yönetin</p></div>
+                <div class="card">
+                    <div class="card-header"><h3>Tüm Projeler</h3><button class="btn btn-primary btn-sm" onclick="openProjectModal()"><i class="fas fa-plus"></i> Yeni Ekle</button></div>
+                    <div class="table-container"><table><thead><tr><th>Görsel</th><th>Başlık (TR)</th><th>Kategori</th><th>Fiyat</th><th>İşlemler</th></tr></thead><tbody id="projects-table"></tbody></table></div>
+                </div>
+            </section>
+            <section id="site-settings" class="section">
+                <div class="page-header"><h2>Site Ayarları</h2><p>Genel site ayarlarını düzenleyin</p></div>
+                <div class="card">
+                    <h3 style="margin-bottom: 20px;">İletişim Bilgileri</h3>
+                    <div class="form-row">
+                        <div class="form-group"><label>Telefon</label><input type="text" id="setting-phone" placeholder="+90 507 880 76 07"></div>
+                        <div class="form-group"><label>E-posta</label><input type="email" id="setting-email" placeholder="info@zemusippan.com"></div>
+                    </div>
+                    <div class="form-group"><label>Adres</label><input type="text" id="setting-address" placeholder="Sakarya, Türkiye"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Facebook</label><input type="url" id="setting-facebook" placeholder="https://facebook.com/..."></div>
+                        <div class="form-group"><label>Instagram</label><input type="url" id="setting-instagram" placeholder="https://instagram.com/..."></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveSiteSettings()"><i class="fas fa-save"></i> Kaydet</button>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 20px;">Hero (Ana Sayfa) Alanı</h3>
+                    <div class="form-row">
+                        <div class="form-group"><label>Slogan (TR)</label><input type="text" id="setting-slogan-tr" placeholder="Mimari tasarımlara bağlı kalıyoruz."></div>
+                        <div class="form-group"><label>Slogan (EN)</label><input type="text" id="setting-slogan-en" placeholder="Pushing architectural boundaries."></div>
+                    </div>
+                    <div class="form-group"><label>Alt Slogan (TR)</label><textarea id="setting-subslogan-tr" placeholder="Yapısal yalıtımlı SIP panel teknolojisi..."></textarea></div>
+                    <div class="form-group"><label>Alt Slogan (EN)</label><textarea id="setting-subslogan-en" placeholder="Using structural insulated SIP panel technology..."></textarea></div>
+                    <button class="btn btn-primary" onclick="saveHeroSettings()"><i class="fas fa-save"></i> Kaydet</button>
+                </div>
+            </section>
+            <section id="users" class="section">
+                <div class="page-header"><h2>Kullanıcı Yönetimi</h2><p>Admin paneline giriş yapabilen kullanıcılar</p></div>
+                <div class="card">
+                    <div class="card-header"><h3>Kayıtlı Kullanıcılar</h3><button class="btn btn-primary btn-sm" onclick="openUserModal('add')"><i class="fas fa-user-plus"></i> Kullanıcı Ekle</button></div>
+                    <div class="table-container"><table><thead><tr><th>Kullanıcı Adı</th><th>Oluşturulma</th><th>İşlemler</th></tr></thead><tbody id="users-table"></tbody></table></div>
+                </div>
+                <div class="card" style="background: #fff3e0; border: 1px solid #ffe0b2;">
+                    <h3 style="color: #e65100; margin-bottom: 10px;"><i class="fas fa-shield-halved"></i> Güvenlik</h3>
+                    <ul style="color: #bf360c; padding-left: 20px; line-height: 1.8;">
+                        <li>Şifreler PBKDF2-SHA256 (100.000 iterasyon) + rastgele salt ile saklanır, düz metin asla saklanmaz</li>
+                        <li>5 hatalı girişte hesap 5 dakika kilitlenir</li>
+                        <li>30 dakika hareketsizlikte otomatik çıkış yapılır</li>
+                        <li>Son kalan kullanıcı silinemez; kendi hesabınızı da silemezsiniz</li>
+                    </ul>
+                </div>
+            </section>
+            <section id="export" class="section">
+                <div class="page-header"><h2>Kod Dışa Aktarma</h2><p>Değişiklikleri indirin ve sitenize uygulayın</p></div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-file-code"></i> Dosyaları İndir</h3></div>
+                    <p style="color: #666; margin-bottom: 20px;">Aşağıdaki butonlarla güncellenmiş dosyaları indirin ve sitenizin <code>config/</code> klasörüne koyun.</p>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                        <button class="btn btn-primary" onclick="downloadFile('site.json')"><i class="fas fa-download"></i> site.json</button>
+                        <button class="btn btn-primary" onclick="downloadFile('categories.json')"><i class="fas fa-download"></i> categories.json</button>
+                        <button class="btn btn-primary" onclick="downloadFile('projects.json')"><i class="fas fa-download"></i> projects.json</button>
+                        <button class="btn btn-primary" onclick="downloadFile('i18n.json')"><i class="fas fa-download"></i> i18n.json</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3><i class="fas fa-code"></i> Kod Önizleme</h3></div>
+                    <div class="export-tabs"><div class="export-tab active" data-file="site.json">site.json</div><div class="export-tab" data-file="categories.json">categories.json</div><div class="export-tab" data-file="projects.json">projects.json</div><div class="export-tab" data-file="i18n.json">i18n.json</div></div>
+                    <div class="code-export" id="code-preview">// Kod burada görünecek...</div>
+                    <button class="btn btn-primary" style="margin-top: 15px;" onclick="copyCode()"><i class="fas fa-copy"></i> Kopyala</button>
+                </div>
+                <div class="card" style="background: #fff3e0; border: 1px solid #ffe0b2;">
+                    <h3 style="color: #e65100; margin-bottom: 15px;"><i class="fas fa-exclamation-triangle"></i> Önemli Notlar</h3>
+                    <ul style="color: #bf360c; padding-left: 20px; line-height: 1.8;">
+                        <li>Görselleri <code>images/</code> klasörüne manuel olarak koyun</li>
+                        <li>Görsel alanlarına sadece dosya adını yazın (ör: <code>proje-1.jpg</code>) veya tam URL yapıştırın</li>
+                        <li>Değişikliklerden sonra dosyaları indirip sitenize yükleyin</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div class="modal-overlay" id="category-modal">
+        <div class="modal">
+            <div class="modal-header"><h3 id="category-modal-title">Yeni Kategori Ekle</h3><button class="modal-close" onclick="closeModal('category-modal')">&times;</button></div>
+            <input type="hidden" id="category-edit-id">
+            <div class="form-group"><label>Kategori ID (boş = TR addan otomatik üretilir)</label><input type="text" id="category-id-input" placeholder="konutlar"></div>
+            <div class="form-group"><label>Türkçe Ad</label><input type="text" id="category-tr" placeholder="Konutlar"></div>
+            <div class="form-group"><label>İngilizce Ad</label><input type="text" id="category-en" placeholder="Houses"></div>
+            <div class="form-group"><label>Alt Öğeler (kategori alt sayfaları — opsiyonel, ID boşsa otomatik)</label><div id="category-items-list"></div><button type="button" class="btn btn-secondary btn-sm" onclick="addCategoryItemRow()"><i class="fas fa-plus"></i> Alt Öğe Ekle</button></div>
+            <button class="btn btn-primary" onclick="saveCategory()"><i class="fas fa-save"></i> Kaydet</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal" style="max-width: 800px;">
+            <div class="modal-header"><h3 id="project-modal-title">Yeni Proje Ekle</h3><button class="modal-close" onclick="closeModal('project-modal')">&times;</button></div>
+            <input type="hidden" id="project-edit-id">
+            <div class="tabs"><div class="tab active" data-project-tab="general">Genel</div><div class="tab" data-project-tab="images">Görseller</div><div class="tab" data-project-tab="details">Detaylar</div></div>
+            <div id="project-tab-general" class="project-tab active">
+                <div class="form-row">
+                    <div class="form-group"><label>Proje ID (boş = başlıktan otomatik)</label><input type="text" id="project-id" placeholder="proje-yeni"></div>
+                    <div class="form-group"><label>Kategori</label><select id="project-category"></select></div>
+                </div>
+                <div class="form-group"><label>Başlık (TR)</label><input type="text" id="project-title-tr" placeholder="Proje Adı"></div>
+                <div class="form-group"><label>Başlık (EN)</label><input type="text" id="project-title-en" placeholder="Project Name"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Fiyat (€)</label><input type="number" id="project-price" placeholder="25000"></div>
+                    <div class="form-group"><label>Metrekare (m²)</label><input type="number" id="project-sqm" placeholder="100"></div>
+                </div>
+            </div>
+            <div id="project-tab-images" class="project-tab" style="display: none;">
+                <div class="form-group"><label>Ana Görsel — dosya adı yazın (otomatik images/ öneki eklenir) veya tam URL</label><input type="text" id="project-main-image" placeholder="proje-adi.jpg veya https://..." list="image-suggestions" autocomplete="off"><datalist id="image-suggestions"></datalist><div class="image-preview" id="main-image-preview"><div class="placeholder"><i class="fas fa-image"></i><br>Görsel URL veya dosya adı</div></div></div>
+                <div class="form-group"><label>Galeri Görselleri (her satıra dosya adı veya URL — images/ öneki otomatik)</label><textarea id="project-gallery" rows="5" placeholder="proje-1.jpg&#10;proje-2.jpg&#10;https://images.unsplash.com/..."></textarea></div>
+            </div>
+            <div id="project-tab-details" class="project-tab" style="display: none;">
+                <div class="form-group"><label>Açıklama (TR)</label><textarea id="project-desc-tr" placeholder="Proje açıklaması..."></textarea></div>
+                <div class="form-group"><label>Açıklama (EN)</label><textarea id="project-desc-en" placeholder="Project description..."></textarea></div>
+                <div class="form-group"><label>Özellikler (her satıra: icon|tr|en)</label><textarea id="project-features" rows="5" placeholder="fa-bed|3 Yatak Odası|3 Bedrooms&#10;fa-bath|2 Banyo|2 Bathrooms"></textarea></div>
+            </div>
+            <div style="margin-top: 20px;"><button class="btn btn-primary" onclick="saveProject()"><i class="fas fa-save"></i> Kaydet</button></div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="user-modal">
+        <div class="modal" style="max-width: 480px;">
+            <div class="modal-header"><h3 id="user-modal-title">Kullanıcı Ekle</h3><button class="modal-close" onclick="closeModal('user-modal')">&times;</button></div>
+            <input type="hidden" id="user-mode">
+            <input type="hidden" id="user-target">
+            <div class="form-group" id="user-username-field">
+                <label>Kullanıcı Adı</label>
+                <input type="text" id="user-username" placeholder="örn. umut">
+            </div>
+            <div class="form-group" id="user-old-field" style="display:none">
+                <label>Mevcut Şifreniz</label>
+                <div class="password-wrap">
+                    <input type="password" id="user-old-pass">
+                    <button type="button" class="eye-btn" onclick="togglePassword('user-old-pass', this)"><i class="fas fa-eye"></i></button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Şifre (min 6 karakter)</label>
+                <div class="password-wrap">
+                    <input type="password" id="user-new-pass">
+                    <button type="button" class="eye-btn" onclick="togglePassword('user-new-pass', this)"><i class="fas fa-eye"></i></button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Şifre (Tekrar)</label>
+                <input type="password" id="user-new-pass2">
+            </div>
+            <button class="btn btn-primary" onclick="saveUserForm()"><i class="fas fa-save"></i> Kaydet</button>
+            <div class="auth-error" id="user-modal-error"></div>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="admin.js"></script>
+    <script type="module">
+        // Yedek: JSON config dosyaları yüklenemezse config.js'ten devam edilir
+        import { siteConfig } from '../config.js';
+        window.FALLBACK_CONFIG = siteConfig;
+    </script>
+    <script src="auth.js"></script>
+</body>
+</html>
