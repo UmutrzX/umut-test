@@ -1,9 +1,14 @@
-const CACHE_NAME = 'zemusippan-pwa-v5'; // v5: var olmayan görsel listeden çıkarıldı, offline fallback güçlendirildi
+﻿const CACHE_NAME = 'zemusippan-pwa-v8'; // v8: UX hissiyat güncellemesi (hızlı geçiş, buton-ripple, FLIP, CSS-native progress)
 const urlsToCache = [
   './',
   './index.html',
   './app.js',
   './config.js',
+  './config-loader.js',
+  './config/site.json',
+  './config/categories.json',
+  './config/projects.json',
+  './config/i18n.json',
   './manifest.json',
   './tailwind-fallback.js',
   './images/logo.png',
@@ -39,6 +44,16 @@ self.addEventListener('activate', event => {
 // Stale-While-Revalidate + güvenli offline fallback
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+
+  // Admin panel ve config dosyaları her zaman taze olmalı (network-first)
+  if (event.request.url.includes('/admin/') || event.request.url.includes('/config/')) {
+    event.respondWith(
+      fetch(event.request).catch(() =>
+        caches.match(event.request).then(r => r || new Response('', { status: 503, statusText: 'Offline' }))
+      )
+    );
+    return;
+  }
 
   event.respondWith(
     caches.open(CACHE_NAME).then(cache => {

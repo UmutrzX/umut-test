@@ -1,4 +1,6 @@
-import { siteConfig } from './config.js';
+﻿import { loadConfig } from './config-loader.js';
+
+let siteConfig = null;
 
 const state = {
     lang: 'tr',       
@@ -116,7 +118,7 @@ function initScrollAnimations() {
                     obs.unobserve(entry.target);
                 }
             });
-        }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+        }, { root: null, rootMargin: '0px 0px -5% 0px', threshold: 0.05 });
     }
     revealObserver.disconnect();
     elements.forEach(el => revealObserver.observe(el));
@@ -183,7 +185,7 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
     renderHeader();
 
     setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'auto' });
         const cacheKey = `${viewOrId}-${state.lang}-${state.activeCategory || 'all'}-${state.sortBy}`;
         const dynamicCategories = Object.keys(siteConfig.categories);
 
@@ -224,7 +226,7 @@ export function navigate(viewOrId, evt = null, keepCategory = false, fromHash = 
 
         initScrollAnimations();
         window.dispatchEvent(new Event('scroll'));
-    }, 300);
+    }, 250);
 }
 
 export function changeLanguage(lang) {
@@ -256,7 +258,7 @@ window.filterAndNavigate = function(menuId, catId, evt) {
     } else {
         renderProjectsPage(menuId);
         setTimeout(() => {
-             const grid = document.getElementById('projects-grid');
+             const grid = document.getElementById('projects-page');
              if(grid) grid.scrollIntoView({behavior: 'smooth', block: 'start'});
         }, 100);
     }
@@ -270,16 +272,58 @@ window.filterCategory = function(catId, evt) {
     if (!dynamicCategories.includes(state.currentView)) {
         state.currentView = dynamicCategories.length > 0 ? dynamicCategories[0] : 'home';
     }
+    const flipState = captureGridRects();
     renderProjectsPage(state.currentView);
-    setTimeout(() => { initScrollAnimations(); }, 50);
+    setTimeout(() => { initScrollAnimations(); playGridFlip(flipState); }, 50);
 };
 
 window.sortProjects = function(sortBy) { 
-    state.sortBy = sortBy; 
-    renderProjectsPage(state.currentView); 
-    setTimeout(() => { initScrollAnimations(); }, 50);
+    state.sortBy = sortBy;
+    const flipState = captureGridRects();
+    renderProjectsPage(state.currentView);
+    setTimeout(() => { initScrollAnimations(); playGridFlip(flipState); }, 50);
 };
 
+// ── Grid FLIP: filtre/sıralamada kartlar yer değişimini yumuşak taşır ──
+function captureGridRects() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return null;
+    const grid = document.getElementById('projects-grid');
+    if (!grid) return null;
+    const map = new Map();
+    grid.querySelectorAll('a[href^="#"]').forEach(el => {
+        const id = (el.getAttribute('href') || '').slice(1);
+        if (id) map.set(id, el.getBoundingClientRect());
+    });
+    return map.size ? map : null;
+}
+
+function playGridFlip(map) {
+    if (!map) return;
+    const grid = document.getElementById('projects-grid');
+    if (!grid) return;
+    grid.querySelectorAll('a[href^="#"]').forEach(el => {
+        const id = (el.getAttribute('href') || '').slice(1);
+        const prev = id ? map.get(id) : null;
+        const now = el.getBoundingClientRect();
+        el.classList.add('reveal-visible');
+        if (!prev) {
+            el.style.opacity = '0';
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                el.style.transition = 'opacity .45s ease .08s, transform .45s cubic-bezier(.22,1,.36,1)';
+                el.style.opacity = '1';
+            }));
+            return;
+        }
+        const dx = prev.left - now.left, dy = prev.top - now.top;
+        if (!dx && !dy) return;
+        el.style.transition = 'none';
+        el.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            el.style.transition = 'transform .45s cubic-bezier(.22,1,.36,1), opacity .4s ease';
+            el.style.transform = '';
+        }));
+    });
+}
 window.toggleMobileMenu = function() {
     state.mobileMenuOpen = !state.mobileMenuOpen;
     const overlay = document.getElementById('vg-overlay-bg');
@@ -359,7 +403,15 @@ window.changeMainImage = function(index) {
         } else {
             container.innerHTML = `<iframe src="${media.embed}" class="absolute inset-0 w-full h-full z-10" frameborder="0" allow="autoplay; fullscreen"></iframe>`;
         }
-        container.style.opacity = 1; container.style.transform = 'scale(1)';
+        container.style.transform = 'scale(1)';
+        const imgEl = container.querySelector('#detail-main-image');
+        if (imgEl && !imgEl.complete) {
+            container.style.opacity = 0.35;
+            imgEl.addEventListener('load', () => { container.style.opacity = 1; }, { once: true });
+            imgEl.addEventListener('error', () => { container.style.opacity = 1; }, { once: true });
+        } else {
+            container.style.opacity = 1;
+        }
     }, 330); 
 };
 
@@ -1242,7 +1294,7 @@ function renderProjectsPage(pageId) {
     const dynamicTitle = t().pageTitles && t().pageTitles[pageId] ? t().pageTitles[pageId] : (t().menu[pageId] || pageId);
 
     DOM.content.innerHTML = `
-        <div id="projects-grid" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-36 sm:pt-44 min-h-[60vh]">
+        <div id="projects-page" class="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-36 sm:pt-44 min-h-[60vh]">
             <div class="mb-8 sm:mb-10 reveal-element">
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3 sm:mb-4 leading-tight tracking-tight">${dynamicTitle}</h1>
                 <div class="w-16 sm:w-20 h-1.5 bg-brand-orange rounded-full"></div>
@@ -1263,7 +1315,7 @@ function renderProjectsPage(pageId) {
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     ${projectsHTML}
                 </div>
             </div>
@@ -1600,7 +1652,11 @@ function renderFooter() {
     `;
 }
 
-function initApp() {
+async function initApp() {
+    // Config'i yükle (admin panel desteğiyle, config.js yedeğiyle)
+    siteConfig = await loadConfig();
+    console.log('✓ Config yüklendi');
+
     renderHeader();
     renderFooter();
     window.addEventListener('scroll', handleScroll);
@@ -1616,12 +1672,22 @@ function initApp() {
 
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.addEventListener('click', (e) => {
-            const ripple = document.createElement('div');
+            const el = e.target.closest('a, button, .btn-press, summary, .project-card, .floating-btn');
+            if (!el || el.dataset.ripple === 'off') return;
+            const rect = el.getBoundingClientRect();
+            if (!rect.width && !rect.height) return;
+            const size = Math.max(rect.width, rect.height) * 2.4;
+            const ripple = document.createElement('span');
             ripple.className = 'click-ripple';
-            ripple.style.left = e.clientX + 'px';
-            ripple.style.top = e.clientY + 'px';
-            document.body.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 650);
+            ripple.style.width = size + 'px';
+            ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left) + 'px';
+            ripple.style.top = (e.clientY - rect.top) + 'px';
+            const prevPos = el.style.position, prevOv = el.style.overflow;
+            if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+            if (getComputedStyle(el).overflow !== 'hidden') el.style.overflow = 'hidden';
+            el.appendChild(ripple);
+            setTimeout(() => { ripple.remove(); el.style.position = prevPos; el.style.overflow = prevOv; }, 500);
         });
     }
     
@@ -1789,8 +1855,12 @@ window.navigateWithLoading = function(view, event) {
     showLoading();
     setTimeout(() => {
         navigate(view, null, true, true);
-    }, 300);
+    }, 80);
 };
 
-// Uygulamayı başlat
-window.addEventListener('DOMContentLoaded', initApp);
+// Uygulamayı başlat (tek sefer, DOM hazırsa direkt)
+if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
